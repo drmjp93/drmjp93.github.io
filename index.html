@@ -19,21 +19,22 @@
       color: white;
       padding: 40px 20px;
       position: relative;
-      text-align: centre;
+      text-align: center;
     }
 
     /* PHOTO - TOP RIGHT - CIRCLE */
-    .profile-photo {
-      position: absolute;
-      top: 80px;
-      right: 20px;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
+   .profile-photo {
+  position: absolute;
+  top: 65px;              /* moves the whole photo downward */
+  right: 20px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 70%;   /* ↓ this moves image content down */
+  border: 2px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
 
     header h1 {
       margin: 0 0 10px 0;
