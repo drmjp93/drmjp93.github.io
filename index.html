@@ -39,19 +39,28 @@
   max-width: 100%;   /* ensures image fits container */
   display: block;
 }
+    
+.profile-photo-container {
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  margin-top: 16px;        /* adjust vertical spacing */
+}
 
     /* VERTICAL SEPARATOR */
     .separator {
-      width: 2px;
-      height: 130px;
-      background: white;
-      opacity: 0.35;
-      align-self: center;
-    }
+  border-top: 1px solid rgba(0,0,0,0.06);
+  width: 90%;        /* longer line */
+  margin: 12px auto; /* centered with spacing above/below */
+}
+
 
     .header-text p {
-      margin: 3px 0;
-      opacity: 0.95;
+       margin: 0;           /* remove spacing between name & qualifications */
+  font-size: 0.87rem;  /* ~10% smaller */
+  opacity: 0.8;        /* 20% lower opacity */
+  text-align: center;
+  line-height: 1.35;
     }
 
     /* MAIN CONTENT */
@@ -121,7 +130,9 @@
   <header>
     <div class="header-flex">
 
-      <img alt="Dr Mit Panchani" src="myphoto.jpg" class="profile-photo">
+    <div class="profile-photo-container">
+  <img alt="Dr Mit Panchani" src="myphoto.jpg" class="profile-photo">
+</div>
 
       <div class="separator"></div>
 
