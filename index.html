@@ -23,7 +23,7 @@
 
     .header-flex {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 25px;
     }
 
@@ -33,17 +33,18 @@
       height: 130px;
       border-radius: 50%;
       object-fit: cover;
-      object-position: 50% 70%; /* adjust to show forehead */
+      object-position: 50% 32%; /* adjust to show forehead */
       border: 2px solid white;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     /* VERTICAL SEPARATOR */
     .separator {
-      width: 3px;
+      width: 2px;
       height: 130px;
       background: white;
       opacity: 0.35;
+      align-self: center;
     }
 
     .header-text p {
