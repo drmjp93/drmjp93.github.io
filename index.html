@@ -27,16 +27,18 @@
       gap: 25px;
     }
 
-    /* PHOTO */
-    .profile-photo {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: 50% 32%; /* adjust to show forehead */
-      border: 2px solid white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
+  /* PHOTO */
+.profile-photo {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 32%; /* forehead adjustment */
+  border: 2px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  max-width: 100%;   /* ensures image fits container */
+  display: block;
+}
 
     /* VERTICAL SEPARATOR */
     .separator {
@@ -119,9 +121,8 @@
   <header>
     <div class="header-flex">
 
-      <!-- PHOTO (Base64 to be added manually) -->
-      <img alt="Dr Mit Panchani" src="myphoto.jpg" style="object-position:50% 32%; width:100%; height:100%; object-fit:cover;">
-      
+      <img alt="Dr Mit Panchani" src="myphoto.jpg" class="profile-photo">
+
       <div class="separator"></div>
 
       <div class="header-text">
