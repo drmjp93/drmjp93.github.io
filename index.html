@@ -157,6 +157,175 @@
     </div>
   </header>
 
+<!-- INLINE STATS BAR (place directly AFTER </header> and BEFORE <div class="container">) -->
+<style>
+  /* Inline stats bar (scoped) */
+  #inline-stats-bar {
+    max-width:980px;
+    margin: -28px auto 18px; /* negative top to sit between header and main card */
+    position: relative;
+    z-index: 6;
+    pointer-events: auto;
+  }
+
+  #inline-stats-card {
+    display:flex;
+    gap:18px;
+    align-items:flex-end;
+    justify-content:center;
+    background: linear-gradient(180deg, rgba(15,17,24,0.98), rgba(12,14,20,0.95));
+    color: #e6eefb;
+    padding: 12px 18px;
+    border-radius: 12px;
+    box-shadow: 0 14px 30px rgba(6,8,16,0.18);
+    border: 1px solid rgba(255,255,255,0.04);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    backdrop-filter: blur(6px);
+  }
+
+  .is-block {
+    display:flex; flex-direction:column; align-items:center; min-width:78px;
+  }
+
+  .is-number {
+    font-weight:800;
+    font-size:1.05rem;
+    line-height:1;
+    color:#fff;
+  }
+
+  .is-label {
+    font-size:0.72rem;
+    color:#aac0ff;
+    margin-top:4px;
+    opacity:0.95;
+  }
+
+  .is-sep {
+    color:#5f7fff;
+    font-weight:700;
+    align-self:center;
+    margin:0 6px;
+  }
+
+  @media (max-width:720px){
+    #inline-stats-card { gap:12px; padding:10px 12px; border-radius:10px; }
+    .is-number { font-size:0.98rem }
+    .is-label { font-size:0.65rem }
+  }
+</style>
+
+<div id="inline-stats-bar" aria-hidden="true" style="display:none">
+  <div id="inline-stats-card" role="region" aria-label="Key clinical stats">
+    <div class="is-block">
+      <div class="is-number" data-key="echo_studies">—</div>
+      <div class="is-label">Echo</div>
+    </div>
+
+    <div class="is-sep">•</div>
+
+    <div class="is-block">
+      <div class="is-number" data-key="cases_attended">—</div>
+      <div class="is-label">Cases</div>
+    </div>
+
+    <div class="is-sep">•</div>
+
+    <div class="is-block">
+      <div class="is-number" data-key="surgical_fitness_given">—</div>
+      <div class="is-label">Fitness</div>
+    </div>
+
+    <div class="is-sep">•</div>
+
+    <div class="is-block">
+      <div class="is-number" data-key="admissions">—</div>
+      <div class="is-label">Adm.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Logic: show inline-stats when floating widget is closed (sessionStorage key used by widget).
+   Uses stats.json only (no visitor API). Animates numbers. */
+(function(){
+  const INLINE_ID = 'inline-stats-bar';
+  const HIDE_KEY = 'hideStatsMode'; // same key as widget uses (sessionStorage)
+  const STATS_PATH = '/stats.json';
+
+  const inlineBar = document.getElementById(INLINE_ID);
+  if (!inlineBar) return;
+
+  // Helper: animate integer from 0 to target
+  function animateNumberEl(el, to, duration=900){
+    const from = 0;
+    const start = performance.now();
+    function frame(now){
+      const t = Math.min((now - start)/duration, 1);
+      const val = Math.floor(from + (to - from) * t);
+      el.textContent = val.toLocaleString();
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  // Populate inline numbers from local data
+  function populateInline(data){
+    const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
+    keys.forEach(key => {
+      const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
+      if (!el) return;
+      const value = Number(data[key]) || 0;
+      animateNumberEl(el, value, 700 + Math.random()*400);
+    });
+  }
+
+  // Decide whether to show inline: show if sessionStorage indicates 'inline' or expiry timestamp present
+  function shouldShowInline(){
+    try {
+      const saved = sessionStorage.getItem(HIDE_KEY);
+      if(!saved) return false;
+      if (saved === 'inline') return true;
+      // if saved is expiry timestamp string
+      const expiry = new Date(saved);
+      if (!isNaN(expiry) && expiry > new Date()) return true;
+    } catch(e){ /* ignore */ }
+    return false;
+  }
+
+  // Fetch stats.json and populate
+  fetch(STATS_PATH + '?_=' + Date.now())
+    .then(r => r.ok ? r.json() : {})
+    .then(data => {
+      if (shouldShowInline()){
+        inlineBar.style.display = 'block';
+        inlineBar.setAttribute('aria-hidden','false');
+        populateInline(data);
+      } else {
+        // keep hidden; but prefill hidden elements so when user closes widget it animates quickly
+        populateInline(data);
+      }
+    })
+    .catch(err => {
+      console.warn('inline-stats fetch failed', err);
+    });
+
+  // Also observe sessionStorage changes in case floating widget sets flag in other tab/window
+  window.addEventListener('storage', (e) => {
+    if (e.key === HIDE_KEY){
+      if (shouldShowInline()){
+        inlineBar.style.display = 'block';
+        inlineBar.setAttribute('aria-hidden','false');
+      } else {
+        inlineBar.style.display = 'none';
+        inlineBar.setAttribute('aria-hidden','true');
+      }
+    }
+  });
+
+})();
+</script>
+  
   <!-- MAIN CONTENT -->
   <main class="container" id="main" role="main">
 
