@@ -3,72 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dr. Mit Panchani | Internal Medicine</title>
+  <title>Dr. Mit Panchani | Profile</title>
 
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f5f7;
+      background: #f5f7fa;
       color: #222;
       line-height: 1.6;
     }
 
     header {
-      background: #1a1a1a; /* Black Accent */
+      background: #1a1a1a;
       color: white;
-      padding: 50px 20px;
-      text-align: center;
+      padding: 40px 20px;
+      position: relative;
+      text-align: left;
+    }
+
+    /* PHOTO - TOP RIGHT - CIRCLE */
+    .profile-photo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
 
     header h1 {
-      margin: 0;
-      font-size: 2.7rem;
+      margin: 0 0 10px 0;
+      font-size: 2.4rem;
       font-weight: bold;
     }
 
     header p {
-      margin-top: 10px;
-      font-size: 1.2rem;
-      opacity: 0.9;
+      margin: 4px 0;
+      font-size: 1.05rem;
+      opacity: 0.95;
     }
 
     .container {
-      width: 90%;
+      width: 92%;
       max-width: 900px;
       margin: 40px auto;
       background: white;
-      padding: 35px;
+      padding: 32px;
       border-radius: 12px;
-      box-shadow: 0 4px 22px rgba(0,0,0,0.10);
+      box-shadow: 0 10px 30px rgba(15,15,15,0.06);
+      border: 1px solid rgba(0,0,0,0.04);
     }
 
     h2 {
-      border-left: 5px solid #1a1a1a; /* Black accent */
+      border-left: 5px solid #1a1a1a;
       padding-left: 12px;
-      font-size: 1.9rem;
-      margin-top: 45px;
+      margin-top: 40px;
+      font-size: 1.8rem;
+      color: #1a1a1a;
     }
 
-    ul {
-      padding-left: 22px;
-      margin-top: 12px;
+    .section {
+      margin-top: 14px;
+      font-size: 1rem;
     }
 
+    ul { padding-left: 22px; }
+
+    /* BUTTON */
     .appointment-btn {
       display: inline-block;
-      margin-top: 25px;
+      margin-top: 22px;
       padding: 15px 30px;
-      background: #2b2b2b; /* Dark Grey Button */
+      background: #2b2b2b;
       color: white;
       text-decoration: none;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       border-radius: 8px;
-      transition: 0.3s;
+      transition: 0.3s ease;
     }
 
     .appointment-btn:hover {
-      background: #000; /* Pure black on hover */
+      background: #000;
     }
 
     footer {
@@ -78,48 +97,77 @@
       color: #555;
       margin-top: 50px;
     }
+
+    @media (max-width: 600px) {
+      .profile-photo {
+        width: 100px;
+        height: 100px;
+        top: 15px;
+        right: 15px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <header>
+
+    <!-- PHOTO INSERTED HERE -->
+    <img class="profile-photo" 
+      src="data:image/jpeg;base64,Fr0TxRqH9n2THdhj+deL2qT3ExunU5Y1jXfuMDsNM5ABrpI3IULWBpkMox8prf8AJlABwa86Eh2JMY5zSeeRxmkEN0527G/KrcOiXE43MCv14rsjK4iuJdw60bohy2M1ppoBHDuPzqb+yoEba7ZNWBiNOqj5VzVfKucqprpfstrEPmqRZLEYGzp3xUTA51EuSP3a9asR2V22NwrfEsOcLgUolbGFrOwFJNGZkzIaEsLIHBXpVszzjCk8U3ZKBuJFIB6W1hGAyqMip/tCdsVT/ed8fnUWGoA01uQDxVS4dpGyCagAYHNWEx1agBpBKYPtShSRkVKcEYFPAG3rQBUC4Y5p1OYc8c02gBjlh92mZl9Knzt6ijzB6f5/KgBi5x81PyR0pM55op2YCSN8lc1fDJz710E2SMVh3KMDg0gLNsCtuPpTsmliwIQPamZWsWmx2FopNy+tG5aVmIgqKQkdPSpMioZSP0osBWJbBqDPOamYjFViw9cU0tQsMiYAsxFWtIiaa8J7VnmQLGxzW74bBAMhrYGdOi+Vx1qZZt3ydMVGzZ4FJGBuzQBNRRRTswP/2Q==" />
+
     <h1>Dr. Mit Panchani</h1>
-    <p>MD (General Medicine) | Internal Medicine Specialist</p>
+
+    <!-- UPDATED QUALIFICATIONS -->
+    <p>MBBS, MD (General Medicine), Surat</p>
+    <p>PGCIH (MSU, Baroda)</p>
+    <p>Fellow in 2D Echocardiography (CIMS, Ahmedabad)</p>
+
   </header>
 
   <div class="container">
 
     <h2>About Me</h2>
-    <p>
-      I am a physician specializing in Internal Medicine with experience in
-      acute and chronic disease management, emergency care, ICU management and 
-      advanced non-invasive cardiac assessment. My approach emphasizes
-      evidence-based medicine and patient-centric care.
-    </p>
+    <div class="section">
+      <p>
+        I am a physician with extensive experience in managing acute and chronic 
+        medical conditions. I focus on evidence-based medicine, patient-centered 
+        care, and advanced non-invasive cardiac assessment including 2D Echocardiography.
+      </p>
+    </div>
 
     <h2>Qualifications</h2>
-    <ul>
-      <li>MD in General Medicine</li>
-      <li>MBBS</li>
-      <li>Fellowship in 2D Echocardiography</li>
-    </ul>
+    <div class="section">
+      <ul>
+        <li>MBBS</li>
+        <li>MD in General Medicine</li>
+        <li>PGCIH – MSU Baroda</li>
+        <li>Fellowship in 2D Echocardiography – CIMS Ahmedabad</li>
+      </ul>
+    </div>
 
     <h2>Clinical Experience</h2>
-    <ul>
-      <li>Resident Doctor – Internal Medicine, XYZ Hospital</li>
-      <li>Medical Officer – ABC Multispeciality Hospital</li>
-      <li>OPD, Emergency & ICU Physician</li>
-    </ul>
+    <div class="section">
+      <ul>
+        <li>Resident Doctor – Internal Medicine, XYZ Hospital</li>
+        <li>Medical Officer – ABC Multispeciality Hospital</li>
+        <li>Physician – OPD, Emergency & ICU Care</li>
+      </ul>
+    </div>
 
     <h2>Telemedicine Consultation</h2>
-    <p>
-      You can securely book a tele-consultation appointment through the link below.
-    </p>
+    <div class="section">
+      <p>
+        You can book a tele-consultation appointment securely through the link below.
+      </p>
 
-    <a class="appointment-btn" href="https://tele.mitpanchani.com" target="_blank">
-      Book Appointment
-    </a>
+      <a class="appointment-btn" 
+         href="https://tele.mitpanchani.com" 
+         target="_blank">
+        Book Appointment
+      </a>
+    </div>
 
   </div>
 
