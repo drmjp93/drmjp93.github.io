@@ -139,7 +139,10 @@
   <header class="fade-in" role="banner">
     <div class="header-flex">
       <div class="profile-photo-container">
-        <img src="myphoto.jpg" alt="Dr Mit Panchani — Internal Medicine" class="profile-photo" loading="lazy" />
+        <!-- using uploaded image path as requested -->
+        <img src="/mnt/data/IMG_D0EAA3F0-A889-48E7-997B-42160B7ECA6E.jpeg"
+             alt="Dr Mit Panchani — Internal Medicine"
+             class="profile-photo" loading="lazy" />
       </div>
 
       <div class="separator" aria-hidden="true"></div>
@@ -157,61 +160,97 @@
     </div>
   </header>
 
-  <!-- INLINE STATS BAR (between header and main) -->
+  <!-- SLIM INLINE STATS BAR (between header and main) -->
   <style>
-    /* Inline stats bar (scoped) */
+    /* Slim Inline Stats Bar - polished with pulse + tooltip */
     #inline-stats-bar {
       max-width:980px;
-      margin: -28px auto 18px; /* negative top to sit between header and main card */
+      margin: -18px auto 10px;
       position: relative;
-      z-index: 6;
+      z-index: 5;
       pointer-events: auto;
     }
 
     #inline-stats-card {
       display:flex;
-      gap:18px;
-      align-items:flex-end;
       justify-content:center;
-      background: linear-gradient(180deg, rgba(15,17,24,0.98), rgba(12,14,20,0.95));
-      color: #e6eefb;
-      padding: 12px 18px;
-      border-radius: 12px;
-      box-shadow: 0 14px 30px rgba(6,8,16,0.18);
-      border: 1px solid rgba(255,255,255,0.04);
+      align-items:center;
+      gap:24px;
+      background: #0f1113;            /* clean dark strip */
+      padding: 6px 10px;
+      border-radius: 0 0 12px 12px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(0,0,0,0.8);
+      /* soft top + bottom shadow to blend into header */
+      box-shadow:
+        0 6px 18px rgba(0,0,0,0.20),
+        0 -4px 10px rgba(0,0,0,0.12);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      backdrop-filter: blur(6px);
     }
 
     .is-block {
-      display:flex; flex-direction:column; align-items:center; min-width:78px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-width:64px;
+      position:relative; /* for tooltip */
     }
 
     .is-number {
-      font-weight:800;
-      font-size:1.05rem;
-      line-height:1;
+      font-weight:700;
+      font-size:0.98rem;
       color:#fff;
+      line-height:1.05;
+      animation: statPulse .75s ease-out;
     }
 
     .is-label {
-      font-size:0.72rem;
-      color:#aac0ff;
-      margin-top:4px;
-      opacity:0.95;
+      font-size:0.65rem;
+      margin-top:3px;
+      color:#9ca3af;
+      letter-spacing:0.2px;
     }
 
     .is-sep {
-      color:#5f7fff;
-      font-weight:700;
-      align-self:center;
+      font-size:0.42rem;
+      color:#5b6470;
       margin:0 6px;
     }
 
+    /* subtle pulse animation on numbers */
+    @keyframes statPulse {
+      from { color:#cfe3ff; transform: translateY(3px); }
+      to   { color:#ffffff; transform: translateY(0); }
+    }
+
+    /* tooltip */
+    .inline-tip {
+      position:absolute;
+      top:-30px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,0.88);
+      color:#fff;
+      font-size:0.68rem;
+      padding:5px 8px;
+      border-radius:6px;
+      white-space:nowrap;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .14s ease;
+      box-shadow:0 6px 14px rgba(0,0,0,0.3);
+      z-index:11;
+    }
+
+    /* show tooltip on hover (desktop only) */
+    @media (hover: hover) {
+      .is-block:hover .inline-tip { opacity:1; }
+    }
+
     @media (max-width:720px){
-      #inline-stats-card { gap:12px; padding:10px 12px; border-radius:10px; }
-      .is-number { font-size:0.98rem }
-      .is-label { font-size:0.65rem }
+      #inline-stats-card { gap:14px; padding:6px; border-radius:0 0 10px 10px; }
+      .is-number { font-size:0.9rem; }
+      .is-label { font-size:0.58rem; }
     }
   </style>
 
@@ -220,6 +259,7 @@
       <div class="is-block">
         <div class="is-number" data-key="echo_studies">—</div>
         <div class="is-label">Echo</div>
+        <span class="inline-tip">Total 2D echo studies performed</span>
       </div>
 
       <div class="is-sep">•</div>
@@ -227,6 +267,7 @@
       <div class="is-block">
         <div class="is-number" data-key="cases_attended">—</div>
         <div class="is-label">Cases</div>
+        <span class="inline-tip">Total clinical cases attended</span>
       </div>
 
       <div class="is-sep">•</div>
@@ -234,6 +275,7 @@
       <div class="is-block">
         <div class="is-number" data-key="surgical_fitness_given">—</div>
         <div class="is-label">Fitness</div>
+        <span class="inline-tip">Surgical fitness certificates issued</span>
       </div>
 
       <div class="is-sep">•</div>
@@ -241,13 +283,12 @@
       <div class="is-block">
         <div class="is-number" data-key="admissions">—</div>
         <div class="is-label">Adm.</div>
+        <span class="inline-tip">Admissions managed</span>
       </div>
     </div>
   </div>
 
   <script>
-    /* Logic: show inline-stats when floating widget is closed (sessionStorage key used by widget).
-       Uses stats.json only (no visitor API). Animates numbers. */
     (function(){
       const INLINE_ID = 'inline-stats-bar';
       const HIDE_KEY = 'hideStatsMode'; // unified key
@@ -256,7 +297,7 @@
       const inlineBar = document.getElementById(INLINE_ID);
       if (!inlineBar) return;
 
-      // Helper: animate integer from 0 to target
+      // animate integer from 0 to target
       function animateNumberEl(el, to, duration=900){
         const from = 0;
         const start = performance.now();
@@ -269,7 +310,7 @@
         requestAnimationFrame(frame);
       }
 
-      // Populate inline numbers from local data
+      // populate inline numbers from local data
       function populateInline(data){
         const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
         keys.forEach(key => {
@@ -280,20 +321,19 @@
         });
       }
 
-      // Decide whether to show inline: show if sessionStorage indicates 'inline' or expiry timestamp present
+      // should show inline when hide flag set (expiry or 'inline')
       function shouldShowInline(){
         try {
           const saved = sessionStorage.getItem(HIDE_KEY);
           if(!saved) return false;
           if (saved === 'inline') return true;
-          // if saved is expiry timestamp string
           const expiry = new Date(saved);
           if (!isNaN(expiry) && expiry > new Date()) return true;
         } catch(e){ /* ignore */ }
         return false;
       }
 
-      // Fetch stats.json and populate
+      // fetch stats.json and populate
       fetch(STATS_PATH + '?_=' + Date.now())
         .then(r => r.ok ? r.json() : {})
         .then(data => {
@@ -302,15 +342,12 @@
             inlineBar.setAttribute('aria-hidden','false');
             populateInline(data);
           } else {
-            // keep hidden; but prefill hidden elements so when user closes widget it animates quickly
+            // prefill hidden elements (makes them ready if user closes floating widget)
             populateInline(data);
           }
-        })
-        .catch(err => {
-          console.warn('inline-stats fetch failed', err);
-        });
+        }).catch(err => console.warn('inline-stats fetch failed', err));
 
-      // Also observe sessionStorage changes in case floating widget sets flag in other tab/window
+      // observe storage changes (other tabs)
       window.addEventListener('storage', (e) => {
         if (e.key === HIDE_KEY){
           if (shouldShowInline()){
@@ -322,7 +359,6 @@
           }
         }
       });
-
     })();
   </script>
 
@@ -439,32 +475,30 @@
       const visitorsInc = 'https://counterapi.dev/api/drmjp93s-team/visitors/increment';
       const visitorsGet = 'https://counterapi.dev/api/drmjp93s-team/visitors';
 
-      const HIDE_KEY = 'hideStatsMode'; // unified key (same as inline)
+      const HIDE_KEY = 'hideStatsMode';
       const TEMP_HIDE_MS = 10 * 60 * 1000; // 10 minutes
 
       const card = document.getElementById('live-stats');
       const closeBtn = document.getElementById('stats-close');
 
-      // If inline mode/expiry is present, hide floating
+      // Hide floating if inline/expiry present
       try {
         const saved = sessionStorage.getItem(HIDE_KEY);
-        if (saved === 'inline') { card.style.display = 'none'; }
+        if (saved === 'inline') { if (card) card.style.display = 'none'; }
         else if (saved) {
           const expiry = new Date(saved);
-          if (!isNaN(expiry) && expiry > new Date()) card.style.display = 'none';
+          if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display = 'none'; }
         }
-      } catch(e){ /* ignore */ }
+      } catch(e){}
 
-      // Close button: hide floating, enable inline for TEMP_HIDE_MS
+      // Close -> set temporary inline mode
       closeBtn.addEventListener('click', () => {
         if (card) card.style.display = 'none';
         const until = new Date(Date.now() + TEMP_HIDE_MS).toISOString();
         try { sessionStorage.setItem(HIDE_KEY, until); } catch(e){}
-        // dispatch storage event for same-tab listeners
         try { window.dispatchEvent(new StorageEvent('storage', { key: HIDE_KEY, newValue: until })); } catch(e){}
       });
 
-      // animate helper
       function animate(el, to, duration=900){
         const from = 0;
         const start = performance.now();
@@ -476,7 +510,6 @@
         requestAnimationFrame(frame);
       }
 
-      // robust visitors fetch: try increment -> fallback to get, accept multiple numeric fields
       function extractNumber(obj){
         if (!obj || typeof obj !== 'object') return 0;
         return Number(obj.count ?? obj.value ?? obj.hits ?? obj.total ?? obj._value ?? 0) || 0;
@@ -485,17 +518,13 @@
       const localStatsP = fetch(path + '?_=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(()=> ({}));
 
       const visitorsP = fetch(visitorsInc, { method:'GET', redirect:'follow' })
-        .then(r => r.text().then(t => {
-          try { return JSON.parse(t); } catch(e){ return null; }
-        }))
+        .then(r => r.text().then(t => { try { return JSON.parse(t); } catch(e){ return null; } }))
         .then(parsed => {
           const n = extractNumber(parsed);
           if (n) return n;
-          // fallback to GET endpoint
           return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
         })
         .catch(() => {
-          // fallback
           return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
         });
 
@@ -512,11 +541,9 @@
 
         const up = document.getElementById('stats-updated');
         if (up) up.textContent = new Date().toLocaleString();
-      }).catch(err => {
-        console.warn('stats widget error', err);
-      });
+      }).catch(err => console.warn('stats widget error', err));
 
-      // listen for storage changes from other tabs (show inline / hide floating accordingly)
+      // listen for storage changes
       window.addEventListener('storage', (e) => {
         if (e.key === HIDE_KEY){
           const saved = sessionStorage.getItem(HIDE_KEY);
