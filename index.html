@@ -14,7 +14,27 @@
       line-height: 1.6;
     }
 
-    /* HEADER AREA */
+    /* ANIMATIONS ------------------------------------------------------ */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in { animation: fadeIn 1.2s ease-out; }
+    .slide-in { animation: slideIn 1.1s ease-out; }
+    .fade-up { animation: fadeUp 1.1s ease-out; }
+
+    /* HEADER ---------------------------------------------------------- */
     header {
       background: #1a1a1a;
       color: white;
@@ -23,47 +43,53 @@
 
     .header-flex {
       display: flex;
-      align-items: flex-start;
-      gap: 25px;
+      align-items: center;
+      gap: 22px;
     }
 
-  /* PHOTO */
-.profile-photo {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 32%; /* forehead adjustment */
-  border: 2px solid white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  max-width: 100%;   /* ensures image fits container */
-  display: block;
-}
-    
-.profile-photo-container {
-  display: flex;
-  justify-content: center; /* horizontal center */
-  align-items: center;     /* vertical center */
-  margin-top: 16px;        /* adjust vertical spacing */
-}
+    /* PHOTO ----------------------------------------------------------- */
+    .profile-photo-container {
+      flex: 0 0 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-    /* VERTICAL SEPARATOR */
+    .profile-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 32%;
+      border: 2px solid white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      flex-shrink: 0;
+      animation: fadeIn 1.2s ease-out;   /* image fade-in */
+    }
+
+    /* SEPARATOR ------------------------------------------------------- */
     .separator {
-  border-top: 1px solid rgba(0,0,0,0.06);
-  width: 90%;        /* longer line */
-  margin: 12px auto; /* centered with spacing above/below */
-}
+      width: 1px;
+      height: 80px;
+      background: rgba(255,255,255,0.15);
+    }
 
+    /* HEADER TEXT ----------------------------------------------------- */
+    .header-text h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: white;
+      animation: slideIn 1.1s ease-out;   /* name slide-in */
+    }
 
     .header-text p {
-       margin: 0;           /* remove spacing between name & qualifications */
-  font-size: 0.87rem;  /* ~10% smaller */
-  opacity: 0.8;        /* 20% lower opacity */
-  text-align: center;
-  line-height: 1.35;
+      margin: 2px 0;
+      font-size: 0.9rem;
+      opacity: 0.85;
+      animation: fadeIn 1.2s ease-out;    /* subtle fade */
     }
 
-    /* MAIN CONTENT */
+    /* CONTENT --------------------------------------------------------- */
     .container {
       width: 92%;
       max-width: 900px;
@@ -72,45 +98,50 @@
       padding: 32px;
       border-radius: 12px;
       box-shadow: 0 10px 30px rgba(15,15,15,0.06);
-      border: 1px solid rgba(0,0,0,0.04);
     }
 
     h2 {
       border-left: 5px solid #1a1a1a;
       padding-left: 12px;
       margin-top: 40px;
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       color: #1a1a1a;
+      animation: fadeUp 1.1s ease-out;
     }
 
-    ul { padding-left: 22px; }
+    ul, p {
+      animation: fadeUp 1.1s ease-out;
+    }
 
-    /* BUTTON */
+    /* BUTTON ---------------------------------------------------------- */
     .appointment-btn {
       display: inline-block;
       margin-top: 22px;
-      padding: 15px 30px;
+      padding: 14px 28px;
       background: #2b2b2b;
       color: white;
       text-decoration: none;
-      font-size: 1.15rem;
       border-radius: 8px;
-      transition: 0.3s ease;
+      transition: transform 0.25s ease, background 0.25s ease;
+      animation: fadeUp 1.2s ease-out;
     }
 
     .appointment-btn:hover {
       background: #000;
+      transform: scale(1.05);
     }
 
+    /* FOOTER ---------------------------------------------------------- */
     footer {
       text-align: center;
       padding: 25px;
       font-size: 0.9rem;
       color: #555;
       margin-top: 50px;
+      animation: fadeIn 1.3s ease-out;
     }
 
-    /* MOBILE VIEW */
+    /* MOBILE ---------------------------------------------------------- */
     @media (max-width: 600px) {
       .header-flex {
         flex-direction: column;
@@ -120,6 +151,11 @@
       .separator {
         display: none;
       }
+
+      .header-text h1,
+      .header-text p {
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -127,12 +163,15 @@
 <body>
 
   <!-- HEADER -->
-  <header>
+  <header class="fade-in">
     <div class="header-flex">
 
-    <div class="profile-photo-container">
-  <img alt="Dr Mit Panchani" src="myphoto.jpg" class="profile-photo">
-</div>
+      <div class="profile-photo-container">
+        <img 
+        src="myphoto.jpg" 
+        alt="Dr Mit Panchani" 
+        class="profile-photo">
+      </div>
 
       <div class="separator"></div>
 
@@ -146,39 +185,35 @@
     </div>
   </header>
 
-  <!-- CONTENT -->
+  <!-- MAIN CONTENT -->
   <div class="container">
 
     <h2>About Me</h2>
     <p>
       I am a physician with extensive experience in managing acute and chronic 
-      medical conditions. My focus is on evidence-based medicine, patient-centered 
-      care, and advanced non-invasive cardiac assessment including 2D Echocardiography.
+      medical conditions, focusing on evidence-based practice and cardiac assessment 
+      including 2D Echocardiography.
     </p>
 
     <h2>Qualifications</h2>
     <ul>
       <li>MBBS</li>
-      <li>MD in General Medicine</li>
+      <li>MD General Medicine</li>
       <li>PGCIH – MSU Baroda</li>
       <li>Fellowship in 2D Echocardiography – CIMS Ahmedabad</li>
     </ul>
 
     <h2>Clinical Experience</h2>
     <ul>
-      <li>Resident Doctor – Internal Medicine, XYZ Hospital</li>
-      <li>Medical Officer – ABC Multispeciality Hospital</li>
-      <li>Physician – OPD, Emergency & ICU Care</li>
+      <li>Resident – Internal Medicine</li>
+      <li>Medical Officer – Multispeciality Hospital</li>
+      <li>Physician – OPD / Emergency / ICU</li>
     </ul>
 
     <h2>Telemedicine Consultation</h2>
-    <p>
-      You can book a tele-consultation appointment securely through the link below.
-    </p>
+    <p>You can book a secure online consultation below.</p>
 
-    <a class="appointment-btn" 
-       href="https://tele.mitpanchani.com" 
-       target="_blank">
+    <a href="https://tele.mitpanchani.com" class="appointment-btn" target="_blank">
       Book Appointment
     </a>
 
