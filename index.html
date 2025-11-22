@@ -487,12 +487,9 @@
         </div>
       </div>
 
+      <!-- Visitors row removed; keeping Updated timestamp only -->
       <div class="row">
-        <div>
-          <div class="label">Visitors</div>
-          <div class="num" data-key="visitors">—</div>
-        </div>
-        <div style="text-align:right">
+        <div style="flex:1">
           <div class="label">Updated</div>
           <div id="stats-updated" style="font-size:12px;color:#cbd5e1">—</div>
         </div>
@@ -504,9 +501,6 @@
   <script>
   (function(){
     const path = '/stats.json';
-    const visitorsInc = 'https://counterapi.dev/api/drmjp93s-team/visitors/increment';
-    const visitorsGet = 'https://counterapi.dev/api/drmjp93s-team/visitors';
-
     const HIDE_KEY = 'hideStatsMode';
     const TEMP_HIDE_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -546,35 +540,15 @@
       requestAnimationFrame(frame);
     }
 
-    function extractNumber(obj){
-      if (!obj || typeof obj !== 'object') return 0;
-      return Number(obj.count ?? obj.value ?? obj.hits ?? obj.total ?? obj._value ?? 0) || 0;
-    }
-
     const localStatsP = fetch(path + '?_=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(()=> ({}));
 
-    const visitorsP = fetch(visitorsInc, { method:'GET', redirect:'follow' })
-      .then(r => r.text().then(t => { try { return JSON.parse(t); } catch(e){ return null; } }))
-      .then(parsed => {
-        const n = extractNumber(parsed);
-        if (n) return n;
-        return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
-      })
-      .catch(() => {
-        return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
-      });
-
-    Promise.all([localStatsP, visitorsP]).then(([data, visitors]) => {
+    localStatsP.then((data) => {
       // floating widget populate (slower)
       document.querySelectorAll('#live-stats .num').forEach(el => {
         const key = el.dataset.key;
-        if (key === 'visitors') return;
         const val = Number(data[key]) || 0;
         animate(el, val, 2000 + Math.random()*1200);
       });
-
-      const visEl = document.querySelector('.num[data-key="visitors"]');
-      if (visEl) animate(visEl, visitors, 2400);
 
       const up = document.getElementById('stats-updated');
       if (up) up.textContent = new Date().toLocaleString();
