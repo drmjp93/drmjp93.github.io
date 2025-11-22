@@ -68,15 +68,6 @@
     .header-text h1 { margin:0; font-size:1.6rem; }
     .header-text p { margin:6px 0 0; font-size:0.8rem; opacity:0.75; }
 
-    .nav { margin-left:auto; display:flex; gap:12px; }
-    .nav a {
-      color:rgba(255,255,255,0.92);
-      text-decoration:none;
-      font-weight:600;
-      font-size:0.9rem;
-    }
-    .nav a:hover { text-decoration:underline; }
-
     main.container {
       width:92%;
       max-width:980px;
@@ -139,10 +130,8 @@
   <header class="fade-in" role="banner">
     <div class="header-flex">
       <div class="profile-photo-container">
-        <!-- using uploaded image path as requested -->
-        <img src="/mnt/data/IMG_D0EAA3F0-A889-48E7-997B-42160B7ECA6E.jpeg"
-             alt="Dr Mit Panchani — Internal Medicine"
-             class="profile-photo" loading="lazy" />
+        <!-- image from repo root -->
+        <img src="myphoto.jpg" alt="Dr Mit Panchani — Internal Medicine" class="profile-photo" loading="lazy" />
       </div>
 
       <div class="separator" aria-hidden="true"></div>
@@ -152,11 +141,7 @@
         <p class="fade-in">MD (General Medicine) | 2D Echocardiographer </p>
       </div>
 
-      <nav class="nav" aria-label="Primary">
-        <a href="#about">About</a>
-        <a href="#experience">Experience</a>
-        <a href="#telemedicine">Telemedicine</a>
-      </nav>
+      <!-- NAV removed as requested -->
     </div>
   </header>
 
@@ -176,7 +161,7 @@
       justify-content:center;
       align-items:center;
       gap:24px;
-      background: #0f1113;            /* clean dark strip */
+      background: var(--accent);            /* match header color exactly */
       padding: 6px 10px;
       border-radius: 0 0 12px 12px;
       border-top: 1px solid rgba(255,255,255,0.04);
@@ -201,7 +186,7 @@
       font-size:0.98rem;
       color:#fff;
       line-height:1.05;
-      animation: statPulse .75s ease-out;
+      animation: statPulse .95s cubic-bezier(.22,.8,.26,1);
     }
 
     .is-label {
@@ -217,7 +202,7 @@
       margin:0 6px;
     }
 
-    /* subtle pulse animation on numbers */
+    /* subtle pulse animation on numbers (visual only) */
     @keyframes statPulse {
       from { color:#cfe3ff; transform: translateY(3px); }
       to   { color:#ffffff; transform: translateY(0); }
@@ -297,15 +282,17 @@
       const inlineBar = document.getElementById(INLINE_ID);
       if (!inlineBar) return;
 
-      // animate integer from 0 to target
-      function animateNumberEl(el, to, duration=900){
+      // animate integer from 0 to target with ease-out cubic (slow near end)
+      function animateNumberEl(el, to, duration=2200){
         const from = 0;
         const start = performance.now();
+        function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); } // ease-out
         function frame(now){
-          const t = Math.min((now - start)/duration, 1);
+          const progress = Math.min((now - start)/duration, 1);
+          const t = easeOutCubic(progress);
           const val = Math.floor(from + (to - from) * t);
           el.textContent = val.toLocaleString();
-          if (t < 1) requestAnimationFrame(frame);
+          if (progress < 1) requestAnimationFrame(frame);
         }
         requestAnimationFrame(frame);
       }
@@ -317,7 +304,7 @@
           const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
           if (!el) return;
           const value = Number(data[key]) || 0;
-          animateNumberEl(el, value, 700 + Math.random()*400);
+          animateNumberEl(el, value, 2200 + Math.random()*800);
         });
       }
 
@@ -491,7 +478,7 @@
         }
       } catch(e){}
 
-      // Close -> set temporary inline mode
+      // Close button: hide floating, enable inline for TEMP_HIDE_MS
       closeBtn.addEventListener('click', () => {
         if (card) card.style.display = 'none';
         const until = new Date(Date.now() + TEMP_HIDE_MS).toISOString();
@@ -499,13 +486,17 @@
         try { window.dispatchEvent(new StorageEvent('storage', { key: HIDE_KEY, newValue: until })); } catch(e){}
       });
 
-      function animate(el, to, duration=900){
+      // animate helper with ease-out cubic for slow finish
+      function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+
+      function animate(el, to, duration=2400){
         const from = 0;
         const start = performance.now();
         function frame(now){
-          const t = Math.min((now - start) / duration, 1);
+          const progress = Math.min((now - start) / duration, 1);
+          const t = easeOutCubic(progress);
           el.textContent = Math.floor(from + (to - from) * t).toLocaleString();
-          if(t<1) requestAnimationFrame(frame);
+          if (progress < 1) requestAnimationFrame(frame);
         }
         requestAnimationFrame(frame);
       }
@@ -533,11 +524,11 @@
           const key = el.dataset.key;
           if (key === 'visitors') return;
           const val = Number(data[key]) || 0;
-          animate(el, val, 800 + Math.random()*400);
+          animate(el, val, 1800 + Math.random()*1200); // slowed & variable
         });
 
         const visEl = document.querySelector('.num[data-key="visitors"]');
-        if (visEl) animate(visEl, visitors, 900);
+        if (visEl) animate(visEl, visitors, 2000);
 
         const up = document.getElementById('stats-updated');
         if (up) up.textContent = new Date().toLocaleString();
