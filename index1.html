@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dr. Mit Panchani | Profile</title>
+  <meta name="description" content="Dr Mit Panchani — Internal Medicine physician and 2D Echocardiography fellow. OPD care, telemedicine, chronic disease management." />
+
+  <style>
+    :root {
+      --bg:#f5f7fa;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#6b7280;
+      --accent:#1a1a1a;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body {
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+    }
+
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes slideIn { from{opacity:0; transform:translateY(-12px)} to{opacity:1; transform:translateY(0)} }
+    @keyframes fadeUp { from{opacity:0; transform:translateY(18px)} to{opacity:1; transform:translateY(0)} }
+
+    .fade-in{ animation:fadeIn 1s ease-out; }
+    .slide-in{ animation:slideIn .9s ease-out; }
+    .fade-up{ animation:fadeUp 1s ease-out; }
+
+    /* header */
+    header {
+      background: #000;
+      color:#fff;
+      padding:28px 20px;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .header-flex {
+      display:flex;
+      align-items:center;
+      gap:20px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    .profile-photo-container { flex:0 0 120px; }
+    .profile-photo {
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      object-fit:cover;
+      object-position:50% 5%;
+      border:2px solid rgba(255,255,255,0.12);
+      box-shadow:0 6px 18px rgba(0,0,0,0.28);
+      background: #222;
+    }
+
+    .separator { width:1px; height:130px; background:rgba(255,255,255,0.12); }
+
+    .header-text h1 { margin:0; font-size:1.6rem; }
+    .header-text p { margin:6px 0 0; font-size:0.8rem; opacity:0.75; }
+
+    main.container {
+      width:92%;
+      max-width:980px;
+      margin:28px auto;
+      background:var(--card);
+      padding:28px;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(15,15,15,0.06);
+    }
+
+    section { margin-bottom:20px; }
+
+    h2 {
+      border-left:5px solid var(--accent);
+      padding-left:12px;
+      margin-top:16px;
+      margin-bottom:12px;
+      font-size:1.45rem;
+      color:var(--accent);
+    }
+
+    ul.clean { padding-left:18px; margin:8px 0; }
+
+    .appointment-btn {
+      display:inline-block;
+      margin-top:14px;
+      padding:12px 20px;
+      border-radius:8px;
+      background:var(--accent);
+      color:#fff;
+      text-decoration:none;
+      font-weight:700;
+      transition:transform .18s ease, background .18s ease;
+    }
+
+    .appointment-btn:hover { transform:scale(1.03); background:#000; }
+
+    .small-note {
+      font-size:0.92rem;
+      color:var(--muted);
+      background:#fbfbff;
+      padding:10px;
+      border-radius:8px;
+      margin-top:10px;
+    }
+
+    @media (max-width:720px){
+      .header-flex{ flex-direction:column; text-align:center; }
+      .separator{ display:none; }
+      .profile-photo{ width:110px; height:110px; }
+      main.container{ padding:18px; }
+      h2{ font-size:1.28rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="fade-in" role="banner">
+    <div class="header-flex">
+      <div class="profile-photo-container">
+        <!-- uploaded file path used as requested -->
+        <img src="myphoto.jpg"
+             alt="Dr Mit Panchani — Internal Medicine"
+             class="profile-photo" loading="lazy" />
+      </div>
+
+      <div class="separator" aria-hidden="true"></div>
+
+      <div class="header-text">
+        <h1 class="slide-in">Dr. Mit Panchani</h1>
+        <p class="fade-in">MD (General Medicine) | 2D Echocardiographer </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- INLINE STATS BAR (separated, full short labels, pipe separators, tooltip kept) -->
+  <style>
+    #inline-stats-bar {
+      max-width:980px;
+      margin: 18px auto; /* equal space above and below */
+      position: relative;
+      z-index: 5;
+      pointer-events: auto;
+      text-align:center;
+    }
+
+    /* separate strip: slightly different dark tone + subtle shadow + rounded corners */
+    #inline-stats-card {
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:18px;
+      background: #0f1113;
+      padding: 8px 16px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(4,6,10,0.12);
+      border: 1px solid rgba(255,255,255,0.03);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .is-block {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-width:110px;
+      padding: 0 6px;
+      position:relative;
+    }
+
+    .is-number {
+      font-weight:700;
+      font-size:1.02rem;
+      color:#fff;
+      line-height:1.05;
+      animation: statPulse .8s cubic-bezier(.22,.8,.26,1);
+    }
+
+    .is-label {
+      font-size:0.66rem;
+      margin-top:4px;
+      color:#a7adb3;
+      letter-spacing:0.1px;
+      max-width:160px;
+      line-height:1.1;
+      text-align:center;
+    }
+
+    .sep-pipe {
+      color:#52565a;
+      font-weight:600;
+      font-size:1rem;
+      margin:0 8px;
+      user-select:none;
+    }
+
+    @keyframes statPulse {
+      from { color:#cfe3ff; transform: translateY(3px); }
+      to   { color:#ffffff; transform: translateY(0); }
+    }
+
+    /* tooltip (kept) */
+    .inline-tip {
+      position:absolute;
+      top:-34px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,0.88);
+      color:#fff;
+      font-size:0.68rem;
+      padding:6px 9px;
+      border-radius:6px;
+      white-space:nowrap;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .14s ease;
+      box-shadow:0 6px 14px rgba(0,0,0,0.3);
+      z-index:11;
+    }
+    @media (hover: hover) {
+      .is-block:hover .inline-tip { opacity:1; }
+    }
+
+    /* explanatory small note under bar */
+    #stats-legend {
+      margin-top:8px;
+      font-size:0.8rem;
+      color:#6b7280;
+      opacity:0.95;
+    }
+
+    @media (max-width:720px){
+      #inline-stats-card { gap:12px; padding:10px; border-radius:8px; }
+      .is-number { font-size:0.95rem; }
+      .is-label { font-size:0.58rem; max-width:100px; }
+      .is-block { min-width:72px; }
+      .sep-pipe { display:none; } /* hide pipes on very small screens for cleaner layout */
+    }
+  </style>
+
+  <div id="inline-stats-bar" aria-hidden="true" style="display:none">
+    <div id="inline-stats-card" role="region" aria-label="Key clinical stats">
+      <div class="is-block">
+        <div class="is-number" data-key="echo_studies">—</div>
+        <div class="is-label">2D Echo</div>
+        <span class="inline-tip">Total 2D echocardiography Studies carried out till now</span>
+      </div>
+
+      <div class="sep-pipe">|</div>
+
+      <div class="is-block">
+        <div class="is-number" data-key="cases_attended">—</div>
+        <div class="is-label">Cases Attended</div>
+        <span class="inline-tip">Cases Attended till now</span>
+      </div>
+
+      <div class="sep-pipe">|</div>
+
+      <div class="is-block">
+        <div class="is-number" data-key="surgical_fitness_given">—</div>
+        <div class="is-label">Fitness Given</div>
+        <span class="inline-tip">Surgical fitness certificates issued</span>
+      </div>
+
+      <div class="sep-pipe">|</div>
+
+      <div class="is-block">
+        <div class="is-number" data-key="admissions">—</div>
+        <div class="is-label">Admissions Managed</div>
+        <span class="inline-tip">Admissions till now</span>
+      </div>
+    </div>
+
+    <div id="stats-legend" aria-hidden="true">
+      Only includes logged data — actual experience is way higher.
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const INLINE_ID = 'inline-stats-bar';
+    const HIDE_KEY = 'hideStatsMode';
+    const STATS_PATH = '/stats.json';
+
+    const inlineBar = document.getElementById(INLINE_ID);
+    if (!inlineBar) return;
+
+    // Ease-out cubic
+    function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+
+    // animate from 0 to 'to' slowly with ease-out
+    function animateNumberEl(el, to, duration=3000){
+      const from = 0;
+      const start = performance.now();
+      function frame(now){
+        const progress = Math.min((now - start)/duration, 1);
+        const t = easeOutCubic(progress);
+        const val = Math.floor(from + (to - from) * t);
+        el.textContent = val.toLocaleString();
+        if (progress < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // populate keys with animation (stagger slightly)
+    function populateInline(data){
+      const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
+      keys.forEach((key, idx) => {
+        const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
+        if (!el) return;
+        const value = Number(data[key]) || 0;
+        const dur = 2600 + idx*300 + Math.random()*600;
+        animateNumberEl(el, value, dur);
+      });
+    }
+
+    // quick set (no animation) to prefill before reveal
+    function prefillInline(data){
+      const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
+      keys.forEach(key => {
+        const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
+        if (!el) return;
+        el.textContent = (Number(data[key]) || 0).toLocaleString();
+      });
+    }
+
+    // show and animate (called on close of floating widget)
+    function showInlineWithAnimation(){
+      fetch(STATS_PATH + '?_=' + Date.now())
+        .then(r => r.ok ? r.json() : {})
+        .then(data => {
+          inlineBar.style.display = 'block';
+          inlineBar.setAttribute('aria-hidden','false');
+          populateInline(data);
+        })
+        .catch(err => {
+          console.warn('inline-stats fetch failed', err);
+          inlineBar.style.display = 'block';
+          inlineBar.setAttribute('aria-hidden','false');
+        });
+    }
+
+    // check local flag
+    function shouldShowInline(){
+      try {
+        const saved = sessionStorage.getItem(HIDE_KEY);
+        if(!saved) return false;
+        if (saved === 'inline') return true;
+        const expiry = new Date(saved);
+        if (!isNaN(expiry) && expiry > new Date()) return true;
+      } catch(e){}
+      return false;
+    }
+
+    // on load: prefetch values; if inline mode active, show+animate
+    if (shouldShowInline()){
+      showInlineWithAnimation();
+    } else {
+      fetch(STATS_PATH + '?_=' + Date.now())
+        .then(r => r.ok ? r.json() : {})
+        .then(data => prefillInline(data))
+        .catch(()=>{/* ignore */});
+    }
+
+    // react to storage changes (widget close in same or other tab)
+    window.addEventListener('storage', (e) => {
+      if (e.key !== HIDE_KEY) return;
+      if (shouldShowInline()){
+        showInlineWithAnimation();
+      } else {
+        inlineBar.style.display = 'none';
+        inlineBar.setAttribute('aria-hidden','true');
+      }
+    });
+
+    // also listen to custom event (widget dispatches this on close)
+    window.addEventListener('showInlineStats', showInlineWithAnimation);
+
+  })();
+  </script>
+
+  <!-- MAIN CONTENT -->
+  <main class="container" id="main" role="main">
+
+    <section id="about" class="fade-up">
+      <h2>About Me</h2>
+      <p>
+        I provide comprehensive Internal Medicine care for adults, managing respiratory and metabolic conditions,
+        infections, cardiac and renal problems, and neurological symptoms. I follow a clear, structured, evidence-based approach
+        so patients receive accurate diagnosis and practical treatment plans.
+      </p>
+    </section>
+
+    <section id="qualifications" class="fade-up">
+      <h2>Qualifications</h2>
+      <ul class="clean">
+        <li>MBBS, Ahmedabad</li>
+        <li>MD (General Medicine), Surat</li>
+        <li>PGCIH (MSU), Baroda</li>
+        <li>Fellowship in 2D Echocardiography (CIMS), Ahmedabad</li>
+      </ul>
+    </section>
+
+    <section id="experience" class="fade-up">
+      <h2>Clinical Experience</h2>
+      <ul class="clean">
+        <li>Clinical practice in adult Internal Medicine with focus on OPD-based diagnosis and management.</li>
+        <li>Hands-on experience in respiratory illnesses, diabetes, thyroid disorders, hypertension, renal infections, and headache disorders.</li>
+        <li>Skilled in cardiac evaluation including ECG and 2D Echocardiography.</li>
+        <li>Experience in managing medical disorders during pregnancy (diabetes, thyroid, hypertension).</li>
+        <li>Preventive health counselling and long-term chronic disease follow-up.</li>
+      </ul>
+    </section>
+
+    <section id="telemedicine" class="fade-up">
+      <h2>Telemedicine Consultation</h2>
+      <p>Click below to view details and book an online consultation.</p>
+
+      <a href="telemedicine.html" class="appointment-btn" aria-label="Open telemedicine page for booking">
+        Telemedicine Consultation
+      </a>
+
+      <p class="small-note">
+        Detailed instructions & payment steps  will be shown on the telemedicine page.
+      </p>
+    </section>
+
+<!-- Tools Header -->
+<h2 style="margin-top:34px;">Tools</h2>
+
+<!-- LDL Tool Card -->
+<details id="ldl-embed-card"
+         style="margin-top:14px;border-radius:12px;border:1px solid #eef2ff;background:#fff;">
+
+  <!-- Replace only the <summary> block with this -->
+<summary style="
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:stretch;      /* make CTA stretch vertically */
+    gap:14px;
+    padding:0;                /* card padding handled by details wrapper */
+    outline:none;
+  ">
+
+  <!-- left content (icon + text) with internal padding -->
+  <div style="display:flex;gap:14px;align-items:center;padding:14px 16px;flex:1;min-width:0;">
+    <div class="ldl-icon" style="
+        width:48px;height:48px;border-radius:12px;
+        background:linear-gradient(135deg,#7c3aed,#06b6d4);
+        display:flex;align-items:center;justify-content:center;
+        color:#fff;font-weight:700;font-size:0.9rem;
+        box-shadow:0 8px 22px rgba(12,18,35,0.08);
+      ">LDL</div>
+
+    <div style="overflow:hidden;min-width:0;">
+      <div style="font-weight:700;color:var(--text);font-size:1rem;">LDL Calculator</div>
+      <div style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+        Share your LDL level to see if you may need medication
+      </div>
+    </div>
+  </div>
+
+  <!-- right CTA: visually attached to card (no gap) -->
+  <div style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0 18px;
+      color:#fff;
+      font-weight:700;
+      background:linear-gradient(90deg,#ff6b6b,#ff3d71);
+      border-top-right-radius:12px;
+      border-bottom-right-radius:12px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+      /* make height determined by sibling - using align-items:stretch above makes this match */
+    ">
+    <span style="display:block;padding:12px 0;">Tap to open ▾</span>
+  </div>
+
+</summary>
+
+<style>
+/* remove default marker and ensure the CTA appears flush */
+#ldl-embed-card summary::-webkit-details-marker { display:none; }
+#ldl-embed-card summary::marker { content:none; }
+
+/* ensure no extra gap between summary and details container */
+#ldl-embed-card > summary { margin:0; }
+
+/* subtle hover: lift whole summary slightly */
+#ldl-embed-card summary:hover { transform: translateY(-2px); transition: transform .14s ease; }
+
+/* responsive: reduce CTA padding on small screens */
+@media (max-width:520px) {
+  #ldl-embed-card summary div[style*="padding:14px 16px"] { padding:10px 12px; }
+  #ldl-embed-card summary div[style*="padding:0 18px"] span { padding:10px 0; font-size:14px; }
+}
+</style>
+  <!-- Expanded area -->
+  <div style="padding:16px;">
+    <div id="ldl-iframe-wrap"
+         style="width:100%;min-height:520px;border-radius:12px;overflow:hidden;border:1px solid #e8eefc;background:#fafcff;">
+      <div style="padding:26px;text-align:center;color:var(--muted);">
+        Loading tool…
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">
+      <em>This loads the full LDL calculator inside the page. All logic runs securely on the backend.</em>
+    </p>
+  </div>
+</details>
+
+<style>
+/* Remove default disclosure arrow */
+#ldl-embed-card summary::-webkit-details-marker { display:none; }
+#ldl-embed-card summary::marker { content:none; }
+
+/* Hover effect */
+#ldl-embed-card summary:hover {
+  background:#f3f4f6;
+  transition:background .18s ease;
+}
+</style>
+
+<style>
+/* ensure the details/card clips any hover/focus visuals to rounded corners */
+#ldl-embed-card {
+  border-radius: 12px;     /* keep same radius as card */
+  overflow: hidden;        /* <-- important: clips child shadows/backgrounds */
+}
+
+/* make summary match the parent rounding and remove default marker */
+#ldl-embed-card summary {
+  border-radius: inherit;  /* summary corners match card */
+  margin: 0;               /* remove default gap */
+  outline: none;           /* remove native focus rectangle */
+  -webkit-tap-highlight-color: transparent; /* mobile highlight */
+}
+
+/* remove browser default marker */
+#ldl-embed-card summary::-webkit-details-marker { display: none; }
+#ldl-embed-card summary::marker { content: none; }
+
+/* nicer hover: subtle lifted box-shadow that respects rounding */
+#ldl-embed-card summary:hover,
+#ldl-embed-card summary:focus {
+  transform: translateY(-3px);
+  transition: transform .14s ease, box-shadow .14s ease;
+  box-shadow: 0 12px 36px rgba(8,12,24,0.12);
+}
+
+/* replace the ugly rectangular focus ring with a rounded focus ring */
+#ldl-embed-card summary:focus-visible {
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+}
+
+/* responsive tweak (optional) */
+@media (max-width:520px) {
+  #ldl-embed-card summary:hover { transform: none; box-shadow: none; } /* avoid lift on small screens if you prefer */
+}
+</style>
+
+<script>
+(function(){
+  const details = document.getElementById('ldl-embed-card');
+  const wrap = document.getElementById('ldl-iframe-wrap');
+  let loaded = false;
+  const NETLIFY = 'https://drmjp93-ldlcal.netlify.app';
+
+  details.addEventListener('toggle', ()=>{
+    if (!loaded && details.open){
+      wrap.innerHTML = '';
+      const iframe = document.createElement('iframe');
+      iframe.src = NETLIFY;
+      iframe.title = 'LDL Calculator';
+      iframe.style.width = '100%';
+      iframe.style.height = '600px';
+      iframe.style.border = '0';
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'no-referrer';
+      wrap.appendChild(iframe);
+      loaded = true;
+    }
+  });
+})();
+</script>
+
+
+  </main>
+
+  <footer role="contentinfo" style="text-align:center;padding:20px;color:var(--muted)">
+    © 2025 Dr. Mit Panchani. All Rights Reserved.
+  </footer>
+
+  <!-- Floating widget (keeps setting hide flag and dispatching 'showInlineStats' on close) -->
+  <style>
+    #live-stats{position:fixed;right:16px;bottom:16px;z-index:9999;font-family:system-ui,Segoe UI,Roboto,Arial}
+    #live-stats .card{min-width:240px;background:#0f1724;color:#fff;padding:12px;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,.45)}
+    #live-stats .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    #live-stats .label{font-size:12px;color:#a5b4fc}
+    #live-stats .num{font-weight:700;font-size:16px}
+    #live-stats .close-btn{background:transparent;border:none;color:#cbd5e1;font-size:18px;cursor:pointer}
+    #live-stats .muted{font-size:11px;color:#94a3b8;margin-top:8px}
+    @media (max-width:520px){ #live-stats{right:10px;left:10px;bottom:12px} #live-stats .card{min-width:unset} }
+  </style>
+
+  <div id="live-stats" aria-live="polite">
+    <div class="card" role="region" aria-label="Clinical activity">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong style="font-size:14px">Clinical Activity</strong>
+        <button class="close-btn" id="stats-close" aria-label="Close stats">×</button>
+      </div>
+
+      <div class="row">
+        <div>
+          <div class="label">Echo studies</div>
+          <div class="num" data-key="echo_studies">—</div>
+        </div>
+        <div>
+          <div class="label">Cases attended</div>
+          <div class="num" data-key="cases_attended">—</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <div class="label">Surgical fitness</div>
+          <div class="num" data-key="surgical_fitness_given">—</div>
+        </div>
+        <div>
+          <div class="label">Admissions</div>
+          <div class="num" data-key="admissions">—</div>
+        </div>
+      </div>
+
+      <!-- Visitors row removed; keeping Updated timestamp only -->
+      <div class="row">
+        <div style="flex:1">
+          <div class="label">Updated</div>
+          <div id="stats-updated" style="font-size:12px;color:#cbd5e1">—</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const path = '/stats.json';
+    const HIDE_KEY = 'hideStatsMode';
+    const TEMP_HIDE_MS = 10 * 60 * 1000; // 10 minutes
+
+    const card = document.getElementById('live-stats');
+    const closeBtn = document.getElementById('stats-close');
+
+    // hide floating if inline/expiry present
+    try {
+      const saved = sessionStorage.getItem(HIDE_KEY);
+      if (saved === 'inline') { if (card) card.style.display = 'none'; }
+      else if (saved) {
+        const expiry = new Date(saved);
+        if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display = 'none'; }
+      }
+    } catch(e){}
+
+    // Close -> set inline flag (temporary), dispatch storage and custom event
+    closeBtn.addEventListener('click', () => {
+      if (card) card.style.display = 'none';
+      const until = new Date(Date.now() + TEMP_HIDE_MS).toISOString();
+      try { sessionStorage.setItem(HIDE_KEY, until); } catch(e){}
+      try { window.dispatchEvent(new StorageEvent('storage', { key: HIDE_KEY, newValue: until })); } catch(e){}
+      try { window.dispatchEvent(new Event('showInlineStats')); } catch(e){}
+    });
+
+    // animate helper for floating widget (slowed)
+    function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+    function animate(el, to, duration=2600){
+      const from = 0;
+      const start = performance.now();
+      function frame(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const t = easeOutCubic(progress);
+        el.textContent = Math.floor(from + (to - from) * t).toLocaleString();
+        if (progress < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    const localStatsP = fetch(path + '?_=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(()=> ({}));
+
+    localStatsP.then((data) => {
+      // floating widget populate (slower)
+      document.querySelectorAll('#live-stats .num').forEach(el => {
+        const key = el.dataset.key;
+        const val = Number(data[key]) || 0;
+        animate(el, val, 2000 + Math.random()*1200);
+      });
+
+      const up = document.getElementById('stats-updated');
+      if (up) up.textContent = new Date().toLocaleString();
+    }).catch(err => console.warn('stats widget error', err));
+
+    // listen for storage changes (show/hide inline)
+    window.addEventListener('storage', (e) => {
+      if (e.key === HIDE_KEY){
+        const saved = sessionStorage.getItem(HIDE_KEY);
+        if (saved === 'inline') { if (card) card.style.display='none'; }
+        else if (saved) {
+          const expiry = new Date(saved);
+          if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display='none'; }
+        } else { if (card) card.style.display='block'; }
+      }
+    });
+
+  })();
+  </script>
+
+</body>
+</html>
