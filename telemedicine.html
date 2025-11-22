@@ -4,9 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Telemedicine Consultation — Dr. Mit Panchani</title>
-  <meta name="description" content="Online telemedicine consultation by Dr Mit Panchani. Quick, safe workflow with WhatsApp communication after payment." />
-
-  <!-- UPLOADED_IMAGE: /mnt/data/IMG_241754B6-ED33-47E8-A41E-5799A6AA75B8.jpeg -->
+  <meta name="description" content="Online telemedicine consultation by Dr Mit Panchani." />
 
   <style>
     :root {
@@ -51,6 +49,14 @@
       padding:14px; display:none; background:white;
       color:#444; border-top:1px solid #eee;
     }
+
+    /* small helpers */
+    ul.quick{ margin:8px 0 18px 18px;color:#333; }
+    a.link-inline{ color:#1a1a1a; text-decoration:underline; font-weight:600; }
+    @media (max-width:560px){
+      body{padding:14px}
+      .container{padding:18px}
+    }
   </style>
 </head>
 
@@ -60,32 +66,32 @@
   <!-- HEADER -->
   <h1>Telemedicine Consultation</h1>
   <div class="lead">
-    Convenient medical advice with WhatsApp communication after payment and phone/video consultation as required.
+    Convenient medical advice over a Phone Call.
   </div>
 
   <!-- EMERGENCY BANNER -->
   <div style="background:#ffe9e9;color:#9b1111;padding:10px;border-radius:8px;font-weight:700;margin-bottom:16px;">
-    Emergency? Chest pain, severe breathlessness, weakness, seizures or altered sensorium → visit the nearest ER immediately.
+    Emergency? Chest pain, severe breathlessness, weakness, seizures or altered sensorium → visit the nearest hospital immediately.
   </div>
 
-  <!-- QUICK INFO (clean, no follow-up details) -->
-  <ul style="margin:8px 0 18px 18px;color:#333">
+  <!-- QUICK INFO WITH INLINE CLICKABLE FOLLOW-UP -->
+  <ul class="quick">
     <li>First consultation ₹400 (≈15 minutes)</li>
-    <li>Follow-up policy → tap to read below</li>
-    <li>Payment first → WhatsApp details appear on Thank-you page</li>
-    <li>Consultation over phone (video if needed)</li>
+    <li>
+      <a href="#" id="openFollowUp" class="link-inline">Follow-up Policy (Tap to view)</a>
+    </li>
+    <li>Appointment only after payment</li>
+    <li>Consultation over phone (or video if needed)</li>
   </ul>
 
   <!-- ACCORDION: HOW IT WORKS -->
   <div class="acc">
-    <button aria-expanded="false">How It Works</button>
+    <button aria-expanded="false">How It Works?</button>
     <div class="panel">
       <ol>
         <li>Click <strong>Pay Now</strong> and complete the payment.</li>
-        <li>You will go to the <strong>Thank You</strong> page automatically.</li>
-        <li>A WhatsApp button appears there.</li>
-        <li>Send your symptoms + reports + payment ID.</li>
-        <li>I assign a phone call time and conduct the consultation.</li>
+        <li>Further instructions will be given on screen to share Transaction ID and other details.</li>
+        <li>Then, I will assign a phone call time and we will have the consultation.</li>
       </ol>
     </div>
   </div>
@@ -95,13 +101,10 @@
     <button aria-expanded="false">Suitable For</button>
     <div class="panel">
       <ul>
-        <li>Mild fever, cold, cough, throat infection</li>
-        <li>Gastritis, acidity, diarrhea, vomiting</li>
-        <li>Diabetes, thyroid, BP follow-up</li>
-        <li>Pregnancy: diabetes, thyroid, BP (non-emergency)</li>
+        <li>Diabetes, Thyroid, BP follow-up, Cholesterol, On-going Cardiac condition, Rheumatoid Arthritis, Vertigo</li>
+        <li><strong>Pregnancy</strong> with Diabetes, Thyroid, BP (non-emergency)</li>
         <li>Medication review</li>
         <li>Blood report / test review</li>
-        <li>General non-urgent symptoms</li>
       </ul>
     </div>
   </div>
@@ -111,9 +114,9 @@
     <button aria-expanded="false">Before the Consultation</button>
     <div class="panel">
       <ul>
-        <li>Age, medications, allergies</li>
+        <li>Age, current medications, allergies</li>
         <li>Recent lab reports / imaging</li>
-        <li>Vitals if available — BP, temperature, SpO₂</li>
+        <li>Vitals if available — BP, Temperature, SPO₂</li>
       </ul>
     </div>
   </div>
@@ -126,34 +129,32 @@
         <li>Full refund if requested before appointment time is assigned.</li>
         <li>No refund for no-show after slot confirmation.</li>
         <li>One free reschedule allowed.</li>
-        <li>If technical issue on doctor’s side — call rescheduled at no cost.</li>
+        <li>If technical issue on my side — call will be rescheduled at no cost.</li>
       </ul>
     </div>
   </div>
 
-  <!-- ACCORDION: FOLLOW-UP POLICY -->
+  <!-- ACCORDION: FOLLOW-UP POLICY (FULL - exact text as earlier) -->
   <div class="acc">
     <button aria-expanded="false">Follow-up Policy & WhatsApp Guidelines</button>
     <div class="panel">
-
       <p style="font-weight:700;margin:0 0 8px 0;">Follow-up policy:</p>
       <ul>
         <li>Follow-up for the same problem within 72 hours → <strong>Free</strong> (on call or WhatsApp, whichever is appropriate).</li>
-        <li>After 72 hours → <strong>₹200*</strong> per call.</li>
+        <li>After 72 hours → <strong>₹300</strong> per call.</li>
       </ul>
 
       <p style="font-weight:700;margin:12px 0 6px 0;">Important:</p>
       <ul>
-        <li>If you have new symptoms or a new issue, it will be counted as a new consultation even within the 72-hour window.</li>
+        <li>If you have new symptoms or a new issue, it will be counted as a new consultation, even inside the 72-hour window.</li>
       </ul>
 
       <p style="font-weight:700;margin:12px 0 6px 0;">WhatsApp policy:</p>
       <ul>
         <li>WhatsApp is only for small clarifications about the same prescription and for sharing reports.</li>
         <li>WhatsApp is not for new symptoms, dose changes, or new treatment decisions.</li>
-        <li>For any new issue, please book a paid teleconsultation so I can advise properly.</li>
+        <li>For any new issue, please book a paid teleconsultation.</li>
       </ul>
-
     </div>
   </div>
 
@@ -182,7 +183,40 @@
   © 2025 Dr. Mit Panchani. All Rights Reserved.
 </footer>
 
+<!-- FOLLOW-UP POLICY MODAL (placed after footer) -->
+<div id="followModal" 
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45);
+            backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:9999;">
+  <div style="background:#fff; width:92%; max-width:640px; padding:18px; 
+              border-radius:12px; max-height:80vh; overflow-y:auto; position:relative;">
+    <button id="closeFollowUp" 
+            style="position:absolute; top:10px; right:12px; background:none; border:0; 
+                   font-size:22px; cursor:pointer;">×</button>
+
+    <h2 style="margin-top:0;">Follow-up Policy</h2>
+
+    <p style="font-weight:700;margin:0 0 8px 0;">Follow-up policy:</p>
+    <ul>
+      <li>Follow-up for the same problem within 72 hours → <strong>Free</strong> (on call or WhatsApp, whichever is appropriate).</li>
+      <li>After 72 hours → <strong>₹300</strong> per call.</li>
+    </ul>
+
+    <p style="font-weight:700;margin:12px 0 6px 0;">Important:</p>
+    <ul>
+      <li>New symptoms or a new issue = counted as a new consultation, even inside 72 hours.</li>
+    </ul>
+
+    <p style="font-weight:700;margin:12px 0 6px 0;">WhatsApp policy:</p>
+    <ul>
+      <li>WhatsApp is only for small clarifications about the same prescription and for sharing reports.</li>
+      <li>WhatsApp is not for new symptoms, dose changes, or new treatment decisions.</li>
+      <li>For any new issue, please book a paid teleconsultation.</li>
+    </ul>
+  </div>
+</div>
+
 <script>
+  // accordion behaviour
   document.querySelectorAll('.acc').forEach(acc=>{
     const btn = acc.querySelector('button');
     const panel = acc.querySelector('.panel');
@@ -192,6 +226,37 @@
       btn.setAttribute('aria-expanded', String(!open));
     });
   });
+
+  // modal popup behaviour
+  (function(){
+    const modal = document.getElementById('followModal');
+    const openBtn = document.getElementById('openFollowUp');
+    const closeBtn = document.getElementById('closeFollowUp');
+
+    if(!openBtn || !modal) return;
+
+    openBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', ()=>{
+      modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal){
+        modal.style.display = 'none';
+      }
+    });
+
+    // accessibility: close on ESC
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && modal.style.display === 'flex'){
+        modal.style.display = 'none';
+      }
+    });
+  })();
 </script>
 
 </body>
