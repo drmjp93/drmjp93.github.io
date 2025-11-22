@@ -38,10 +38,13 @@
     .slide-in{ animation:slideIn .9s ease-out; }
     .fade-up{ animation:fadeUp 1s ease-out; }
 
+    /* ================= header ================= */
     header {
-      background:var(--accent);
+      background: #000;        /* absolute black for consistency */
       color:#fff;
       padding:28px 20px;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     .header-flex {
@@ -61,6 +64,7 @@
       object-position:50% 5%;
       border:2px solid rgba(255,255,255,0.12);
       box-shadow:0 6px 18px rgba(0,0,0,0.28);
+      background: #222;
     }
 
     .separator { width:1px; height:130px; background:rgba(255,255,255,0.12); }
@@ -130,8 +134,10 @@
   <header class="fade-in" role="banner">
     <div class="header-flex">
       <div class="profile-photo-container">
-        <!-- image from repo root -->
-        <img src="myphoto.jpg" alt="Dr Mit Panchani — Internal Medicine" class="profile-photo" loading="lazy" />
+        <!-- using uploaded file path as requested -->
+        <img src="/mnt/data/IMG_3360A821-541D-420C-8812-32DEFEDFACF0.jpeg"
+             alt="Dr Mit Panchani — Internal Medicine"
+             class="profile-photo" loading="lazy" />
       </div>
 
       <div class="separator" aria-hidden="true"></div>
@@ -141,36 +147,33 @@
         <p class="fade-in">MD (General Medicine) | 2D Echocardiographer </p>
       </div>
 
-      <!-- NAV removed as requested -->
+      <!-- nav removed as requested -->
     </div>
   </header>
 
-  <!-- SLIM INLINE STATS BAR (between header and main) -->
+  <!-- ================= INLINE STATS BAR (separated, slim) ================= -->
   <style>
-    /* Slim Inline Stats Bar - polished with pulse + tooltip */
     #inline-stats-bar {
       max-width:980px;
-      margin: -18px auto 10px;
+      /* positive margin keeps it below the black header with equal space above & below */
+      margin: 14px auto 14px;
       position: relative;
       z-index: 5;
       pointer-events: auto;
     }
 
+    /* separate strip: slightly different dark tone + subtle shadow + rounded corners */
     #inline-stats-card {
       display:flex;
       justify-content:center;
       align-items:center;
-      gap:24px;
-      background: var(--accent);            /* match header color exactly */
-      padding: 6px 10px;
-      border-radius: 0 0 12px 12px;
-      border-top: 1px solid rgba(255,255,255,0.04);
-      border-bottom: 1px solid rgba(0,0,0,0.8);
-      /* soft top + bottom shadow to blend into header */
-      box-shadow:
-        0 6px 18px rgba(0,0,0,0.20),
-        0 -4px 10px rgba(0,0,0,0.12);
+      gap:22px;
+      background: #0f1113;           /* distinct from pure black header */
+      padding: 8px 14px;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      border: 1px solid rgba(255,255,255,0.02);
     }
 
     .is-block {
@@ -178,31 +181,31 @@
       flex-direction:column;
       align-items:center;
       min-width:64px;
-      position:relative; /* for tooltip */
+      position:relative;
     }
 
     .is-number {
       font-weight:700;
-      font-size:0.98rem;
+      font-size:1.02rem;
       color:#fff;
       line-height:1.05;
-      animation: statPulse .95s cubic-bezier(.22,.8,.26,1);
+      /* small visual pulse on show */
+      animation: statPulse .8s cubic-bezier(.22,.8,.26,1);
     }
 
     .is-label {
-      font-size:0.65rem;
-      margin-top:3px;
-      color:#9ca3af;
+      font-size:0.68rem;
+      margin-top:4px;
+      color:#9aa0a8;
       letter-spacing:0.2px;
     }
 
     .is-sep {
       font-size:0.42rem;
-      color:#5b6470;
+      color:#60656c;
       margin:0 6px;
     }
 
-    /* subtle pulse animation on numbers (visual only) */
     @keyframes statPulse {
       from { color:#cfe3ff; transform: translateY(3px); }
       to   { color:#ffffff; transform: translateY(0); }
@@ -211,12 +214,12 @@
     /* tooltip */
     .inline-tip {
       position:absolute;
-      top:-30px;
+      top:-34px;
       left:50%;
       transform:translateX(-50%);
       background:rgba(0,0,0,0.88);
       color:#fff;
-      font-size:0.68rem;
+      font-size:0.66rem;
       padding:5px 8px;
       border-radius:6px;
       white-space:nowrap;
@@ -226,15 +229,13 @@
       box-shadow:0 6px 14px rgba(0,0,0,0.3);
       z-index:11;
     }
-
-    /* show tooltip on hover (desktop only) */
     @media (hover: hover) {
       .is-block:hover .inline-tip { opacity:1; }
     }
 
     @media (max-width:720px){
-      #inline-stats-card { gap:14px; padding:6px; border-radius:0 0 10px 10px; }
-      .is-number { font-size:0.9rem; }
+      #inline-stats-card { gap:14px; padding:8px 10px; border-radius:8px; }
+      .is-number { font-size:0.95rem; }
       .is-label { font-size:0.58rem; }
     }
   </style>
@@ -274,79 +275,108 @@
   </div>
 
   <script>
-    (function(){
-      const INLINE_ID = 'inline-stats-bar';
-      const HIDE_KEY = 'hideStatsMode'; // unified key
-      const STATS_PATH = '/stats.json';
+  (function(){
+    const INLINE_ID = 'inline-stats-bar';
+    const HIDE_KEY = 'hideStatsMode';
+    const STATS_PATH = '/stats.json';
 
-      const inlineBar = document.getElementById(INLINE_ID);
-      if (!inlineBar) return;
+    const inlineBar = document.getElementById(INLINE_ID);
+    if (!inlineBar) return;
 
-      // animate integer from 0 to target with ease-out cubic (slow near end)
-      function animateNumberEl(el, to, duration=2200){
-        const from = 0;
-        const start = performance.now();
-        function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); } // ease-out
-        function frame(now){
-          const progress = Math.min((now - start)/duration, 1);
-          const t = easeOutCubic(progress);
-          const val = Math.floor(from + (to - from) * t);
-          el.textContent = val.toLocaleString();
-          if (progress < 1) requestAnimationFrame(frame);
-        }
-        requestAnimationFrame(frame);
+    // animate with eased slow finish (longer durations)
+    function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+
+    function animateNumberEl(el, to, duration=3200){
+      const from = 0;
+      const start = performance.now();
+      function frame(now){
+        const progress = Math.min((now - start)/duration, 1);
+        const t = easeOutCubic(progress);
+        const val = Math.floor(from + (to - from) * t);
+        el.textContent = val.toLocaleString();
+        if (progress < 1) requestAnimationFrame(frame);
       }
+      requestAnimationFrame(frame);
+    }
 
-      // populate inline numbers from local data
-      function populateInline(data){
-        const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
-        keys.forEach(key => {
-          const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
-          if (!el) return;
-          const value = Number(data[key]) || 0;
-          animateNumberEl(el, value, 2200 + Math.random()*800);
-        });
-      }
+    // Populate inline numbers
+    function populateInline(data){
+      const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
+      keys.forEach((key, idx) => {
+        const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
+        if (!el) return;
+        const value = Number(data[key]) || 0;
+        // slightly stagger durations so it looks organic
+        const dur = 3000 + (idx * 200) + Math.random()*500;
+        animateNumberEl(el, value, dur);
+      });
+    }
 
-      // should show inline when hide flag set (expiry or 'inline')
-      function shouldShowInline(){
-        try {
-          const saved = sessionStorage.getItem(HIDE_KEY);
-          if(!saved) return false;
-          if (saved === 'inline') return true;
-          const expiry = new Date(saved);
-          if (!isNaN(expiry) && expiry > new Date()) return true;
-        } catch(e){ /* ignore */ }
-        return false;
-      }
-
-      // fetch stats.json and populate
+    // Show inline: fetch fresh data and animate (used on close)
+    function showInlineWithAnimation(){
       fetch(STATS_PATH + '?_=' + Date.now())
         .then(r => r.ok ? r.json() : {})
         .then(data => {
-          if (shouldShowInline()){
-            inlineBar.style.display = 'block';
-            inlineBar.setAttribute('aria-hidden','false');
-            populateInline(data);
-          } else {
-            // prefill hidden elements (makes them ready if user closes floating widget)
-            populateInline(data);
-          }
-        }).catch(err => console.warn('inline-stats fetch failed', err));
+          inlineBar.style.display = 'block';
+          inlineBar.setAttribute('aria-hidden','false');
+          populateInline(data);
+        })
+        .catch(err => {
+          console.warn('inline-stats fetch failed', err);
+          // still reveal bar (pre-filled values may exist)
+          inlineBar.style.display = 'block';
+          inlineBar.setAttribute('aria-hidden','false');
+        });
+    }
 
-      // observe storage changes (other tabs)
-      window.addEventListener('storage', (e) => {
-        if (e.key === HIDE_KEY){
-          if (shouldShowInline()){
-            inlineBar.style.display = 'block';
-            inlineBar.setAttribute('aria-hidden','false');
-          } else {
-            inlineBar.style.display = 'none';
-            inlineBar.setAttribute('aria-hidden','true');
-          }
-        }
-      });
-    })();
+    // Should show inline?
+    function shouldShowInline(){
+      try {
+        const saved = sessionStorage.getItem(HIDE_KEY);
+        if(!saved) return false;
+        if (saved === 'inline') return true;
+        const expiry = new Date(saved);
+        if (!isNaN(expiry) && expiry > new Date()) return true;
+      } catch(e){}
+      return false;
+    }
+
+    // On load: if inline should be shown, fetch & animate,
+    // else prefetch to cache values (but don't animate until shown).
+    if (shouldShowInline()){
+      showInlineWithAnimation();
+    } else {
+      // prefetch and populate but don't animate strongly (we animate on first reveal)
+      fetch(STATS_PATH + '?_=' + Date.now())
+        .then(r => r.ok ? r.json() : {})
+        .then(data => {
+          // set static values (no animation)
+          const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
+          keys.forEach(key => {
+            const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
+            if (!el) return;
+            el.textContent = (Number(data[key]) || 0).toLocaleString();
+          });
+        }).catch(()=>{/* ignore */});
+    }
+
+    // When storage changes (other tabs or our synthetic event), show/hide accordingly.
+    window.addEventListener('storage', (e) => {
+      if (e.key !== HIDE_KEY) return;
+      if (shouldShowInline()){
+        // fetch fresh and animate
+        showInlineWithAnimation();
+      } else {
+        inlineBar.style.display = 'none';
+        inlineBar.setAttribute('aria-hidden','true');
+      }
+    });
+
+    // Also expose a programmatic way (fallback) for same-tab cases:
+    // If some code dispatches a custom event 'showInlineStats', we show+animate.
+    window.addEventListener('showInlineStats', () => showInlineWithAnimation());
+
+  })();
   </script>
 
   <!-- MAIN CONTENT -->
@@ -401,7 +431,7 @@
     © 2025 Dr. Mit Panchani. All Rights Reserved.
   </footer>
 
-  <!-- START: Floating Stats Widget (with Visitors via counterapi.dev) -->
+  <!-- Floating widget kept unchanged except we keep setting storage key when closed -->
   <style>
     #live-stats{position:fixed;right:16px;bottom:16px;z-index:9999;font-family:system-ui,Segoe UI,Roboto,Arial}
     #live-stats .card{min-width:240px;background:#0f1724;color:#fff;padding:12px;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,.45)}
@@ -457,98 +487,101 @@
   </div>
 
   <script>
-    (function(){
-      const path = '/stats.json';
-      const visitorsInc = 'https://counterapi.dev/api/drmjp93s-team/visitors/increment';
-      const visitorsGet = 'https://counterapi.dev/api/drmjp93s-team/visitors';
+  (function(){
+    const path = '/stats.json';
+    const visitorsInc = 'https://counterapi.dev/api/drmjp93s-team/visitors/increment';
+    const visitorsGet = 'https://counterapi.dev/api/drmjp93s-team/visitors';
 
-      const HIDE_KEY = 'hideStatsMode';
-      const TEMP_HIDE_MS = 10 * 60 * 1000; // 10 minutes
+    const HIDE_KEY = 'hideStatsMode';
+    const TEMP_HIDE_MS = 10 * 60 * 1000; // 10 minutes
 
-      const card = document.getElementById('live-stats');
-      const closeBtn = document.getElementById('stats-close');
+    const card = document.getElementById('live-stats');
+    const closeBtn = document.getElementById('stats-close');
 
-      // Hide floating if inline/expiry present
-      try {
+    // hide floating if inline/expiry present
+    try {
+      const saved = sessionStorage.getItem(HIDE_KEY);
+      if (saved === 'inline') { if (card) card.style.display = 'none'; }
+      else if (saved) {
+        const expiry = new Date(saved);
+        if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display = 'none'; }
+      }
+    } catch(e){}
+
+    // Close -> set inline flag (temporary), dispatch storage event so listener reacts
+    closeBtn.addEventListener('click', () => {
+      if (card) card.style.display = 'none';
+      const until = new Date(Date.now() + TEMP_HIDE_MS).toISOString();
+      try { sessionStorage.setItem(HIDE_KEY, until); } catch(e){}
+      // dispatch event (some browsers won't emit storage in same tab)
+      try { window.dispatchEvent(new StorageEvent('storage', { key: HIDE_KEY, newValue: until })); } catch(e){}
+      // fallback: also fire custom event that inline script listens to
+      try { window.dispatchEvent(new Event('showInlineStats')); } catch(e){}
+    });
+
+    // animate helper (slower & eased)
+    function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+    function animate(el, to, duration=3400){
+      const from = 0;
+      const start = performance.now();
+      function frame(now){
+        const progress = Math.min((now - start) / duration, 1);
+        const t = easeOutCubic(progress);
+        el.textContent = Math.floor(from + (to - from) * t).toLocaleString();
+        if (progress < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function extractNumber(obj){
+      if (!obj || typeof obj !== 'object') return 0;
+      return Number(obj.count ?? obj.value ?? obj.hits ?? obj.total ?? obj._value ?? 0) || 0;
+    }
+
+    const localStatsP = fetch(path + '?_=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(()=> ({}));
+
+    const visitorsP = fetch(visitorsInc, { method:'GET', redirect:'follow' })
+      .then(r => r.text().then(t => { try { return JSON.parse(t); } catch(e){ return null; } }))
+      .then(parsed => {
+        const n = extractNumber(parsed);
+        if (n) return n;
+        return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
+      })
+      .catch(() => {
+        return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
+      });
+
+    Promise.all([localStatsP, visitorsP]).then(([data, visitors]) => {
+      // floating widget populate (slower animation)
+      document.querySelectorAll('#live-stats .num').forEach(el => {
+        const key = el.dataset.key;
+        if (key === 'visitors') return;
+        const val = Number(data[key]) || 0;
+        animate(el, val, 2200 + Math.random()*1600);
+      });
+
+      const visEl = document.querySelector('.num[data-key="visitors"]');
+      if (visEl) animate(visEl, visitors, 2600);
+
+      const up = document.getElementById('stats-updated');
+      if (up) up.textContent = new Date().toLocaleString();
+    }).catch(err => console.warn('stats widget error', err));
+
+    // listen for storage changes (show/hide inline)
+    window.addEventListener('storage', (e) => {
+      if (e.key === HIDE_KEY){
         const saved = sessionStorage.getItem(HIDE_KEY);
-        if (saved === 'inline') { if (card) card.style.display = 'none'; }
+        if (saved === 'inline') { if (card) card.style.display='none'; }
         else if (saved) {
           const expiry = new Date(saved);
-          if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display = 'none'; }
-        }
-      } catch(e){}
-
-      // Close button: hide floating, enable inline for TEMP_HIDE_MS
-      closeBtn.addEventListener('click', () => {
-        if (card) card.style.display = 'none';
-        const until = new Date(Date.now() + TEMP_HIDE_MS).toISOString();
-        try { sessionStorage.setItem(HIDE_KEY, until); } catch(e){}
-        try { window.dispatchEvent(new StorageEvent('storage', { key: HIDE_KEY, newValue: until })); } catch(e){}
-      });
-
-      // animate helper with ease-out cubic for slow finish
-      function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
-
-      function animate(el, to, duration=2400){
-        const from = 0;
-        const start = performance.now();
-        function frame(now){
-          const progress = Math.min((now - start) / duration, 1);
-          const t = easeOutCubic(progress);
-          el.textContent = Math.floor(from + (to - from) * t).toLocaleString();
-          if (progress < 1) requestAnimationFrame(frame);
-        }
-        requestAnimationFrame(frame);
+          if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display='none'; }
+        } else { if (card) card.style.display='block'; }
       }
+    });
 
-      function extractNumber(obj){
-        if (!obj || typeof obj !== 'object') return 0;
-        return Number(obj.count ?? obj.value ?? obj.hits ?? obj.total ?? obj._value ?? 0) || 0;
-      }
-
-      const localStatsP = fetch(path + '?_=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(()=> ({}));
-
-      const visitorsP = fetch(visitorsInc, { method:'GET', redirect:'follow' })
-        .then(r => r.text().then(t => { try { return JSON.parse(t); } catch(e){ return null; } }))
-        .then(parsed => {
-          const n = extractNumber(parsed);
-          if (n) return n;
-          return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
-        })
-        .catch(() => {
-          return fetch(visitorsGet).then(r => r.json()).then(j => extractNumber(j)).catch(()=>0);
-        });
-
-      Promise.all([localStatsP, visitorsP]).then(([data, visitors]) => {
-        document.querySelectorAll('#live-stats .num').forEach(el => {
-          const key = el.dataset.key;
-          if (key === 'visitors') return;
-          const val = Number(data[key]) || 0;
-          animate(el, val, 1800 + Math.random()*1200); // slowed & variable
-        });
-
-        const visEl = document.querySelector('.num[data-key="visitors"]');
-        if (visEl) animate(visEl, visitors, 2000);
-
-        const up = document.getElementById('stats-updated');
-        if (up) up.textContent = new Date().toLocaleString();
-      }).catch(err => console.warn('stats widget error', err));
-
-      // listen for storage changes
-      window.addEventListener('storage', (e) => {
-        if (e.key === HIDE_KEY){
-          const saved = sessionStorage.getItem(HIDE_KEY);
-          if (saved === 'inline') { if (card) card.style.display='none'; }
-          else if (saved) {
-            const expiry = new Date(saved);
-            if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display='none'; }
-          } else { if (card) card.style.display='block'; }
-        }
-      });
-
-    })();
+  })();
   </script>
-  <!-- END: Floating Stats Widget -->
+  <!-- END Floating widget -->
 
 </body>
 </html>
