@@ -1,156 +1,201 @@
-<!-- START: Payment card -->
-<section style="max-width:720px;margin:18px auto;padding:18px;border-radius:12px;background:#fff;border:1px solid #eee;">
-  <!-- Top: back -->
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <a href="telemedicine.html" style="padding:8px 12px;border-radius:8px;background:#f3f4f6;color:#111;text-decoration:none;border:1px solid #e6e6e6;">← Back</a>
-    <strong style="font-size:1rem">Pay for Telemedicine</strong>
-    <div style="width:48px"></div>
-  </div>
-
-  <!-- UPI display -->
-  <div style="display:flex;gap:14px;align-items:center;padding:14px;border-radius:10px;background:#f8fafc;border:1px solid #eef6fb;">
-    <div style="flex:1">
-      <div style="font-size:0.95rem;color:#444;font-weight:800;margin-bottom:6px;">Payee</div>
-      <div style="font-family:monospace;font-size:1.05rem;color:#06233a;">Mit J Panchani</div>
-      <div style="font-size:0.88rem;color:#6b7280;margin-top:8px;">UPI ID</div>
-      <div id="upiID" style="font-family:monospace;font-size:1.05rem;color:#06233a;margin-top:3px;">drmjp93@upi</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pay — Telemedicine</title>
+  <meta name="description" content="Pay for telemedicine consultation - UPI" />
+  <style>
+    :root{
+      --brand:#0366d6;
+      --dark:#0b0b0b;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --bg:#f6f7fb;
+    }
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);color:#072033;padding:18px}
+    .wrap{max-width:820px;margin:18px auto}
+    .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid #eee;box-shadow:0 8px 22px rgba(10,12,20,0.04)}
+    .row{display:flex;gap:12px;align-items:center}
+    .col{flex:1}
+    h1{margin:0 0 8px;font-size:1.25rem}
+    .pill-btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 20px;border-radius:999px;background:var(--dark);color:#fff;text-decoration:none;font-weight:700;
+      box-shadow:0 8px 20px rgba(6,7,10,0.28);border:1px solid rgba(255,255,255,0.03);
+    }
+    .pill-btn.secondary{ background:#262626 }
+    .small{font-size:0.85rem;color:var(--muted)}
+    input[type="number"]{padding:10px;border-radius:8px;border:1px solid #ddd;width:120px}
+    .app-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .app-btn{padding:8px 12px;border-radius:8px;background:#121212;color:#fff;text-decoration:none;font-weight:700}
+    .hidden{display:none!important}
+    .upi-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace; font-weight:800}
+    /* responsive */
+    @media(max-width:520px){
+      .row{flex-direction:column;align-items:stretch}
+      .app-row{justify-content:stretch}
+    }
+    /* small helper box for payee details */
+    .payee-box{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-radius:10px;background:#f8fafc;border:1px solid #eef6fb}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <a href="telemedicine.html" class="pill-btn secondary" style="text-decoration:none">← Back</a>
+      <div style="text-align:center">
+        <h1>Pay for Telemedicine</h1>
+        <div class="small">Secure UPI payment — instant and simple</div>
+      </div>
+      <div style="width:48px"></div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:8px;min-width:160px;">
-      <button id="copyUpi" style="padding:10px;border-radius:8px;border:none;background:#0366d6;color:#fff;cursor:pointer;">Copy UPI</button>
-      <a id="genericUpi" class="btn" style="display:inline-block;padding:10px;border-radius:8px;text-align:center;background:#0b7285;color:#fff;text-decoration:none;">Open UPI app</a>
+      <!-- Payee / UPI details -->
+      <div class="payee-box">
+        <div>
+          <div style="font-size:0.85rem;color:var(--muted);font-weight:700">Payee</div>
+          <div style="font-size:1.05rem;font-weight:800;margin-top:6px">Dr Mit Panchani</div>
+
+          <div style="margin-top:10px;font-size:0.78rem;color:var(--muted);font-weight:700">UPI ID</div>
+          <div id="upiID" class="upi-mono" style="font-size:1.02rem;margin-top:4px">drmjp93@upi</div>
+        </div>
+
+        <div style="text-align:right">
+          <div style="font-size:0.78rem;color:var(--muted);font-weight:700">Amount</div>
+          <div style="font-weight:800;font-size:1.1rem;margin-top:6px">₹ <input id="amount" type="number" value="500" min="1" /></div>
+
+          <div class="small" style="margin-top:8px">Note: Telemedicine Consultation</div>
+        </div>
+      </div>
+
+      <!-- Primary actions -->
+      <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <!-- Universal UPI deep-link button (works for most phones) -->
+        <a id="openUpi" class="pill-btn" href="#" style="text-decoration:none;min-width:220px">Open UPI app</a>
+
+        <!-- Copy UPI -->
+        <button id="copyUpi" class="pill-btn secondary" style="min-width:140px;border:none;cursor:pointer">Copy UPI</button>
+      </div>
+
+      <!-- App-specific buttons: shown only on Android by JS. Hidden on iOS/desktop to avoid loops. -->
+      <div id="appRow" class="app-row hidden" style="margin-top:12px">
+        <a id="gpayBtn" class="app-btn" href="#">Google Pay</a>
+        <a id="phonepeBtn" class="app-btn" href="#">PhonePe</a>
+        <a id="bhimBtn" class="app-btn" href="#">BHIM</a>
+      </div>
+
+      <!-- small helper text -->
+      <div style="margin-top:12px" class="small">
+        Tip: On desktop, copy the UPI ID and pay using your phone. On mobile, "Open UPI app" opens your preferred UPI app.
+      </div>
+    </div>
+
+    <!-- footer -->
+    <div style="text-align:center;color:var(--muted);font-size:0.85rem;margin-top:16px">
+      <div>Need help? Contact support or call clinic.</div>
     </div>
   </div>
-
-  <!-- App-specific row -->
-  <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;">
-    <!-- Generic UPI above covers most apps. App-specific intents below (Android): -->
-    <a id="gpayBtn" href="#" style="padding:8px 10px;border-radius:8px;background:#0f7ded;color:#fff;text-decoration:none;">Open Google Pay</a>
-    <a id="phonepeBtn" href="#" style="padding:8px 10px;border-radius:8px;background:#0b6b3a;color:#fff;text-decoration:none;">Open PhonePe</a>
-    <a id="bhimBtn" href="#" style="padding:8px 10px;border-radius:8px;background:#111;color:#fff;text-decoration:none;">Open BHIM</a>
-    <!-- <a id="waBtn" href="#" style="padding:8px 10px;border-radius:8px;background:#25D366;color:#fff;text-decoration:none;">Send to WhatsApp</a> -->
-  </div>
-
-  <!-- Amount -->
-  <div style="margin-top:12px;">
-    <label style="font-weight:700;display:block;margin-bottom:6px;">Amount (₹)</label>
-    <input id="amount" type="number" value="400" min="1" style="padding:10px;border-radius:8px;border:1px solid #ddd;width:140px">
-  </div>
-
-  <!-- Txn ID input -->
-  <div style="margin-top:12px;">
-    <label style="font-weight:700;display:block;margin-bottom:6px;">After payment — paste UPI Transaction ID</label>
-    <input id="txnId" placeholder="Example: 123456789012" style="padding:10px;border-radius:8px;border:1px solid #ddd;width:100%;max-width:420px;">
-    <div style="display:flex;gap:10px;margin-top:10px;max-width:420px;">
-      <button id="submitTxn" style="padding:10px;border-radius:8px;border:none;background:#0366d6;color:#fff;cursor:pointer;">Submit Txn ID</button>
-      <button id="clearTxn" style="padding:10px;border-radius:8px;border:none;background:#aaa;color:#fff;cursor:pointer;">Clear</button>
-    </div>
-    <div id="txnMsg" style="margin-top:8px;color:#666;font-size:0.95rem;"></div>
-  </div>
-</section>
 
 <script>
 /*
-  pay.html payment card script
-  - configure UPI_ID & PAYEE_NAME below
-  - generic upi deep-link opens most UPI apps
-  - app-specific "intent" links are provided for Android; they may or may not open depending on browser/platform
-  - Txn ID submit behaves:
-      • tries POST to /verify-upi
-      • if server not present, saves submitted txns in localStorage for staff manual check
+  pay.html logic:
+  - generic UPI deeplink set on Open UPI app button
+  - on Android the appRow is shown and intent URIs are set for app-specific buttons
+  - on iOS/desktop appRow remains hidden and only generic UPI is used
+  - copy button copies UPI ID
 */
 
 const UPI_ID = 'drmjp93@upi';
-const PAYEE_NAME = 'Mit J Panchani';
-const DEFAULT_NOTE = 'Telemedicine Consultation';
+const PAYEE = 'Dr Mit Panchani';
+const NOTE = 'Telemedicine Consultation';
 
+function isAndroid(){ return /Android/i.test(navigator.userAgent); }
+function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent); }
 function encode(v){ return encodeURIComponent(v); }
+
 function buildUpiLink(amount){
-  // amount should be plain number
   const am = Number(amount).toFixed(2);
-  return `upi://pay?pa=${encode(UPI_ID)}&pn=${encode(PAYEE_NAME)}&am=${encode(am)}&tn=${encode(DEFAULT_NOTE)}&cu=INR`;
+  return `upi://pay?pa=${encode(UPI_ID)}&pn=${encode(PAYEE)}&am=${encode(am)}&tn=${encode(NOTE)}&cu=INR`;
 }
 
-// set UI links on page load / when amount changes
-function refreshLinks(){
-  const amount = document.getElementById('amount').value || '0';
-  const upi = buildUpiLink(amount);
-  document.getElementById('genericUpi').href = upi;
-
-  // App-specific intent URIs (Android). These attempt to open the app directly.
-  // They are best-effort — browsers or iOS may not support.
-  document.getElementById('gpayBtn').href = `intent://${upi.replace('upi://','')}#Intent;package=com.google.android.apps.nbu.paisa.user;scheme=upi;end`;
-  document.getElementById('phonepeBtn').href = `intent://${upi.replace('upi://','')}#Intent;package=com.phonepe.app;scheme=upi;end`;
-  document.getElementById('bhimBtn').href = `intent://${upi.replace('upi://','')}#Intent;package=in.org.npci.upiapp;scheme=upi;end`;
-
-  // copy button label remains same
+function safeOpen(url){
+  // attempt to open; we don't want to loop
+  try{ window.location.href = url; }catch(e){}
 }
 
-// copy UPI to clipboard
-document.getElementById('copyUpi').addEventListener('click', async ()=>{
-  try {
-    await navigator.clipboard.writeText(UPI_ID);
-    alert('UPI ID copied to clipboard. Paste in your UPI app.');
-  } catch(e){
-    const ta = document.createElement('textarea'); ta.value = UPI_ID; document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); ta.remove();
-    alert('Copied UPI ID.');
-  }
-});
+// set links & UI on load
+function init(){
+  const amountEl = document.getElementById('amount');
+  const openBtn = document.getElementById('openUpi');
+  const copyBtn = document.getElementById('copyUpi');
+  const appRow = document.getElementById('appRow');
+  const gpayBtn = document.getElementById('gpayBtn');
+  const phonepeBtn = document.getElementById('phonepeBtn');
+  const bhimBtn = document.getElementById('bhimBtn');
 
-// Txn ID submit
-document.getElementById('submitTxn').addEventListener('click', async ()=>{
-  const txn = document.getElementById('txnId').value.trim();
-  const amount = document.getElementById('amount').value || '0';
-  const msgEl = document.getElementById('txnMsg');
-  if(!txn){ msgEl.style.color = '#9b1b1b'; msgEl.innerText = 'Enter Transaction ID before submit.'; return; }
-  msgEl.style.color = '#666'; msgEl.innerText = 'Verifying...';
+  function refresh(){
+    const amt = amountEl.value || '0';
+    const upiLink = buildUpiLink(amt);
+    openBtn.href = upiLink;
 
-  try {
-    const res = await fetch('/verify-upi', {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ txn, amount, upi: UPI_ID })
-    });
-
-    if(res.ok){
-      const j = await res.json();
-      if(j.ok){
-        msgEl.style.color = '#0b6b2d';
-        msgEl.innerText = 'Payment verified ✅ Booking confirmed.';
-      } else {
-        msgEl.style.color = '#9b1b1b';
-        msgEl.innerText = 'Not verified: ' + (j.msg || 'pending');
-      }
-      return;
+    // On Android: show appRow and set intent URIs (best-effort).
+    if(isAndroid()){
+      appRow.classList.remove('hidden');
+      // intent URIs (Android Chrome friendly)
+      gpayBtn.href = `intent://${upiLink.replace('upi://','')}#Intent;package=com.google.android.apps.nbu.paisa.user;scheme=upi;end`;
+      phonepeBtn.href = `intent://${upiLink.replace('upi://','')}#Intent;package=com.phonepe.app;scheme=upi;end`;
+      bhimBtn.href = `intent://${upiLink.replace('upi://','')}#Intent;package=in.org.npci.upiapp;scheme=upi;end`;
+    } else {
+      // hide app-specific UI on iOS & desktop (avoids mis-handling)
+      appRow.classList.add('hidden');
+      // ensure app buttons fall back to universal for safety (in case of direct open)
+      gpayBtn.href = upiLink;
+      phonepeBtn.href = upiLink;
+      bhimBtn.href = upiLink;
     }
-  } catch(e){
-    // fallthrough to local-store fallback
   }
 
-  // fallback when /verify-upi not available: store locally for staff verification
-  try {
-    const pending = JSON.parse(localStorage.getItem('pendingUpiTxns')||'[]');
-    pending.push({ txn, amount, upi:UPI_ID, when: new Date().toISOString()});
-    localStorage.setItem('pendingUpiTxns', JSON.stringify(pending));
-    msgEl.style.color = '#0b6b2d';
-    msgEl.innerText = 'Saved locally for manual verification. Staff will check bank. (No server configured)';
-  } catch(err){
-    msgEl.style.color = '#9b1b1b';
-    msgEl.innerText = 'Could not save locally. Please inform staff.';
-  }
-});
+  // click handler for Open UPI button — open and disable rapid re-open
+  openBtn.addEventListener('click', function(e){
+    // allow normal navigation on anchor, but protect from double clicks
+    e.preventDefault();
+    const url = this.href;
+    safeOpen(url);
+    this.style.pointerEvents = 'none';
+    setTimeout(()=>{ this.style.pointerEvents = 'auto'; }, 1500);
+  });
 
-// clear txn
-document.getElementById('clearTxn').addEventListener('click', ()=>{
-  document.getElementById('txnId').value='';
-  document.getElementById('txnMsg').innerText='';
-});
+  // Copy UPI
+  copyBtn.addEventListener('click', async function(){
+    try{
+      await navigator.clipboard.writeText(UPI_ID);
+      alert('UPI ID copied to clipboard: ' + UPI_ID);
+    }catch(e){
+      // fallback
+      const ta = document.createElement('textarea'); ta.value = UPI_ID; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); alert('UPI ID copied to clipboard.'); }catch(err){ alert('Copy failed — please copy manually.'); }
+      ta.remove();
+    }
+  });
 
-// amount change updates links
-document.getElementById('amount').addEventListener('input', refreshLinks);
+  // app-specific safe open (single click)
+  [gpayBtn,phonepeBtn,bhimBtn].forEach(btn=>{
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      const href = this.href;
+      safeOpen(href);
+      this.style.pointerEvents = 'none';
+      setTimeout(()=>{ this.style.pointerEvents = 'auto'; }, 1500);
+    });
+  });
 
-// init
-refreshLinks();
+  amountEl.addEventListener('input', refresh);
+  refresh();
+}
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
-<!-- END: Payment card -->
+</body>
+</html>
