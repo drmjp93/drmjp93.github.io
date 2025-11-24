@@ -58,6 +58,57 @@
       .container{padding:18px}
     }
   </style>
+  <style>
+/* Black pill buttons — reuse .pill-btn on both links/buttons */
+.pill-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:12px 22px;
+  border-radius:999px;               /* pill shape */
+  background:#0b0b0b;                /* deep black */
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  min-width:140px;
+  box-shadow: 0 8px 20px rgba(6,7,10,0.28), inset 0 -3px 8px rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.04);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  cursor:pointer;
+}
+
+/* secondary pill (lighter black / muted) */
+.pill-btn.secondary{
+  background:#262626;
+  box-shadow: 0 6px 16px rgba(10,10,10,0.18);
+  color:#fff;
+}
+
+/* small icon styling if you want icons inside */
+.pill-btn .icon {
+  width:20px; height:20px; display:inline-block; flex:0 0 20px;
+  border-radius:4px; background:transparent;
+}
+
+/* hover / active */
+.pill-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(6,7,10,0.32); }
+.pill-btn:active { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(6,7,10,0.22); }
+
+/* container for side-by-side layout */
+.btn-row {
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin:28px 0;
+  flex-wrap:wrap;
+}
+
+/* make them full-width on very small screens */
+@media (max-width:420px){
+  .btn-row .pill-btn { min-width:unset; width:48%; padding:10px 14px; }
+}
+</style>
 </head>
 
 <body>
@@ -172,14 +223,15 @@
     </div>
   </div>
 
- <!-- Buttons: side-by-side -->
-  
-<div style="display:flex;justify-content:center;gap:14px;margin:30px 0;">
-  <a href="pay.html" class="appointment-btn" style="min-width:140px;text-align:center;">
+<!-- Replace existing pay/back button block with this -->
+<div class="btn-row" aria-hidden="false">
+  <a href="pay.html" class="pill-btn" id="payNowBtn" aria-label="Pay now">
+    <!-- optional icon: <span class="icon">💳</span> -->
     Pay Now
   </a>
 
-  <a href="index.html" class="appointment-btn" style="min-width:120px;text-align:center;background:#666;">
+  <a href="telemedicine.html" class="pill-btn secondary" id="backBtn" aria-label="Back to telemedicine">
+    <!-- optional icon: <span class="icon">←</span> -->
     Back
   </a>
 </div>
