@@ -601,9 +601,13 @@
 
   </main>
 
-  <footer role="contentinfo" style="text-align:center;padding:20px;color:var(--muted)">
-    © 2025 Dr. Mit Panchani. All Rights Reserved.
-  </footer>
+<footer role="contentinfo" style="text-align:center;padding:20px;color:var(--muted)">
+  © 2025 Dr. Mit Panchani. All Rights Reserved.
+
+  <div style="margin-top:8px;font-size:0.85rem;color:#a1a1a1;">
+    Visitors: <span id="visitorCount">—</span>
+  </div>
+</footer>
 
   <!-- Floating widget (keeps setting hide flag and dispatching 'showInlineStats' on close) -->
   <style>
@@ -727,6 +731,27 @@
 
   })();
   </script>
+<script>
+(function(){
+  const el = document.getElementById('visitorCount');
+  if(!el) return;
 
+  async function updateVisitorCount(){
+    try{
+      const resp = await fetch('https://api.counterapi.dev/v1/drmjp93in/visits/up');
+      const j = await resp.json();
+      if(j && j.count !== undefined){
+        el.innerText = j.count.toLocaleString();
+      } else {
+        el.innerText = '-';
+      }
+    }catch(e){
+      el.innerText = '-';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', updateVisitorCount);
+})();
+</script>
 </body>
 </html>
