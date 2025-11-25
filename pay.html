@@ -1,292 +1,421 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pay — Telemedicine (Bold)</title>
-  <meta name="description" content="Pay for telemedicine consultation - Bold UI with UPI options" />
-  <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --accent:#ff4d6d;
-      --accent2:#6bde8a;
-      --muted:#9aa6b2;
-      --glass: rgba(255,255,255,0.04);
-      --pill-shadow: 0 14px 30px rgba(0,0,0,0.45);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      background: linear-gradient(180deg,#071422 0%, #071a28 60%);
-      color:#f8fafc;
-      -webkit-font-smoothing:antialiased;
-      padding:22px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Telemedicine — Payment</title>
+<meta name="description" content="Telemedicine payment page — device aware UPI options">
 
-    .stage{width:100%;max-width:920px}
+<style>
+  :root {
+    --bg:#f5f7fa;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#0b1220;
+    --tele:#0f1724;
+    --cta:#d9ff7a;
+    --shadow:0 12px 30px rgba(15,15,15,0.06);
+    --pill-height:56px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:20px;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    background:var(--bg); color:var(--accent);
+    -webkit-font-smoothing:antialiased;
+  }
+  .topbar{
+    display:flex; justify-content:space-between;
+    align-items:center; margin-bottom:8px;
+  }
+  .back{
+    display:flex; align-items:center; gap:8px;
+    background:#fff; padding:8px 12px;
+    border-radius:10px; text-decoration:none;
+    color:var(--accent); font-weight:800;
+    box-shadow:var(--shadow);
+  }
+  .container{
+    max-width:1100px; margin:24px auto;
+    display:grid; grid-template-columns:1fr 460px;
+    gap:20px; align-items:flex-start;
+  }
+  @media(max-width:920px){ .container{ grid-template-columns:1fr; } }
 
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border-radius:18px;
-      padding:22px;
-      box-shadow: var(--pill-shadow);
-      border: 1px solid rgba(255,255,255,0.04);
-    }
+  /* LEFT CARD */
+  .card-left{
+    background:linear-gradient(180deg,#0f1724,#0b1220);
+    color:#fff; border-radius:14px; padding:22px;
+    box-shadow:var(--shadow); min-height:520px;
+  }
+  .card-left h2{ margin:0 0 10px; font-size:1.6rem; color:#fff; }
+  .rules{ margin-top:12px; color:#e6eef9; line-height:1.55; }
+  .rules ul{ padding-left:18px; margin:6px 0; }
 
-    .top {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
-    }
-    .back {
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.06);
-      color:#fff;
-      padding:10px 12px;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:700;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    h1{margin:0;font-size:1.25rem;letter-spacing:0.2px}
-    .sub{color:var(--muted);font-size:0.92rem;margin-top:4px}
-
-    .hero {
-      display:flex;
-      gap:18px;
-      align-items:center;
-      margin-bottom:18px;
-    }
-    .payee {
-      flex:1;
-      min-width:0;
-    }
-    .payee .label{font-size:0.78rem;color:var(--muted);font-weight:700}
-    .payee .name{font-size:1.2rem;font-weight:900;margin-top:6px}
-    .payee .upi{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;font-weight:800;margin-top:8px;font-size:1rem;color:#dff7e3}
-    .payee .note{color:var(--muted);margin-top:8px;font-size:0.85rem}
-
-    .decor {
-      width:132px;height:96px;border-radius:10px;overflow:hidden;flex:0 0 132px;background:linear-gradient(90deg,#ff9fb0,#9be6b8);
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:0 10px 30px rgba(0,0,0,0.4);
-    }
-    .decor img{max-width:100%;height:100%;object-fit:cover;display:block}
-
-    /* Big button row (bold + colored) */
-    .btn-row{
-      display:flex;
-      gap:12px;
-      margin-top:18px;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:12px;
-      padding:14px 18px;
-      border-radius:999px;
-      font-weight:800;
-      cursor:pointer;
-      border:0;
-      color:#062033;
-      text-decoration:none;
-      min-width:160px;
-      justify-content:center;
-      box-shadow:0 10px 30px rgba(2,6,23,0.45), inset 0 -4px 8px rgba(255,255,255,0.03);
-      transition: transform .12s ease, box-shadow .12s ease;
-    }
-    .pill:active{ transform: translateY(1px) }
-    .pill--whatsapp{ background: linear-gradient(90deg,#25D366,#06b85a); color:#042222 }
-    .pill--gpay{ background: linear-gradient(90deg,#4285F4,#1a65f0); color:#fff }
-    .pill--phonepe{ background: linear-gradient(90deg,#7b61ff,#4c1db3); color:#fff }
-    .pill--bhim{ background: linear-gradient(90deg,#111827,#0b1220); color:#fff; border:1px solid rgba(255,255,255,0.04) }
-    .pill--copy{ background: linear-gradient(90deg,#ffd166,#ffb84a); color:#072033 }
-    .pill--openupi{ background: linear-gradient(90deg,#ff4d6d,#ff7a95); color:#fff }
-
-    .small-note{margin-top:12px;color:var(--muted);text-align:center;font-weight:700}
-
-    /* responsive */
-    @media (max-width:720px){
-      .hero{flex-direction:column;align-items:stretch}
-      .decor{width:100%;height:140px}
-      .pill{min-width:140px;padding:12px 14px}
-    }
-  </style>
-</head>
-<body>
-  <div class="stage">
-    <div class="card" role="main" aria-label="Telemedicine Payment">
-
-      <div class="top">
-        <a href="telemedicine.html" class="back" aria-label="Back to telemedicine">← Back</a>
-        <div style="text-align:center">
-          <h1>Secure Payment</h1>
-          <div class="sub">Choose your preferred UPI method — quick and secure</div>
-        </div>
-        <div style="width:48px"></div>
-      </div>
-
-      <div class="hero">
-        <div class="payee">
-          <div class="label">Payee</div>
-          <div class="name">Dr Mit Panchani</div>
-
-          <div class="label" style="margin-top:10px">UPI ID</div>
-          <div id="upiId" class="upi">drmjp93@upi</div>
-
-          <div class="note">Note: Telemedicine Consultation</div>
-        </div>
-
-        <div class="decor" aria-hidden="true">
-          <!-- uploaded image - local path included -->
-          <img src="/mnt/data/IMG_4BC426E2-94A5-42BA-8BD8-091BAAA31D38.jpeg" alt="clinic" />
-        </div>
-      </div>
-
-      <div style="display:flex;justify-content:center;margin-top:10px;gap:12px;align-items:center">
-        <div style="font-weight:900;font-size:1.1rem;margin-right:12px">Amount</div>
-        <input id="amount" type="number" value="500" min="1" style="padding:10px 12px;border-radius:8px;border:0;background:rgba(255,255,255,0.03);color:#fff;font-weight:800;width:120px;text-align:center" />
-      </div>
-
-      <!-- Bold pill buttons -->
-      <div class="btn-row" role="group" aria-label="Payment options">
-
-        <!-- WhatsApp (preferred on iOS; works on many phones) -->
-        <a id="waBtn" class="pill pill--whatsapp" href="#" aria-label="Pay via WhatsApp (opens payment)">
-          <span>💬</span>
-          <span>Open WhatsApp to Pay</span>
-        </a>
-
-        <!-- Open UPI app (universal) -->
-        <a id="openUpi" class="pill pill--openupi" href="#" aria-label="Open UPI app">
-          <span>⚡</span>
-          <span>Open UPI app</span>
-        </a>
-
-        <!-- Copy UPI -->
-        <button id="copyBtn" class="pill pill--copy" aria-label="Copy UPI ID">
-          <span>📋</span>
-          <span>Copy UPI ID</span>
-        </button>
-      </div>
-
-      <!-- Android-only app specific row (hidden on iOS/desktop) -->
-      <div id="androidRow" style="display:flex;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap" aria-hidden="true">
-        <a id="gpayBtn" class="pill pill--gpay" href="#" aria-label="Open Google Pay">🟦 Google Pay</a>
-        <a id="phonepeBtn" class="pill pill--phonepe" href="#" aria-label="Open PhonePe">🟪 PhonePe</a>
-        <a id="bhimBtn" class="pill pill--bhim" href="#" aria-label="Open BHIM">🟩 BHIM</a>
-      </div>
-
-      <div class="small-note">If you're on desktop: copy UPI ID and pay from your phone. No transaction is recorded automatically — staff will reconcile payments.</div>
-    </div>
-  </div>
-
-<script>
-/* Bold pay.html script
-  - static-only flow (no backend)
-  - safe platform detection: Android shows app buttons, iOS/desktop hides them to avoid loops
-  - WhatsApp button and Open UPI use same upi:// deep-link; iOS will open the app registered for UPI (usually WhatsApp)
-  - Copy button writes UPI ID to clipboard
-*/
-
-const UPI_ID = 'drmjp93@upi';
-const PAYEE = 'Dr Mit Panchani';
-const NOTE = 'Telemedicine Consultation';
-
-function isAndroid(){ return /Android/i.test(navigator.userAgent); }
-function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent); }
-function encode(v){ return encodeURIComponent(v); }
-
-function buildUpi(amount){
-  const am = Number(amount).toFixed(2);
-  return `upi://pay?pa=${encode(UPI_ID)}&pn=${encode(PAYEE)}&am=${encode(am)}&tn=${encode(NOTE)}&cu=INR`;
-}
-
-// safe open helper
-function safeOpen(url){
-  try{ window.location.href = url; } catch(e){}
-}
-
-// init UI
-document.addEventListener('DOMContentLoaded', ()=>{
-
-  const amountEl = document.getElementById('amount');
-  const waBtn = document.getElementById('waBtn');
-  const openUpi = document.getElementById('openUpi');
-  const copyBtn = document.getElementById('copyBtn');
-  const androidRow = document.getElementById('androidRow');
-  const gpayBtn = document.getElementById('gpayBtn');
-  const phonepeBtn = document.getElementById('phonepeBtn');
-  const bhimBtn = document.getElementById('bhimBtn');
-
-  // set UPI display
-  document.getElementById('upiId').innerText = UPI_ID;
-
-  function refreshLinks(){
-    const amt = amountEl.value || '0';
-    const upi = buildUpi(amt);
-
-    // Universal handlers
-    waBtn.href = upi;         // on iOS this will open the registered handler (usually WhatsApp)
-    openUpi.href = upi;
-
-    // Android-specific intents (best-effort). Only enable on Android to avoid iOS loop issues.
-    if(isAndroid()){
-      androidRow.setAttribute('aria-hidden','false');
-      androidRow.style.display = 'flex';
-      // intent URIs for Android Chrome
-      const intentBody = upi.replace('upi://','');
-      gpayBtn.href = `intent://${intentBody}#Intent;package=com.google.android.apps.nbu.paisa.user;scheme=upi;end`;
-      phonepeBtn.href = `intent://${intentBody}#Intent;package=com.phonepe.app;scheme=upi;end`;
-      bhimBtn.href = `intent://${intentBody}#Intent;package=in.org.npci.upiapp;scheme=upi;end`;
-    } else {
-      androidRow.setAttribute('aria-hidden','true');
-      androidRow.style.display = 'none';
-      // fallback: make app links point to universal upi to be safe
-      gpayBtn.href = upi; phonepeBtn.href = upi; bhimBtn.href = upi;
-    }
+  /* RIGHT CARD */
+  .card-right{
+    background:#fff; border-radius:14px;
+    padding:18px; box-shadow:var(--shadow);
+  }
+  .alert{
+    background:#fffbea; border:1px solid #f6e29b;
+    padding:10px 12px; border-radius:10px;
+    font-weight:700; color:#6b7280;
+    margin-bottom:12px;
   }
 
-  // open clicks: prevent double-open
-  [waBtn, openUpi, gpayBtn, phonepeBtn, bhimBtn].forEach(el=>{
-    el.addEventListener('click', function(e){
-      e.preventDefault();
-      safeOpen(this.href);
-      this.style.pointerEvents = 'none';
-      setTimeout(()=> this.style.pointerEvents = 'auto', 1200);
-    });
-  });
+  /* METHOD PILLS */
+  .methods{ display:flex; flex-direction:column; gap:12px; }
+  .pill{
+    display:flex; border:1px solid #eef2f7;
+    height:var(--pill-height); border-radius:12px;
+    background:#fff; overflow:hidden;
+  }
+  .pill .label{
+    flex:7; display:flex;
+    gap:12px; align-items:center;
+    padding:12px 16px; cursor:pointer;
+  }
+  .pill .title{ font-weight:800; }
+  .pill .desc{ font-size:0.84rem; color:var(--muted); }
+  .pill .action{
+    flex:3; background:#0b1220; color:#fff;
+    display:flex; align-items:center;
+    justify-content:center; font-weight:900;
+    cursor:pointer;
+  }
+  .pill.selected{
+    border-color:#dce8ff;
+    box-shadow:0 8px 18px rgba(8,14,24,0.06);
+  }
+  .logo{
+    width:42px; height:42px;
+    border-radius:8px; background:#111;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:900;
+  }
 
-  // copy
-  copyBtn.addEventListener('click', async ()=>{
-    try {
-      await navigator.clipboard.writeText(UPI_ID);
-      alert('UPI ID copied: ' + UPI_ID);
-    } catch(e){
-      const ta = document.createElement('textarea'); ta.value = UPI_ID; document.body.appendChild(ta); ta.select();
-      try{ document.execCommand('copy'); alert('UPI ID copied'); } catch(err){ alert('Copy failed - please copy manually'); }
-      ta.remove();
+  /* QR CARD (Option A) */
+  #qrCard{
+    display:none;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:18px; margin-top:18px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+  }
+
+  .qr-row{
+    display:flex; align-items:center; gap:18px;
+  }
+  .qr-img{
+    width:140px; height:140px;
+    border-radius:8px; border:1px solid #eee;
+    object-fit:cover;
+  }
+  .qr-sep{
+    width:1px; height:120px; background:#e5e7eb;
+  }
+  .copy-box{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#f9fafb; border:1px solid #e5e7eb;
+    padding:10px 14px; border-radius:8px;
+  }
+  .copy-btn{
+    background:#0b1220; color:#fff;
+    padding:8px 14px; border:none;
+    border-radius:6px; font-weight:700;
+    cursor:pointer;
+  }
+
+  .qr-toggle{
+    margin:10px 0 0;
+    background:#eef2f7;
+    border-radius:8px;
+    padding:10px;
+    display:none;
+    font-weight:700;
+    cursor:pointer;
+    border:1px solid #e6eefc;
+    text-align:center;
+  }
+
+  /* SUMMARY */
+  .summary{ display:flex; flex-direction:column; gap:14px; margin-top:16px; }
+  .total{
+    text-align:center; background:#f1f6fb;
+    padding:14px; border-radius:10px;
+  }
+  .total .label{ font-weight:800; color:var(--muted); font-size:0.9rem; }
+  .total .amount{ margin-top:6px; font-size:1.8rem; font-weight:900; }
+
+  .selected-box{
+    border:1px solid #eef2f7; border-radius:10px;
+    padding:12px;
+  }
+
+  .controls{
+    display:flex; justify-content:space-between;
+    align-items:center; margin-top:8px;
+  }
+  .continue{
+    background:var(--cta);
+    padding:12px 18px;
+    border-radius:10px;
+    border:none;
+    font-weight:900;
+    cursor:pointer;
+  }
+
+  /* Desktop → hide Continue */
+  body.is-desktop .continue{ display:none !important; }
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <a class="back" href="telemedicine.html">← Back</a>
+  <span style="color:#6b7280;font-weight:700">Secure payment</span>
+</div>
+
+<div class="container">
+
+  <!-- LEFT CARD -->
+  <aside class="card-left">
+    <h2>Telemedicine — Rules</h2>
+
+    <div class="rules">
+      <p><strong>Before consultation</strong></p>
+      <ul>
+        <li>Appointment only after payment.</li>
+        <li>Share reports + medications on WhatsApp.</li>
+        <li>Emergency: go to hospital immediately.</li>
+      </ul>
+
+      <p><strong>Follow-up</strong></p>
+      <ul>
+        <li>Same issue within 72 hrs — free.</li>
+        <li>After 72 hrs — ₹300.</li>
+        <li>New symptoms = new consultation.</li>
+      </ul>
+
+      <p style="margin-top:14px; color:#dbe6f5;">
+        After payment send screenshot on WhatsApp for slot allocation.
+      </p>
+    </div>
+  </aside>
+
+  <!-- RIGHT CARD -->
+  <section class="card-right">
+
+    <div class="alert">
+      ⚠️ Check Payee Name: <strong>Mit J Panchani</strong> before payment
+    </div>
+
+    <div id="methodsWrapper" class="methods"></div>
+
+    <!-- QR Toggle (phones only) -->
+    <div id="showQRtoggle" class="qr-toggle">📷 Show QR Code</div>
+
+    <!-- QR Card (Option A) -->
+    <div id="qrCard">
+      <div style="font-weight:700; margin-bottom:10px;">Scan & Pay (UPI QR)</div>
+
+      <div class="qr-row">
+        <img src="/qr.jpg" class="qr-img" alt="QR">
+
+        <div class="qr-sep"></div>
+
+        <div style="flex:1;">
+          <div style="font-size:0.9rem; margin-bottom:6px; color:#374151;">
+            UPI ID:
+          </div>
+
+          <div class="copy-box">
+            <span style="font-weight:700;">drmjp93@upi</span>
+            <button id="copyQRupi" class="copy-btn">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; color:#6b7280; font-size:0.85rem;">
+        After payment send screenshot/reference on WhatsApp for slot confirmation.
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="total">
+        <div class="label">Total price</div>
+        <div class="amount" id="bigAmount">₹ 400</div>
+      </div>
+
+      <div class="selected-box">
+        <div style="font-weight:700">Selected</div>
+        <div id="selLabel" style="font-weight:900; margin-top:4px;">WhatsApp Pay</div>
+        <div id="selDesc" style="color:#6b7280; margin-top:6px;">Opens WhatsApp Pay or UPI handler</div>
+      </div>
+
+      <div class="controls">
+        <span style="color:#6b7280;font-weight:700">₹400 new · ₹300 old</span>
+        <button id="continueBtn" class="continue">Continue →</button>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<script>
+/* PLATFORM DETECT */
+function isAndroid(){ return /Android/i.test(navigator.userAgent); }
+function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1); }
+function platform(){
+  if(isAndroid()) return 'android';
+  if(isIOS()) return 'ios';
+  return 'desktop';
+}
+const device = platform();
+document.body.classList.add("is-" + device);
+
+const UPI_ID = "drmjp93@upi";
+const PAYEE = "Mit J Panchani";
+const NOTE = "Telemedicine Consultation";
+
+function enc(s){ return encodeURIComponent(s); }
+function buildUPI(amount=400){
+  return `upi://pay?pa=${enc(UPI_ID)}&pn=${enc(PAYEE)}&am=400&tn=${enc(NOTE)}&cu=INR`;
+}
+function intentURI(pkg, upi){
+  return `intent://${upi.replace('upi://','')}#Intent;package=${pkg};scheme=upi;end`;
+}
+
+/* METHOD DEFINITIONS */
+const METHODS = {
+  whatsapp: { title:"WhatsApp Pay", desc:"Opens WhatsApp Pay or UPI handler", pkg:null },
+  gpay:     { title:"Google Pay",   desc:"Open Google Pay (Android)", pkg:"com.google.android.apps.nbu.paisa.user" },
+  phonepe:  { title:"PhonePe",      desc:"Open PhonePe (Android)", pkg:"com.phonepe.app" },
+  bhim:     { title:"BHIM / UPI",   desc:"Open BHIM or other UPI apps", pkg:"in.org.npci.upiapp" }
+};
+
+const wrapper = document.getElementById("methodsWrapper");
+const selLabel = document.getElementById("selLabel");
+const selDesc = document.getElementById("selDesc");
+const qrCard = document.getElementById("qrCard");
+const showQRtoggle = document.getElementById("showQRtoggle");
+const copyQRupi = document.getElementById("copyQRupi");
+const continueBtn = document.getElementById("continueBtn");
+
+let selectedKey = null;
+
+/* CREATE PILL */
+function createPill(key, def){
+  const pill = document.createElement("div");
+  pill.className = "pill";
+  pill.dataset.key = key;
+
+  pill.innerHTML = `
+    <div class="label">
+      <div class="logo">${def.title.charAt(0)}</div>
+      <div>
+        <div class="title">${def.title}</div>
+        <div class="desc">${def.desc}</div>
+      </div>
+    </div>
+    <div class="action">Open</div>
+  `;
+
+  pill.querySelector(".label").onclick = () => selectPill(pill);
+  pill.querySelector(".action").onclick = (e) => {
+    e.stopPropagation();
+    openMethod(key);
+  };
+
+  return pill;
+}
+
+/* BUILD METHOD LIST */
+function buildMethods(){
+  wrapper.innerHTML = "";
+
+  if(device === "desktop"){
+    wrapper.appendChild(createPill("bhim", METHODS.bhim));
+  }
+  else if(device === "ios"){
+    wrapper.appendChild(createPill("whatsapp", METHODS.whatsapp));
+    wrapper.appendChild(createPill("bhim", METHODS.bhim));
+  }
+  else { // android
+    wrapper.appendChild(createPill("gpay", METHODS.gpay));
+    wrapper.appendChild(createPill("phonepe", METHODS.phonepe));
+    wrapper.appendChild(createPill("bhim", METHODS.bhim));
+    wrapper.appendChild(createPill("whatsapp", METHODS.whatsapp));
+  }
+}
+
+/* SELECT PILL */
+function selectPill(el){
+  document.querySelectorAll(".pill").forEach(p => p.classList.remove("selected"));
+  el.classList.add("selected");
+  selectedKey = el.dataset.key;
+
+  const def = METHODS[selectedKey] || { title:"UPI", desc:"Open UPI app" };
+  selLabel.textContent = def.title;
+  selDesc.textContent = def.desc;
+}
+
+/* OPEN METHOD */
+function openMethod(key){
+  const upi = buildUPI();
+
+  if(device === "android"){
+    const pkg = METHODS[key].pkg;
+    if(pkg){
+      window.location.href = intentURI(pkg, upi);
+      return;
     }
-  });
+    window.location.href = upi;
+    return;
+  }
 
-  // refresh initial and on amount change
-  amountEl.addEventListener('input', refreshLinks);
-  refreshLinks();
+  // iOS + Desktop universal link
+  window.location.href = upi;
+}
 
-});
+/* QR TOGGLE */
+function showQR(visible){
+  qrCard.style.display = visible ? "block" : "none";
+  showQRtoggle.textContent = visible ? "📷 Hide QR Code" : "📷 Show QR Code";
+}
+
+showQRtoggle.onclick = () => {
+  const visible = qrCard.style.display === "block";
+  showQR(!visible);
+};
+
+/* Copy UPI */
+copyQRupi.onclick = () => {
+  navigator.clipboard.writeText(UPI_ID);
+  alert("UPI ID copied");
+};
+
+/* Continue */
+continueBtn.onclick = () => {
+  if(!selectedKey){ alert("Select a payment method first"); return; }
+  openMethod(selectedKey);
+};
+
+/* INIT */
+buildMethods();
+selectPill(document.querySelector(".pill"));
+
+if(device === "desktop"){
+  showQR(true);
+  showQRtoggle.style.display = "none";
+} else {
+  showQR(false);
+  showQRtoggle.style.display = "block";
+}
+
 </script>
 </body>
 </html>
