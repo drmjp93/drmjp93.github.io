@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Telemedicine — Payment</title>
+<meta name="description" content="Telemedicine payment page — device aware UPI options">
+
+<style>
+  :root {
+    --bg:#f5f7fa;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#0b1220;
+    --cta:#d9ff7a;
+    --shadow:0 12px 30px rgba(15,15,15,0.06);
+    --pill-height:56px;
+    --sel-border:#3b82f6;
+    --sel-bg:#eff6ff;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:20px;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    background:var(--bg); color:var(--accent);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* TOP BAR */
+  .topbar{
+    display:flex; justify-content:space-between;
+    align-items:center; margin-bottom:8px;
+  }
+
+  /* OPTION C — Black Back Button */
+  .back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:#1a1a1a;
+    color:white;
+    padding:10px 16px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:800;
+    box-shadow:0 2px 8px rgba(0,0,0,0.25);
+  }
+
+  .container{
+    max-width:1100px; margin:24px auto;
+    display:grid; grid-template-columns:1fr 460px;
+    gap:20px; align-items:flex-start;
+  }
+  @media(max-width:920px){ .container{ grid-template-columns:1fr; } }
+
+  /* LEFT CARD */
+  .card-left{
+    background:linear-gradient(180deg,#0f1724,#0b1220);
+    color:#fff; border-radius:14px; padding:22px;
+    box-shadow:var(--shadow); min-height:520px;
+  }
+  .card-left h2{ margin:0 0 10px; font-size:1.6rem; }
+  .rules{ margin-top:12px; color:#e6eef9; line-height:1.55; }
+  .rules ul{ padding-left:18px; margin:6px 0; }
+
+  /* RIGHT CARD */
+  .card-right{
+    background:#fff; border-radius:14px;
+    padding:18px; box-shadow:var(--shadow);
+  }
+  .alert{
+    background:#fffbea; border:1px solid #f6e29b;
+    padding:10px 12px; border-radius:10px;
+    font-weight:700; color:#6b7280;
+    margin-bottom:12px;
+  }
+
+  /* PAYMENT PILLS */
+  .methods{ display:flex; flex-direction:column; gap:12px; }
+
+  .pill{
+    display:flex; border:1px solid #eef2f7;
+    height:var(--pill-height); border-radius:12px;
+    background:#fff; overflow:hidden;
+    transition:all .18s ease;
+  }
+  .pill .label{
+    flex:7; display:flex;
+    gap:12px; align-items:center;
+    padding:12px 16px; cursor:pointer;
+  }
+  .pill .title{ font-weight:800; }
+  .pill .desc{ font-size:0.84rem; color:var(--muted); }
+
+  .pill .action{
+    flex:3;
+    background:#0b1220;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    cursor:pointer;
+  }
+
+  /* STRONG SELECTED STATE */
+  .pill.selected{
+    border:2px solid var(--sel-border);
+    background:var(--sel-bg);
+    transform:scale(1.02);
+    box-shadow:0 6px 16px rgba(59,130,246,0.15);
+  }
+
+  .logo{
+    width:42px; height:42px;
+    border-radius:8px; background:#111;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-weight:900;
+  }
+
+  /* QR CARD */
+  #qrCard{
+    display:none;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:18px; margin-top:18px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+  }
+
+  .qr-row{
+    display:flex; align-items:center; gap:18px;
+  }
+  .qr-img{
+    width:140px; height:140px;
+    border-radius:8px; border:1px solid #eee;
+    object-fit:cover;
+  }
+  .qr-sep{
+    width:1px; height:120px; background:#e5e7eb;
+  }
+  .copy-box{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#f9fafb; border:1px solid #e5e7eb;
+    padding:10px 14px; border-radius:8px;
+  }
+  .copy-btn{
+    background:#0b1220; color:#fff;
+    padding:8px 14px; border:none;
+    border-radius:6px; font-weight:700;
+    cursor:pointer;
+  }
+
+  .qr-toggle{
+    margin:10px 0 0;
+    background:#eef2f7;
+    border-radius:8px;
+    padding:10px;
+    display:none;
+    font-weight:700;
+    cursor:pointer;
+    border:1px solid #e6eefc;
+    text-align:center;
+  }
+
+  /* Google Form button style */
+  .gform-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#2563eb; /* blue */
+    color:#fff;
+    padding:10px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:800;
+    border:0;
+    cursor:pointer;
+  }
+
+  /* SUMMARY */
+  .summary{ display:flex; flex-direction:column; gap:14px; margin-top:16px; }
+  .total{
+    text-align:center; background:#f1f6fb;
+    padding:14px; border-radius:10px;
+  }
+  .total .label{ font-weight:800; color:var(--muted); font-size:0.9rem; }
+  .total .amount{ margin-top:6px; font-size:1.8rem; font-weight:900; }
+
+  .selected-box{
+    border:1px solid #eef2f7; border-radius:10px;
+    padding:12px;
+  }
+
+  .controls{
+    display:flex; justify-content:space-between;
+    align-items:center; margin-top:8px;
+  }
+  .continue{
+    background:var(--cta);
+    padding:12px 18px;
+    border-radius:10px;
+    border:none;
+    font-weight:900;
+    cursor:pointer;
+  }
+
+  /* Desktop → hide Continue */
+  body.is-desktop .continue{ display:none !important; }
+
+  /* Amount controls */
+  .amount-controls{
+    display:flex; gap:8px; align-items:center; justify-content:center;
+    margin-top:8px;
+  }
+
+  input[type="number"]{
+    padding:8px 10px; border-radius:8px;
+    border:1px solid #ddd; width:110px;
+    font-weight:800; text-align:center;
+  }
+  .preset{
+    padding:8px 12px; border-radius:8px;
+    background:#eef2f7; border:1px solid #e6eefc;
+    font-weight:800; cursor:pointer;
+  }
+
+  @media(max-width:720px){
+    .gform-btn{ width:100%; justify-content:center; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <a class="back" href="telemedicine.html">← Back</a>
+  <span style="color:#6b7280;font-weight:700">Secure payment</span>
+</div>
+
+<div class="container">
+
+  <!-- LEFT CARD -->
+  <aside class="card-left">
+    <h2>Telemedicine — Rules</h2>
+
+    <div class="rules">
+      <p><strong>Before consultation</strong></p>
+      <ul>
+        <li>Appointment only after payment.</li>
+        <li>Share reports + medications on WhatsApp.</li>
+        <li>Emergency: go to hospital.</li>
+      </ul>
+
+      <p><strong>Follow-up</strong></p>
+      <ul>
+        <li>Same issue within 72 hrs → free.</li>
+        <li>After 72 hrs → ₹300.</li>
+        <li>New symptoms = new consult.</li>
+      </ul>
+
+      <p style="margin-top:14px; color:#dbe6f5;">
+        After payment send screenshot for slot allocation.
+      </p>
+    </div>
+  </aside>
+
+  <!-- RIGHT CARD -->
+  <section class="card-right">
+
+    <div class="alert">
+      ⚠️ Check Payee Name: <strong>Mit J Panchani</strong> before payment
+    </div>
+
+    <div id="methodsWrapper" class="methods"></div>
+
+    <!-- QR Toggle -->
+    <div id="showQRtoggle" class="qr-toggle">📷 Show QR Code</div>
+
+    <!-- QR CARD -->
+    <div id="qrCard">
+      <div style="font-weight:700; margin-bottom:10px;">Scan & Pay (UPI QR)</div>
+
+      <div class="qr-row">
+        <img src="/qr.jpg" class="qr-img" id="qrImg" alt="UPI QR">
+
+        <div class="qr-sep"></div>
+
+        <div style="flex:1;">
+          <div style="font-size:0.9rem; margin-bottom:6px; color:#374151;">
+            UPI ID:
+          </div>
+
+          <div class="copy-box">
+            <span style="font-weight:700;">drmjp93@upi</span>
+            <button id="copyQRupi" class="copy-btn">Copy</button>
+          </div>
+
+          <!-- Google Form button inside QR card -->
+          <div style="margin-top:12px;">
+            <a id="gFormInQr" class="gform-btn" target="_blank" rel="noopener">
+              📤 Upload payment screenshot (Google Form)
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; color:#6b7280; font-size:0.85rem;">
+        After payment send screenshot/reference on WhatsApp for slot confirmation.
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="total">
+        <div class="label">Total price</div>
+        <div class="amount" id="bigAmount">₹ 400</div>
+      </div>
+
+      <div class="selected-box">
+        <div style="font-weight:700">Selected</div>
+        <div id="selLabel" style="font-weight:900; margin-top:4px;">WhatsApp Pay</div>
+        <div id="selDesc" style="color:#6b7280; margin-top:6px;">Opens WhatsApp Pay or UPI handler</div>
+      </div>
+
+      <!-- Amount controls -->
+      <div class="amount-controls">
+        <div style="font-weight:800">Amount</div>
+        <input id="amountInput" type="number" value="400" min="1" />
+        <button class="preset" data-val="400">₹400</button>
+        <button class="preset" data-val="300">₹300</button>
+      </div>
+
+      <div class="controls">
+        <span style="color:#6b7280;font-weight:700">Guides: ₹400 new · ₹300 old</span>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <!-- Google Form button in summary area -->
+          <a id="gFormSummary" class="gform-btn" target="_blank" rel="noopener" style="background:#2563eb;">
+            📤 Upload screenshot (Google Form)
+          </a>
+
+          <button id="continueBtn" class="continue">Continue →</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<script>
+/* Platform Detection */
+function isAndroid(){ return /Android/i.test(navigator.userAgent); }
+function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+ (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1); }
+function platform(){ if(isAndroid()) return "android"; if(isIOS()) return "ios"; return "desktop"; }
+const device = platform();
+document.body.classList.add("is-" + device);
+
+/* Config */
+const UPI_ID = "drmjp93@upi";
+const PAYEE = "Mit J Panchani";
+const NOTE = "Telemedicine Consultation";
+
+/* Google Form URL (user-provided) */
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSegoCeodeLpgCAXnSki_0kS74YONXKT_RtRl5jlyX9hAfmtbw/viewform?usp=dialog";
+
+/* Methods */
+const METHODS={
+  whatsapp:{title:"WhatsApp Pay",desc:"Opens WhatsApp Pay or UPI handler"},
+  gpay:{title:"Google Pay",desc:"Open Google Pay (Android)",pkg:"com.google.android.apps.nbu.paisa.user"},
+  phonepe:{title:"PhonePe",desc:"Open PhonePe (Android)",pkg:"com.phonepe.app"},
+  bhim:{title:"BHIM / UPI",desc:"Open BHIM or any UPI app",pkg:"in.org.npci.upiapp"}
+};
+
+const wrapper=document.getElementById("methodsWrapper");
+const selLabel=document.getElementById("selLabel");
+const selDesc=document.getElementById("selDesc");
+const amountInput=document.getElementById("amountInput");
+const bigAmount=document.getElementById("bigAmount");
+const qrCard=document.getElementById("qrCard");
+const showQRtoggle=document.getElementById("showQRtoggle");
+const qrImg=document.getElementById("qrImg");
+const copyQRupi=document.getElementById("copyQRupi");
+const continueBtn=document.getElementById("continueBtn");
+const gFormInQr = document.getElementById("gFormInQr");
+const gFormSummary = document.getElementById("gFormSummary");
+
+let selectedKey=null;
+
+/* Utility */
+function enc(s){ return encodeURIComponent(s); }
+function buildUPI(amount){
+  const a=Number(amount||0);
+  const amt=(isFinite(a)&&a>0)?a.toFixed(2):"0.00";
+  return `upi://pay?pa=${enc(UPI_ID)}&pn=${enc(PAYEE)}&am=${enc(amt)}&tn=${enc(NOTE)}&cu=INR`;
+}
+function intentURI(pkg,upi){
+  return `intent://${upi.replace("upi://","")}#Intent;package=${pkg};scheme=upi;end`;
+}
+
+/* Build Methods */
+function createPill(key,def){
+  const pill=document.createElement("div");
+  pill.className="pill";
+  pill.dataset.key=key;
+
+  pill.innerHTML=`
+    <div class="label">
+      <div class="logo">${def.title.charAt(0)}</div>
+      <div>
+        <div class="title">${def.title}</div>
+        <div class="desc">${def.desc}</div>
+      </div>
+    </div>
+    <div class="action">Open</div>
+  `;
+
+  pill.querySelector(".label").onclick=()=>selectPill(pill);
+  pill.querySelector(".action").onclick=(e)=>{ e.stopPropagation(); openMethod(key); };
+
+  return pill;
+}
+
+function buildMethods(){
+  wrapper.innerHTML="";
+  if(device==="desktop"){
+    wrapper.appendChild(createPill("bhim",METHODS.bhim));
+  } else if(device==="ios"){
+    wrapper.appendChild(createPill("whatsapp",METHODS.whatsapp));
+    wrapper.appendChild(createPill("bhim",METHODS.bhim));
+  } else {
+    wrapper.appendChild(createPill("gpay",METHODS.gpay));
+    wrapper.appendChild(createPill("phonepe",METHODS.phonepe));
+    wrapper.appendChild(createPill("bhim",METHODS.bhim));
+    wrapper.appendChild(createPill("whatsapp",METHODS.whatsapp));
+  }
+}
+
+function selectPill(el){
+  document.querySelectorAll(".pill").forEach(p=>p.classList.remove("selected"));
+  el.classList.add("selected");
+  selectedKey=el.dataset.key;
+
+  const def=METHODS[selectedKey]||{};
+  selLabel.textContent=def.title||"";
+  selDesc.textContent=def.desc||"";
+}
+
+function openMethod(key){
+  const amt=Number(amountInput.value)||0;
+  if(amt<=0){ alert("Enter valid amount"); return; }
+  const upi=buildUPI(amt);
+
+  if(device==="android"){
+    const pkg=METHODS[key].pkg;
+    if(pkg){ window.location.href=intentURI(pkg,upi); return; }
+    window.location.href=upi;
+    return;
+  }
+
+  window.location.href=upi;
+}
+
+/* Google Form opening helper
+   We open the plain form link in a new tab. If you later
+   want prefill, we can append entry.<id>=... params (need entry ids).
+*/
+function openGoogleForm(){
+  // open in new tab (user provided link)
+  window.open(GOOGLE_FORM_URL, "_blank", "noopener");
+}
+
+/* QR Toggle */
+function showQR(show){
+  qrCard.style.display=show?"block":"none";
+  showQRtoggle.textContent=show?"📷 Hide QR Code":"📷 Show QR Code";
+}
+showQRtoggle.onclick=()=>showQR(qrCard.style.display!=="block");
+
+/* Amount updates */
+function refreshAmounts(){
+  const amt=Number(amountInput.value)||0;
+  bigAmount.textContent="₹ "+(amt>0?amt.toLocaleString():"0");
+  qrImg.title=buildUPI(amt);
+}
+document.querySelectorAll(".preset").forEach(btn=>{
+  btn.onclick=()=>{ amountInput.value=btn.dataset.val; refreshAmounts(); };
+});
+amountInput.oninput=refreshAmounts;
+
+/* Copy UPI */
+copyQRupi.onclick=async ()=>{
+  try{
+    await navigator.clipboard.writeText(UPI_ID);
+    copyQRupi.textContent="Copied!";
+    setTimeout(()=>copyQRupi.textContent="Copy",1200);
+  }catch(e){
+    alert("Copy failed — please copy: " + UPI_ID);
+  }
+};
+
+/* Continue */
+continueBtn.onclick=()=>{
+  if(!selectedKey){ alert("Select payment method"); return; }
+  openMethod(selectedKey);
+};
+
+/* Attach Google Form buttons */
+gFormInQr.onclick = (e) => { e.preventDefault(); openGoogleForm(); };
+gFormSummary.onclick = (e) => { e.preventDefault(); openGoogleForm(); };
+
+/* Init */
+buildMethods();
+const first=document.querySelector(".pill");
+if(first) selectPill(first);
+
+refreshAmounts();
+
+/* Desktop: always show QR */
+if(device==="desktop"){
+  showQR(true);
+  showQRtoggle.style.display="none";
+} else {
+  showQR(false);
+  showQRtoggle.style.display="block";
+}
+
+/* QR fallback */
+qrImg.onerror=()=>{
+  const amt=Number(amountInput.value)||0;
+  qrImg.src="https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl="+encodeURIComponent(buildUPI(amt));
+};
+</script>
+
+</body>
+</html>
