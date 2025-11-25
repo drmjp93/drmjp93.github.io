@@ -129,6 +129,11 @@
     .split-cta .right{ width:100%; padding:12px 0; }
   }
 
+  /* hide selected-box on mobile (iOS / Android) to prevent duplication */
+  @media (max-width:920px){
+    .selected-box { display: none !important; }
+  }
+
   /* toast */
   #openToast{ position: fixed; left:50%; transform:translateX(-50%); bottom:22px; background: rgba(15,23,42,0.95); color:#fff; padding:10px 14px; border-radius:12px; box-shadow:0 8px 24px rgba(2,6,23,0.35); font-weight:700; z-index:99999; display:none; pointer-events:none; font-size:.95rem; }
 
@@ -150,12 +155,12 @@
 <div class="container">
   <!-- LEFT CARD -->
   <aside class="card-left">
-    <h2>Telemedicine — Rules</h2>
+    <h2>Telemedicine — Policy</h2>
     <div class="rules">
       <p><strong>Before consultation</strong></p>
       <ul>
-        <li>Appointment only after payment.</li>
-        <li>Share reports + medications on WhatsApp if available.</li>
+        <li>Appointment given only after payment.</li>
+        <li>Fill the confirmation form details to share you contact details</li>
         <li>Emergency: go to hospital immediately.</li>
       </ul>
 
@@ -165,13 +170,13 @@
         <li>After 72 hrs — ₹300.</li>
       </ul>
 
-      <p style="margin-top:14px;color:#dbe6f5;">After payment you will be asked to fill a short confirmation form (name, phone, txn & screenshot) for slot allocation.</p>
+      <p style="margin-top:14px;color:#dbe6f5;">After payment. Please fill the confirmation form (Name, Phone & Type of Payment Mode). Time for consultation will be shared on that number.</p>
     </div>
   </aside>
 
   <!-- RIGHT CARD -->
   <section class="card-right">
-    <div class="alert">⚠️ Check Payee Name: <strong>Mit J Panchani</strong> before payment</div>
+    <div class="alert">⚠️ Confirm Payee Name: <strong>Mit J Panchani</strong> before payment</div>
 
     <!-- pills (mobile only) -->
     <div id="methodsWrapper" class="methods"></div>
@@ -216,13 +221,14 @@
         </div>
       </div>
 
-      <div style="color:var(--muted);font-weight:700;margin-top:8px;">Guides: ₹400 new · ₹300 old</div>
+      <div style="color:var(--muted);font-weight:700;margin-top:8px;">FEES: ₹400 NEW CASE · ₹300 OLD CASE</div>
 
       <!-- Minimal split CTA (Option A: professional text) -->
       <div class="split-cta" role="group" aria-label="After payment fill confirmation">
         <div class="left" aria-hidden="false">
-          <div class="line1">AFTER PAYMENT</div>
-          <div class="line2">Submit Confirmation Form</div>
+          <div class="line1"></div>
+          <div class="line2">AFTER PAYMENT</div>
+          <div class="line3">SUBMIT CONFIRMATION FORM</div>
         </div>
         <div class="right" id="openFormBtn" role="button" tabindex="0" aria-pressed="false">OPEN FORM</div>
       </div>
