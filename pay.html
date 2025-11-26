@@ -7,13 +7,8 @@
 <meta name="description" content="Device aware UPI payment page — Telemedicine" />
 <style>
 :root{
-  --bg:#f5f7fa;
-  --card:#fff;
-  --muted:#6b7280;
-  --accent:#0b1220;
-  --pill-h:56px;
+  --bg:#f5f7fa; --card:#fff; --muted:#6b7280; --accent:#0b1220; --pill-h:56px;
 }
-/* reset */
 *{box-sizing:border-box}
 body{
   margin:0; padding:20px;
@@ -38,7 +33,7 @@ body{
 .card-right{ background:var(--card); border-radius:14px; padding:18px; box-shadow:0 8px 30px rgba(15,15,15,0.06); }
 .alert{ background:#fffbea; border:1px solid #f6e29b; padding:10px 12px; border-radius:10px; font-weight:700; margin-bottom:14px; color:#6b7280; }
 
-/* method pills (mobile only) */
+/* method pills (mobile) */
 .methods{ display:flex; flex-direction:column; gap:12px; margin-bottom:12px; }
 .pill{
   display:flex; align-items:center; gap:12px; height:var(--pill-h); border-radius:12px;
@@ -52,7 +47,6 @@ body{
   background:linear-gradient(180deg,#0b1220,#111827); color:#fff; border-radius:10px;
   padding:10px 12px; font-weight:900; cursor:pointer; border:0;
 }
-.pill:active .action{ transform:translateY(0); }
 .pill:focus-within, .pill:focus{ outline:none; box-shadow:0 0 0 4px rgba(59,130,246,0.10); }
 .pill:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(11,18,32,0.06); }
 
@@ -109,8 +103,6 @@ body{
   .split-cta .right{ width:100%; border-top:1px solid rgba(0,0,0,0.04); }
 }
 
-/* treat iPad as desktop via JS class (no CSS needed here) */
-
 /* toast */
 #openToast{ position:fixed; left:50%; transform:translateX(-50%); bottom:22px; background:rgba(11,18,32,0.95); color:#fff; padding:10px 14px; border-radius:12px; display:none; font-weight:700; z-index:9999; }
 </style>
@@ -162,7 +154,7 @@ body{
           <img id="qrImg" class="qr-img" src="qr.jpg" alt="QR">
         </div>
       </div>
-      <!-- UPI plain shown below on desktop/iPad only -->
+      <!-- UPI plain shown below QR only on desktop/iPad -->
       <div class="upi-plain" id="upiPlain" aria-hidden="true">drmjp93@upi</div>
     </div>
 
@@ -202,7 +194,6 @@ body{
 /* --- Device detection: treat iPad as desktop --- */
 function isAndroid(){ return /Android/i.test(navigator.userAgent); }
 function isIPhone(){ return /iPhone|iPod/i.test(navigator.userAgent); }
-/* iPad (modern) often reports MacIntel + touchpoints: treat as desktop */
 const isIPadLike = (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /iPad/.test(navigator.userAgent);
 const device = isAndroid() ? 'android' : isIPhone() ? 'ios' : 'desktop'; // iPadLike falls to desktop branch
 document.body.classList.add('is-' + device);
@@ -258,8 +249,10 @@ function createPill(def, key){
       window.location.href = upi;
     }
   };
-  p.addEventListener('click', ()=>{ /* visual micro-feedback */ p.style.transform='translateY(-4px)'; setTimeout(()=>p.style.transform='none',120); openHandler(); });
-  p.querySelector('.action').addEventListener('click', openHandler);
+  // clicking pill opens directly
+  p.addEventListener('click', ()=>{ p.style.transform='translateY(-3px)'; setTimeout(()=>p.style.transform='none',120); openHandler(); });
+  // action area separately
+  p.querySelector('.action').addEventListener('click', (e)=>{ e.stopPropagation(); openHandler(); });
   return p;
 }
 function buildMethodsUI(){
@@ -278,28 +271,12 @@ function buildMethodsUI(){
 
 /* --- UI behaviour based on device --- */
 function setupUI(){
-  // Treat iPad-like devices as desktop (we already set device variable accordingly)
   const isMobile = (device === 'android' || device === 'ios');
-  // Methods visible only on phones
-  methodsWrapper.setAttribute('aria-hidden', isMobile ? 'false' : 'true');
-  showQRtoggle.setAttribute('aria-hidden', isMobile ? 'false' : 'true');
-  scanpay.setAttribute('aria-hidden', isMobile ? 'true' : 'false');
-  upiPlain.setAttribute('aria-hidden', isMobile ? 'true' : 'false');
-  copyFull.setAttribute('aria-hidden', isMobile ? 'false' : 'true');
-
-  if(!isMobile){
-    // desktop/iPad: always show QR and UPI text; hide copy button
-    scanpay.style.display = 'block';
-    showQRtoggle.style.display = 'none';
-    upiPlain.style.display = 'block';
-    copyFull.style.display = 'none';
-  } else {
-    // mobile: QR collapsed by default, show toggle and full-copy
-    scanpay.style.display = 'none';
-    showQRtoggle.style.display = 'block';
-    upiPlain.style.display = 'none';
-    copyFull.style.display = 'flex';
-  }
+  methodsWrapper.style.display = isMobile ? 'flex' : 'none';
+  showQRtoggle.style.display = isMobile ? 'block' : 'none';
+  scanpay.style.display = isMobile ? 'none' : 'block';
+  upiPlain.style.display = isMobile ? 'none' : 'block';
+  copyFull.style.display = isMobile ? 'flex' : 'none';
 }
 
 /* --- QR toggle (mobile) --- */
@@ -325,7 +302,6 @@ amountInput.addEventListener('input', refreshAmount);
 function refreshAmount(){
   const v = Number(amountInput.value) || 0;
   bigAmount.textContent = '₹ ' + (v>0? v.toLocaleString() : '0');
-  // ensure QR fallback uses updated amount in title
   qrImg.title = buildUPI(v);
 }
 
@@ -337,7 +313,7 @@ buildMethodsUI();
 setupUI();
 refreshAmount();
 
-/* show plain UPI on desktop/iPad below QR, mobile not show UPI text anywhere (only copy-wide) */
+/* show plain UPI on desktop/iPad below QR, mobile not show UPI text anywhere (only full copy) */
 if(upiPlain) upiPlain.textContent = UPI_ID;
 
 /* QR fallback if local image missing */
@@ -346,9 +322,8 @@ qrImg.onerror = ()=>{
   qrImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl=' + encodeURIComponent(upi);
 };
 
-/* Accessibility: keyboard trigger for showQRtoggle */
+/* accessible toggle via keyboard */
 showQRtoggle.addEventListener('keydown',(e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showQRtoggle.click(); } });
-
 </script>
 </body>
 </html>
