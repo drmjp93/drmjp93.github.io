@@ -56,11 +56,17 @@ body{ margin:0; padding:20px; font-family:system-ui,-apple-system,Segoe UI,Robot
 .copy-full{ margin-top:12px; display:none; gap:8px; }
 .copy-full .copywide{ flex:1; background:#0b1220; color:#fff; padding:12px; border-radius:10px; border:0; font-weight:900; cursor:pointer; }
 
-/* Amount / presets */
-.amount-row{ margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-.amount-row label{ font-weight:900; min-width:70px; }
-.amount-row input{ padding:8px 10px; border-radius:8px; border:1px solid #ddd; width:120px; text-align:center; font-weight:800; }
-.preset{ padding:8px 12px; border-radius:8px; background:#eef6ff; border:1px solid #e0efff; font-weight:800; cursor:pointer; }
+/* Amount / presets - fixed non-wrapping group */
+.amount-row{ margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:nowrap; }
+.amount-row label{ font-weight:900; min-width:60px; white-space:nowrap; }
+.amount-row input{ padding:8px 10px; border-radius:8px; border:1px solid #ddd; width:100px; text-align:center; font-weight:800; flex:0 0 auto; }
+.preset{ padding:8px 12px; border-radius:8px; background:#eef6ff; border:1px solid #e0efff; font-weight:800; cursor:pointer; white-space:nowrap; }
+
+/* on very narrow screens allow wrap safely */
+@media(max-width:360px){
+  .amount-row{ flex-wrap:wrap; }
+  .amount-row input{ width:84px; }
+}
 
 /* total summary bar with amount on right */
 .totalbar{ margin-top:14px; display:flex; align-items:center; justify-content:space-between; background:#f1f6fb; padding:14px; border-radius:10px; }
@@ -181,15 +187,9 @@ body{ margin:0; padding:20px; font-family:system-ui,-apple-system,Segoe UI,Robot
 
 <script>
 /* Responsive-first detection (screen width) with UA fallback */
-function prefersMobileByWidth(){
-  return window.matchMedia('(max-width:920px)').matches;
-}
-function uaSuggestsMobile(){
-  return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent);
-}
+function prefersMobileByWidth(){ return window.matchMedia('(max-width:920px)').matches; }
+function uaSuggestsMobile(){ return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent); }
 let isMobile = prefersMobileByWidth() || uaSuggestsMobile();
-
-/* keep document-level class for debugging if needed */
 document.body.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
 
 /* Config */
@@ -229,13 +229,13 @@ function buildUPI(amount){
 function intentURI(pkg, upi){ return `intent://${upi.replace('upi://','')}#Intent;package=${pkg};scheme=upi;end`; }
 function showToast(msg, ms=1000){ toast.textContent = msg; toast.style.display='block'; clearTimeout(toast._t); toast._t = setTimeout(()=> toast.style.display='none', ms); }
 
-/* Build pills (only used on mobile) */
+/* Build pills (mobile only) */
+/* iOS: only WhatsApp (as requested). Android: all 4. */
 function createPill(def){
   const p = document.createElement('div'); p.className='pill';
   p.innerHTML = `<div class="left"><div class="title">${def.title}</div><div class="desc">${def.desc}</div></div><div class="action">OPEN</div>`;
   const openHandler = ()=>{
     const upi = buildUPI(amountInput.value);
-    // android package intent where available
     if(/Android/i.test(navigator.userAgent) && def.pkg){
       window.location.href = intentURI(def.pkg, upi);
     } else {
@@ -249,12 +249,10 @@ function createPill(def){
 function buildMethodsUI(){
   methodsWrapper.innerHTML = '';
   if(!isMobile) return;
-  // iOS: smaller set
-  if(/iPhone|iPod/i.test(navigator.userAgent) && !/Android/i.test(navigator.userAgent)){
-    methodsWrapper.appendChild(createPill(METHODS.whatsapp));
-    methodsWrapper.appendChild(createPill(METHODS.bhim));
+  const isIOS = /iPhone|iPod/i.test(navigator.userAgent) && !/Android/i.test(navigator.userAgent);
+  if(isIOS){
+    methodsWrapper.appendChild(createPill(METHODS.whatsapp)); // only WhatsApp on iOS
   } else {
-    // Android / other mobile
     methodsWrapper.appendChild(createPill(METHODS.gpay));
     methodsWrapper.appendChild(createPill(METHODS.phonepe));
     methodsWrapper.appendChild(createPill(METHODS.bhim));
@@ -320,7 +318,7 @@ window.matchMedia('(max-width:920px)').addEventListener('change', (e)=>{
   setupUI();
 });
 
-/* small UA fallback helper used above */
+/* small UA fallback used above */
 function uaSuggestsMobile(){ return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent); }
 
 /* accessible toggle */
