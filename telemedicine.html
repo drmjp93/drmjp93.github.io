@@ -58,6 +58,7 @@
       .container{padding:18px}
     }
   </style>
+
   <style>
 /* Black pill buttons — reuse .pill-btn on both links/buttons */
 .pill-btn {
@@ -66,8 +67,8 @@
   justify-content:center;
   gap:10px;
   padding:12px 22px;
-  border-radius:999px;               /* pill shape */
-  background:#0b0b0b;                /* deep black */
+  border-radius:999px;             /* pill shape */
+  background:#0b0b0b;              /* deep black */
   color:#fff;
   text-decoration:none;
   font-weight:700;
@@ -104,24 +105,36 @@
   flex-wrap:wrap;
 }
 
-/* make them full-width on very small screens */
+/* make them half-width on very small screens (narrow) */
 @media (max-width:420px){
   .btn-row .pill-btn { min-width:unset; width:48%; padding:10px 14px; }
 }
-   /* MOBILE FIX ONLY */
+
+/* MOBILE FIX: ensure .pill-btn renders as rectangle on mobile
+   (full-width rectangle visual, not tall circular blob) */
 @media (max-width: 560px) {
-  .appointment-btn {
-    width: 100% !important;        /* full width on mobile */
-    max-width: 100% !important;
-    padding: 10px 14px !important; /* less height so it stops becoming oval */
-    font-size: 0.92rem !important; 
-    line-height: 1.25 !important;
-    white-space: normal !important; /* allow text to wrap */
-    border-radius: 14px !important; /* rectangle look, stops giant ellipse */
+  .pill-btn {
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    padding:10px 14px !important;
+    font-size:0.95rem !important;
+    line-height:1.2 !important;
+    white-space:normal !important;    /* allow wrapping */
+    text-align:center !important;
+    border-radius:14px !important;    /* rounded rectangle */
   }
+  .btn-row { gap:12px; }
+  /* For very narrow screens, stack vertically with space */
+  .btn-row .pill-btn { width:100% !important; }
 }
 
-</style>
+/* optional small safety fallback so other rules don't force oval */
+.pill-btn { min-width:0 !important; min-height:0 !important; }
+
+/* small accessible focus style */
+.pill-btn:focus { outline: 3px solid rgba(59,130,246,0.16); box-shadow:0 10px 30px rgba(6,7,10,0.16); }
+  </style>
 </head>
 
 <body>
@@ -241,7 +254,7 @@
 <div class="btn-row" aria-hidden="false">
   <a href="pay.html" class="pill-btn" id="payNowBtn" aria-label="Pay now">
     <!-- optional icon: <span class="icon">💳</span> -->
-   I have read all above rules, Proceed to Pay Now
+    I have read all above rules, Proceed to Pay Now
   </a>
 
   <a href="index.html" class="pill-btn secondary" id="backBtn" aria-label="Back to homepage">
@@ -257,13 +270,13 @@
 </footer>
 
 <!-- FOLLOW-UP POLICY MODAL (placed after footer) -->
-<div id="followModal" 
-     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45);
-            backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:9999;">
-  <div style="background:#fff; width:92%; max-width:640px; padding:18px; 
-              border-radius:12px; max-height:80vh; overflow-y:auto; position:relative;">
-    <button id="closeFollowUp" 
-            style="position:absolute; top:10px; right:12px; background:none; border:0; 
+<div id="followModal"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45);
+           backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:9999;">
+  <div style="background:#fff; width:92%; max-width:640px; padding:18px;
+           border-radius:12px; max-height:80vh; overflow-y:auto; position:relative;">
+    <button id="closeFollowUp"
+            style="position:absolute; top:10px; right:12px; background:none; border:0;
                    font-size:22px; cursor:pointer;">×</button>
 
     <h2 style="margin-top:0;">Follow-up Policy</h2>
@@ -329,6 +342,36 @@
         modal.style.display = 'none';
       }
     });
+  })();
+
+  // Small JS fallback: ensure pill-btn is rectangle on narrow screens (in case CSS gets overridden)
+  (function(){
+    function applyFallback(){
+      if (window.innerWidth <= 560){
+        document.querySelectorAll('.pill-btn').forEach(b=>{
+          b.style.display = 'block';
+          b.style.width = '100%';
+          b.style.maxWidth = '100%';
+          b.style.padding = '10px 14px';
+          b.style.borderRadius = '14px';
+          b.style.whiteSpace = 'normal';
+          b.style.textAlign = 'center';
+        });
+      } else {
+        // remove inline fallback when not needed
+        document.querySelectorAll('.pill-btn').forEach(b=>{
+          b.style.display = '';
+          b.style.width = '';
+          b.style.maxWidth = '';
+          b.style.padding = '';
+          b.style.borderRadius = '';
+          b.style.whiteSpace = '';
+          b.style.textAlign = '';
+        });
+      }
+    }
+    window.addEventListener('resize', applyFallback);
+    document.addEventListener('DOMContentLoaded', applyFallback);
   })();
 </script>
 
