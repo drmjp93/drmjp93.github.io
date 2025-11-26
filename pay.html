@@ -10,11 +10,7 @@
   --bg:#f5f7fa; --card:#fff; --muted:#6b7280; --accent:#0b1220; --pill-h:56px;
 }
 *{box-sizing:border-box}
-body{
-  margin:0; padding:20px;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg); color:var(--accent);
-}
+body{ margin:0; padding:20px; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--accent); }
 
 /* top */
 .topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
@@ -35,36 +31,26 @@ body{
 
 /* method pills (mobile) */
 .methods{ display:flex; flex-direction:column; gap:12px; margin-bottom:12px; }
-.pill{
-  display:flex; align-items:center; gap:12px; height:var(--pill-h); border-radius:12px;
-  background:#fff; border:1px solid #e9eef6; overflow:hidden; padding:6px; transition:box-shadow .14s ease, transform .12s ease;
-}
+.pill{ display:flex; align-items:center; gap:12px; height:var(--pill-h); border-radius:12px; background:#fff; border:1px solid #e9eef6; overflow:hidden; padding:6px; transition:box-shadow .14s ease, transform .12s ease;}
 .pill .left{ flex:1; display:flex; flex-direction:column; justify-content:center; padding:6px 12px; min-width:0; }
 .pill .title{ font-weight:900; font-size:1rem; }
 .pill .desc{ color:var(--muted); font-size:.90rem; }
-.pill .action{
-  flex:0 0 110px; display:inline-flex; align-items:center; justify-content:center;
-  background:linear-gradient(180deg,#0b1220,#111827); color:#fff; border-radius:10px;
-  padding:10px 12px; font-weight:900; cursor:pointer; border:0;
-}
+.pill .action{ flex:0 0 110px; display:inline-flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#0b1220,#111827); color:#fff; border-radius:10px; padding:10px 12px; font-weight:900; cursor:pointer; border:0; }
 .pill:focus-within, .pill:focus{ outline:none; box-shadow:0 0 0 4px rgba(59,130,246,0.10); }
 .pill:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(11,18,32,0.06); }
 
 /* show QR toggle (mobile) */
-#showQRtoggle{ margin-top:8px; background:#eef2f7; border-radius:8px; padding:10px; text-align:center; font-weight:700; cursor:pointer; }
+#showQRtoggle{ margin-top:8px; background:#eef2f7; border-radius:8px; padding:10px; text-align:center; font-weight:700; cursor:pointer; display:none; }
 
 /* Scan & Pay card */
-.scanpay{ margin-top:12px; border:1px solid #e7eef6; border-radius:12px; padding:12px; background:#fff; }
+.scanpay{ margin-top:12px; border:1px solid #e7eef6; border-radius:12px; padding:12px; background:#fff; display:none; }
 .scanpay .row{ display:flex; gap:12px; align-items:center; }
 .scanpay .leftLabel{ flex:0 0 120px; border-radius:8px; background:#f8fafc; display:flex; align-items:center; justify-content:center; font-weight:900; color:#0b1220; height:120px; text-align:center; padding:8px; }
 .scanpay .rightQR{ flex:1; display:flex; align-items:center; gap:12px; padding:8px; justify-content:center; }
 .qr-img{ width:160px; height:160px; border-radius:8px; border:1px solid #eaeff6; object-fit:contain; background:#fff; }
 
 /* UPI plain (desktop & iPad) */
-.upi-plain{
-  display:none; margin-top:12px; text-align:center; font-weight:900; color:#0b1220;
-  background:#f9fafb; padding:10px; border-radius:10px; border:1px solid #eef2f7;
-}
+.upi-plain{ display:none; margin-top:12px; text-align:center; font-weight:900; color:#0b1220; background:#f9fafb; padding:10px; border-radius:10px; border:1px solid #eef2f7; }
 
 /* full-width copy button (mobile) */
 .copy-full{ margin-top:12px; display:none; gap:8px; }
@@ -88,7 +74,11 @@ body{
 .split-cta .left .l2{ color:var(--muted); font-weight:700; font-size:.90rem; margin-top:4px; }
 .split-cta .right{ width:160px; background:#0b1220; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; cursor:pointer; }
 
-/* responsive */
+/* responsive tweaks */
+@media(max-width:920px){
+  #showQRtoggle{ display:block; }
+  .methods{ display:flex; }
+}
 @media(max-width:640px){
   .scanpay .row{ flex-direction:column; align-items:center; gap:8px; }
   .scanpay .leftLabel{ width:100%; height:56px; }
@@ -96,7 +86,6 @@ body{
   .split-cta{ flex-direction:row; height:auto; }
   .split-cta .right{ width:140px; padding:12px 10px; }
   .copy-full{ display:flex; }
-  .methods{ display:flex; }
 }
 @media(max-width:420px){
   .split-cta{ flex-direction:column; }
@@ -191,20 +180,25 @@ body{
 <div id="openToast" role="status" aria-live="polite"></div>
 
 <script>
-/* --- Device detection: treat iPad as desktop --- */
-function isAndroid(){ return /Android/i.test(navigator.userAgent); }
-function isIPhone(){ return /iPhone|iPod/i.test(navigator.userAgent); }
-const isIPadLike = (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /iPad/.test(navigator.userAgent);
-const device = isAndroid() ? 'android' : isIPhone() ? 'ios' : 'desktop'; // iPadLike falls to desktop branch
-document.body.classList.add('is-' + device);
+/* Responsive-first detection (screen width) with UA fallback */
+function prefersMobileByWidth(){
+  return window.matchMedia('(max-width:920px)').matches;
+}
+function uaSuggestsMobile(){
+  return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent);
+}
+let isMobile = prefersMobileByWidth() || uaSuggestsMobile();
 
-/* --- Config --- */
+/* keep document-level class for debugging if needed */
+document.body.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
+
+/* Config */
 const UPI_ID = 'drmjp93@upi';
 const PAYEE = 'Mit J Panchani';
 const NOTE = 'Telemedicine Consultation';
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSegoCeodeLpgCAXnSki_0kS74YONXKT_RtRl5jlyX9hAfmtbw/viewform?usp=dialog';
 
-/* --- Elements --- */
+/* Elements */
 const methodsWrapper = document.getElementById('methodsWrapper');
 const showQRtoggle = document.getElementById('showQRtoggle');
 const scanpay = document.getElementById('scanpay');
@@ -217,7 +211,7 @@ const openFormBtn = document.getElementById('openFormBtn');
 const qrImg = document.getElementById('qrImg');
 const toast = document.getElementById('openToast');
 
-/* --- Methods config --- */
+/* Methods */
 const METHODS = {
   whatsapp:{ title:'WhatsApp Pay', desc:'Open WhatsApp UPI', pkg:null },
   gpay:{ title:'Google Pay', desc:'Open GPay', pkg:'com.google.android.apps.nbu.paisa.user' },
@@ -225,79 +219,79 @@ const METHODS = {
   bhim:{ title:'BHIM / UPI', desc:'Open any UPI app', pkg:'in.org.npci.upiapp' }
 };
 
-/* --- Helpers --- */
-function enc(s){ return encodeURIComponent(s); }
+/* Helpers */
+function enc(v){ return encodeURIComponent(v); }
 function buildUPI(amount){
   const a = Number(amount)||0;
   const safe = (isFinite(a)&&a>0)? a.toFixed(2) : '0.00';
   return `upi://pay?pa=${enc(UPI_ID)}&pn=${enc(PAYEE)}&am=${enc(safe)}&tn=${enc(NOTE)}&cu=INR`;
 }
 function intentURI(pkg, upi){ return `intent://${upi.replace('upi://','')}#Intent;package=${pkg};scheme=upi;end`; }
-function showToast(msg, ms=900){ toast.textContent = msg; toast.style.display='block'; clearTimeout(toast._t); toast._t = setTimeout(()=> toast.style.display='none', ms); }
+function showToast(msg, ms=1000){ toast.textContent = msg; toast.style.display='block'; clearTimeout(toast._t); toast._t = setTimeout(()=> toast.style.display='none', ms); }
 
-/* --- Build mobile pills (only on phones) --- */
-function createPill(def, key){
-  const p = document.createElement('div'); p.className='pill'; p.dataset.key=key;
+/* Build pills (only used on mobile) */
+function createPill(def){
+  const p = document.createElement('div'); p.className='pill';
   p.innerHTML = `<div class="left"><div class="title">${def.title}</div><div class="desc">${def.desc}</div></div><div class="action">OPEN</div>`;
-  const openHandler = (ev)=>{
-    ev && ev.stopPropagation();
+  const openHandler = ()=>{
     const upi = buildUPI(amountInput.value);
-    if(device === 'android' && def.pkg){
-      // try intent
+    // android package intent where available
+    if(/Android/i.test(navigator.userAgent) && def.pkg){
       window.location.href = intentURI(def.pkg, upi);
     } else {
       window.location.href = upi;
     }
   };
-  // clicking pill opens directly
   p.addEventListener('click', ()=>{ p.style.transform='translateY(-3px)'; setTimeout(()=>p.style.transform='none',120); openHandler(); });
-  // action area separately
   p.querySelector('.action').addEventListener('click', (e)=>{ e.stopPropagation(); openHandler(); });
   return p;
 }
 function buildMethodsUI(){
   methodsWrapper.innerHTML = '';
-  if(device === 'desktop') return;
-  if(device === 'ios'){
-    methodsWrapper.appendChild(createPill(METHODS.whatsapp,'whatsapp'));
-    methodsWrapper.appendChild(createPill(METHODS.bhim,'bhim'));
+  if(!isMobile) return;
+  // iOS: smaller set
+  if(/iPhone|iPod/i.test(navigator.userAgent) && !/Android/i.test(navigator.userAgent)){
+    methodsWrapper.appendChild(createPill(METHODS.whatsapp));
+    methodsWrapper.appendChild(createPill(METHODS.bhim));
   } else {
-    methodsWrapper.appendChild(createPill(METHODS.gpay,'gpay'));
-    methodsWrapper.appendChild(createPill(METHODS.phonepe,'phonepe'));
-    methodsWrapper.appendChild(createPill(METHODS.bhim,'bhim'));
-    methodsWrapper.appendChild(createPill(METHODS.whatsapp,'whatsapp'));
+    // Android / other mobile
+    methodsWrapper.appendChild(createPill(METHODS.gpay));
+    methodsWrapper.appendChild(createPill(METHODS.phonepe));
+    methodsWrapper.appendChild(createPill(METHODS.bhim));
+    methodsWrapper.appendChild(createPill(METHODS.whatsapp));
   }
 }
 
-/* --- UI behaviour based on device --- */
+/* Setup UI according to isMobile */
 function setupUI(){
-  const isMobile = (device === 'android' || device === 'ios');
-  methodsWrapper.style.display = isMobile ? 'flex' : 'none';
-  showQRtoggle.style.display = isMobile ? 'block' : 'none';
-  scanpay.style.display = isMobile ? 'none' : 'block';
-  upiPlain.style.display = isMobile ? 'none' : 'block';
-  copyFull.style.display = isMobile ? 'flex' : 'none';
+  if(isMobile){
+    methodsWrapper.style.display='flex';
+    showQRtoggle.style.display='block';
+    scanpay.style.display='none';
+    upiPlain.style.display='none';
+    copyFull.style.display='flex';
+  } else {
+    methodsWrapper.style.display='none';
+    showQRtoggle.style.display='none';
+    scanpay.style.display='block';
+    upiPlain.style.display='block';
+    copyFull.style.display='none';
+  }
 }
 
-/* --- QR toggle (mobile) --- */
+/* Toggle QR (mobile) */
 showQRtoggle.addEventListener('click', ()=>{
-  const open = scanpay.style.display !== 'block';
-  scanpay.style.display = open ? 'block' : 'none';
+  scanpay.style.display = (scanpay.style.display === 'block') ? 'none' : 'block';
 });
 
-/* --- Copy full-width --- */
-if(copyWide){
-  copyWide.addEventListener('click', async ()=>{
-    try{ await navigator.clipboard.writeText(UPI_ID); showToast('UPI ID copied'); }
-    catch(e){ alert('Copy failed — use: ' + UPI_ID); }
-  });
-}
+/* Copy UPI (mobile full) */
+copyWide && copyWide.addEventListener('click', async ()=>{
+  try{ await navigator.clipboard.writeText(UPI_ID); showToast('UPI ID copied'); }
+  catch(e){ alert('Copy failed — use: ' + UPI_ID); }
+});
 
-/* --- Amount logic --- */
-document.querySelectorAll('.preset').forEach(b => b.addEventListener('click', ()=>{
-  amountInput.value = b.dataset.val;
-  refreshAmount();
-}));
+/* Amount logic */
+document.querySelectorAll('.preset').forEach(b=> b.addEventListener('click', ()=>{ amountInput.value = b.dataset.val; refreshAmount(); }));
 amountInput.addEventListener('input', refreshAmount);
 function refreshAmount(){
   const v = Number(amountInput.value) || 0;
@@ -305,25 +299,32 @@ function refreshAmount(){
   qrImg.title = buildUPI(v);
 }
 
-/* --- Open form --- */
+/* Open form */
 openFormBtn.addEventListener('click', ()=> window.open(FORM_URL,'_blank'));
 
-/* --- Init --- */
+/* Init */
 buildMethodsUI();
 setupUI();
 refreshAmount();
-
-/* show plain UPI on desktop/iPad below QR, mobile not show UPI text anywhere (only full copy) */
 if(upiPlain) upiPlain.textContent = UPI_ID;
 
-/* QR fallback if local image missing */
-qrImg.onerror = ()=>{
-  const upi = buildUPI(Number(amountInput.value)||0);
-  qrImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl=' + encodeURIComponent(upi);
-};
+/* QR fallback to Google API if local missing */
+qrImg.onerror = ()=>{ const upi = buildUPI(Number(amountInput.value)||0); qrImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl=' + encodeURIComponent(upi); };
 
-/* accessible toggle via keyboard */
-showQRtoggle.addEventListener('keydown',(e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showQRtoggle.click(); } });
+/* React to viewport change (user rotates or resizes) */
+window.matchMedia('(max-width:920px)').addEventListener('change', (e)=>{
+  isMobile = e.matches || uaSuggestsMobile();
+  document.body.classList.toggle('is-mobile', isMobile);
+  document.body.classList.toggle('is-desktop', !isMobile);
+  buildMethodsUI();
+  setupUI();
+});
+
+/* small UA fallback helper used above */
+function uaSuggestsMobile(){ return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent); }
+
+/* accessible toggle */
+showQRtoggle.addEventListener('keydown',(e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); showQRtoggle.click(); } });
 </script>
 </body>
 </html>
