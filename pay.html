@@ -7,9 +7,13 @@
 <meta name="description" content="Device aware UPI payment page — Telemedicine" />
 <style>
 :root{
-  --bg:#f5f7fa; --card:#fff; --muted:#6b7280; --accent:#0b1220;
+  --bg:#f5f7fa;
+  --card:#fff;
+  --muted:#6b7280;
+  --accent:#0b1220;
   --pill-h:56px;
 }
+/* reset */
 *{box-sizing:border-box}
 body{
   margin:0; padding:20px;
@@ -34,47 +38,46 @@ body{
 .card-right{ background:var(--card); border-radius:14px; padding:18px; box-shadow:0 8px 30px rgba(15,15,15,0.06); }
 .alert{ background:#fffbea; border:1px solid #f6e29b; padding:10px 12px; border-radius:10px; font-weight:700; margin-bottom:14px; color:#6b7280; }
 
-/* method pills (mobile) */
+/* method pills (mobile only) */
 .methods{ display:flex; flex-direction:column; gap:12px; margin-bottom:12px; }
-.pill{ display:flex; align-items:center; height:var(--pill-h); border-radius:12px; background:#fff; border:1px solid #e9eef6; overflow:hidden; }
-.pill .left{ padding:12px 14px; flex:1; display:flex; flex-direction:column; gap:4px; }
+.pill{
+  display:flex; align-items:center; gap:12px; height:var(--pill-h); border-radius:12px;
+  background:#fff; border:1px solid #e9eef6; overflow:hidden; padding:6px; transition:box-shadow .14s ease, transform .12s ease;
+}
+.pill .left{ flex:1; display:flex; flex-direction:column; justify-content:center; padding:6px 12px; min-width:0; }
 .pill .title{ font-weight:900; font-size:1rem; }
-.pill .desc{ color:var(--muted); font-size:.9rem; }
-.pill .action{ width:110px; background:#0b1220; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; cursor:pointer; }
+.pill .desc{ color:var(--muted); font-size:.90rem; }
+.pill .action{
+  flex:0 0 110px; display:inline-flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg,#0b1220,#111827); color:#fff; border-radius:10px;
+  padding:10px 12px; font-weight:900; cursor:pointer; border:0;
+}
+.pill:active .action{ transform:translateY(0); }
+.pill:focus-within, .pill:focus{ outline:none; box-shadow:0 0 0 4px rgba(59,130,246,0.10); }
+.pill:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(11,18,32,0.06); }
 
-/* show QR toggle */
+/* show QR toggle (mobile) */
 #showQRtoggle{ margin-top:8px; background:#eef2f7; border-radius:8px; padding:10px; text-align:center; font-weight:700; cursor:pointer; }
 
-/* Scan & Pay card (two-column inside) */
+/* Scan & Pay card */
 .scanpay{ margin-top:12px; border:1px solid #e7eef6; border-radius:12px; padding:12px; background:#fff; }
 .scanpay .row{ display:flex; gap:12px; align-items:center; }
 .scanpay .leftLabel{ flex:0 0 120px; border-radius:8px; background:#f8fafc; display:flex; align-items:center; justify-content:center; font-weight:900; color:#0b1220; height:120px; text-align:center; padding:8px; }
-.scanpay .rightQR{ flex:1; display:flex; align-items:center; gap:12px; padding:8px; }
-.qr-img{ width:120px; height:120px; border-radius:8px; border:1px solid #eaeff6; object-fit:cover; background:#fff; }
-.qr-sep{ width:1px; height:96px; background:#eef2f7; }
+.scanpay .rightQR{ flex:1; display:flex; align-items:center; gap:12px; padding:8px; justify-content:center; }
+.qr-img{ width:160px; height:160px; border-radius:8px; border:1px solid #eaeff6; object-fit:contain; background:#fff; }
 
-/* UPI row inside scan card (below QR) */
-.upi-row{ margin-top:12px; display:flex; gap:10px; align-items:center; justify-content:space-between; }
-.upi-id{ flex:1; background:#f9fafb; border:1px solid #eef2f7; padding:10px; border-radius:10px; font-weight:900; color:#0b1220; text-align:left; }
-.copy-btn{ background:#0b1220; color:#fff; padding:8px 12px; border-radius:10px; border:0; font-weight:800; cursor:pointer; }
-
-/* Desktop: show upi text, hide copy button */
-@media(min-width:921px){
-  .copy-btn{ display:none !important; }
-  .upi-id{ display:block !important; }
-}
-/* Mobile: hide upi plain text, show copy button */
-@media(max-width:920px){
-  .upi-id{ display:none !important; }
-  .copy-btn{ display:inline-block !important; }
+/* UPI plain (desktop & iPad) */
+.upi-plain{
+  display:none; margin-top:12px; text-align:center; font-weight:900; color:#0b1220;
+  background:#f9fafb; padding:10px; border-radius:10px; border:1px solid #eef2f7;
 }
 
-/* Copy full-width button (below scan card) */
-.copy-full{ margin-top:12px; display:flex; gap:8px; }
+/* full-width copy button (mobile) */
+.copy-full{ margin-top:12px; display:none; gap:8px; }
 .copy-full .copywide{ flex:1; background:#0b1220; color:#fff; padding:12px; border-radius:10px; border:0; font-weight:900; cursor:pointer; }
 
 /* Amount / presets */
-.amount-row{ margin-top:12px; display:flex; gap:8px; align-items:center; }
+.amount-row{ margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
 .amount-row label{ font-weight:900; min-width:70px; }
 .amount-row input{ padding:8px 10px; border-radius:8px; border:1px solid #ddd; width:120px; text-align:center; font-weight:800; }
 .preset{ padding:8px 12px; border-radius:8px; background:#eef6ff; border:1px solid #e0efff; font-weight:800; cursor:pointer; }
@@ -84,27 +87,31 @@ body{
 .totalbar .label{ color:var(--muted); font-weight:800; }
 .totalbar .amt{ font-weight:900; font-size:1.3rem; background:#fff; padding:6px 12px; border-radius:8px; }
 
-/* split CTA: Submit after payment | Open form */
+/* split CTA */
 .split-cta{ margin-top:18px; display:flex; border-radius:12px; overflow:hidden; border:1px solid #e7eef6; background:#fff; height:64px; }
-.split-cta .left{ flex:1; padding:10px 14px; display:flex; flex-direction:column; justify-content:center; }
-.split-cta .left .l1{ font-weight:900; font-size:1.02rem; color:#0b1220; text-transform:uppercase; }
-.split-cta .left .l2{ color:var(--muted); font-weight:700; font-size:.9rem; margin-top:4px; }
+.split-cta .left{ flex:1; padding:10px 14px; display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.split-cta .left .l1{ font-weight:900; font-size:1.02rem; color:#0b1220; text-transform:uppercase; white-space:normal; word-break:break-word; }
+.split-cta .left .l2{ color:var(--muted); font-weight:700; font-size:.90rem; margin-top:4px; }
 .split-cta .right{ width:160px; background:#0b1220; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; cursor:pointer; }
 
-/* responsive adjustments */
+/* responsive */
 @media(max-width:640px){
-  .scanpay .row{ flex-direction:column; align-items:stretch; }
-  .scanpay .leftLabel{ width:100%; height:72px; }
-  .qr-img{ width:160px; height:160px; margin:auto; }
+  .scanpay .row{ flex-direction:column; align-items:center; gap:8px; }
+  .scanpay .leftLabel{ width:100%; height:56px; }
+  .qr-img{ width:220px; height:220px; }
   .split-cta{ flex-direction:row; height:auto; }
   .split-cta .right{ width:140px; padding:12px 10px; }
+  .copy-full{ display:flex; }
+  .methods{ display:flex; }
 }
 @media(max-width:420px){
   .split-cta{ flex-direction:column; }
   .split-cta .right{ width:100%; border-top:1px solid rgba(0,0,0,0.04); }
 }
 
-/* small toast */
+/* treat iPad as desktop via JS class (no CSS needed here) */
+
+/* toast */
 #openToast{ position:fixed; left:50%; transform:translateX(-50%); bottom:22px; background:rgba(11,18,32,0.95); color:#fff; padding:10px 14px; border-radius:12px; display:none; font-weight:700; z-index:9999; }
 </style>
 </head>
@@ -116,7 +123,7 @@ body{
 </div>
 
 <div class="container">
-  <!-- LEFT: rules -->
+  <!-- LEFT -->
   <aside class="card-left">
     <h2>Telemedicine — Rules</h2>
     <div class="rules">
@@ -137,43 +144,37 @@ body{
     </div>
   </aside>
 
-  <!-- RIGHT: payment -->
+  <!-- RIGHT -->
   <section class="card-right">
     <div class="alert">⚠️ Confirm Payee Name: <strong>Mit J Panchani</strong></div>
 
-    <!-- mobile methods (pills) -->
-    <div id="methodsWrapper" class="methods"></div>
+    <!-- method pills (mobile only) -->
+    <div id="methodsWrapper" class="methods" aria-hidden="true"></div>
 
-    <!-- show QR toggle (mobile) -->
-    <div id="showQRtoggle">📷 Show QR Code</div>
+    <!-- show QR toggle (mobile only) -->
+    <div id="showQRtoggle" aria-hidden="true">📷 Show QR Code</div>
 
     <!-- Scan & Pay card -->
-    <div class="scanpay" id="scanpay">
+    <div class="scanpay" id="scanpay" aria-hidden="true">
       <div class="row">
         <div class="leftLabel">SCAN &amp; PAY</div>
         <div class="rightQR">
           <img id="qrImg" class="qr-img" src="qr.jpg" alt="QR">
-          <div style="flex:1;">
-            <div style="font-weight:700;margin-bottom:8px;">UPI ID</div>
-            <div style="display:flex; gap:8px; align-items:center;">
-              <div class="upi-id" id="upiText">drmjp93@upi</div>
-              <button class="copy-btn" id="copyQRupi">Copy</button>
-            </div>
-          </div>
         </div>
       </div>
-      <!-- additional UPI row (for desktop/mobile redundancy if needed) -->
+      <!-- UPI plain shown below on desktop/iPad only -->
+      <div class="upi-plain" id="upiPlain" aria-hidden="true">drmjp93@upi</div>
     </div>
 
-    <!-- full-width copy (optionally visible on some layouts) -->
-    <div class="copy-full">
+    <!-- full-width copy (mobile only) -->
+    <div class="copy-full" id="copyFull" aria-hidden="true">
       <button class="copywide" id="copyWide">Copy UPI ID</button>
     </div>
 
     <!-- Amount controls -->
     <div class="amount-row">
       <label for="amountInput">Amount</label>
-      <input id="amountInput" type="number" value="400" min="1">
+      <input id="amountInput" type="number" value="400" min="1" />
       <button class="preset" data-val="400">₹400</button>
       <button class="preset" data-val="300">₹300</button>
     </div>
@@ -185,10 +186,10 @@ body{
     </div>
 
     <!-- split CTA -->
-    <div class="split-cta">
+    <div class="split-cta" role="group" aria-label="After payment submit confirmation">
       <div class="left">
-        <div class="l1">SUBMIT AFTER PAYMENT</div>
-        <div class="l2">Fill confirmation form (compulsory)</div>
+        <div class="l1">AFTER PAYMENT</div>
+        <div class="l2">SUBMIT CONFIRMATION FORM (COMPULSORY)</div>
       </div>
       <div class="right" id="openFormBtn">OPEN FORM</div>
     </div>
@@ -198,31 +199,34 @@ body{
 <div id="openToast" role="status" aria-live="polite"></div>
 
 <script>
-/* device detection */
+/* --- Device detection: treat iPad as desktop --- */
 function isAndroid(){ return /Android/i.test(navigator.userAgent); }
-function isIOS(){ return /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1); }
-const device = isAndroid() ? 'android' : isIOS() ? 'ios' : 'desktop';
+function isIPhone(){ return /iPhone|iPod/i.test(navigator.userAgent); }
+/* iPad (modern) often reports MacIntel + touchpoints: treat as desktop */
+const isIPadLike = (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /iPad/.test(navigator.userAgent);
+const device = isAndroid() ? 'android' : isIPhone() ? 'ios' : 'desktop'; // iPadLike falls to desktop branch
 document.body.classList.add('is-' + device);
 
-/* config */
+/* --- Config --- */
 const UPI_ID = 'drmjp93@upi';
 const PAYEE = 'Mit J Panchani';
 const NOTE = 'Telemedicine Consultation';
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSegoCeodeLpgCAXnSki_0kS74YONXKT_RtRl5jlyX9hAfmtbw/viewform?usp=dialog';
 
-/* elements */
-const wrapper = document.getElementById('methodsWrapper');
-const qrCard = document.getElementById('scanpay');
+/* --- Elements --- */
+const methodsWrapper = document.getElementById('methodsWrapper');
 const showQRtoggle = document.getElementById('showQRtoggle');
-const copyBtn = document.getElementById('copyQRupi');
+const scanpay = document.getElementById('scanpay');
+const upiPlain = document.getElementById('upiPlain');
+const copyFull = document.getElementById('copyFull');
 const copyWide = document.getElementById('copyWide');
-const upiText = document.getElementById('upiText');
-const qrImg = document.getElementById('qrImg');
 const amountInput = document.getElementById('amountInput');
 const bigAmount = document.getElementById('bigAmount');
 const openFormBtn = document.getElementById('openFormBtn');
+const qrImg = document.getElementById('qrImg');
+const toast = document.getElementById('openToast');
 
-/* methods data */
+/* --- Methods config --- */
 const METHODS = {
   whatsapp:{ title:'WhatsApp Pay', desc:'Open WhatsApp UPI', pkg:null },
   gpay:{ title:'Google Pay', desc:'Open GPay', pkg:'com.google.android.apps.nbu.paisa.user' },
@@ -230,106 +234,121 @@ const METHODS = {
   bhim:{ title:'BHIM / UPI', desc:'Open any UPI app', pkg:'in.org.npci.upiapp' }
 };
 
-/* helpers */
+/* --- Helpers --- */
 function enc(s){ return encodeURIComponent(s); }
 function buildUPI(amount){
   const a = Number(amount)||0;
   const safe = (isFinite(a)&&a>0)? a.toFixed(2) : '0.00';
   return `upi://pay?pa=${enc(UPI_ID)}&pn=${enc(PAYEE)}&am=${enc(safe)}&tn=${enc(NOTE)}&cu=INR`;
 }
-function intentURI(pkg, upi){
-  return `intent://${upi.replace('upi://','')}#Intent;package=${pkg};scheme=upi;end`;
-}
-function showToast(msg, ms=900){
-  const t = document.getElementById('openToast');
-  t.textContent = msg; t.style.display='block';
-  clearTimeout(t._timer); t._timer = setTimeout(()=> t.style.display='none', ms);
-}
+function intentURI(pkg, upi){ return `intent://${upi.replace('upi://','')}#Intent;package=${pkg};scheme=upi;end`; }
+function showToast(msg, ms=900){ toast.textContent = msg; toast.style.display='block'; clearTimeout(toast._t); toast._t = setTimeout(()=> toast.style.display='none', ms); }
 
-/* build mobile pills */
-function createPill(key, def){
-  const el = document.createElement('div'); el.className='pill';
-  el.innerHTML = `<div class="left"><div class="title">${def.title}</div><div class="desc">${def.desc}</div></div><div class="action">Open</div>`;
-  el.onclick = ()=>{
+/* --- Build mobile pills (only on phones) --- */
+function createPill(def, key){
+  const p = document.createElement('div'); p.className='pill'; p.dataset.key=key;
+  p.innerHTML = `<div class="left"><div class="title">${def.title}</div><div class="desc">${def.desc}</div></div><div class="action">OPEN</div>`;
+  const openHandler = (ev)=>{
+    ev && ev.stopPropagation();
     const upi = buildUPI(amountInput.value);
     if(device === 'android' && def.pkg){
+      // try intent
       window.location.href = intentURI(def.pkg, upi);
     } else {
       window.location.href = upi;
     }
   };
-  return el;
+  p.addEventListener('click', ()=>{ /* visual micro-feedback */ p.style.transform='translateY(-4px)'; setTimeout(()=>p.style.transform='none',120); openHandler(); });
+  p.querySelector('.action').addEventListener('click', openHandler);
+  return p;
 }
-function buildMethods(){
-  wrapper.innerHTML = '';
+function buildMethodsUI(){
+  methodsWrapper.innerHTML = '';
   if(device === 'desktop') return;
   if(device === 'ios'){
-    wrapper.appendChild(createPill('whatsapp', METHODS.whatsapp));
-    wrapper.appendChild(createPill('bhim', METHODS.bhim));
+    methodsWrapper.appendChild(createPill(METHODS.whatsapp,'whatsapp'));
+    methodsWrapper.appendChild(createPill(METHODS.bhim,'bhim'));
   } else {
-    wrapper.appendChild(createPill('gpay', METHODS.gpay));
-    wrapper.appendChild(createPill('phonepe', METHODS.phonepe));
-    wrapper.appendChild(createPill('bhim', METHODS.bhim));
-    wrapper.appendChild(createPill('whatsapp', METHODS.whatsapp));
+    methodsWrapper.appendChild(createPill(METHODS.gpay,'gpay'));
+    methodsWrapper.appendChild(createPill(METHODS.phonepe,'phonepe'));
+    methodsWrapper.appendChild(createPill(METHODS.bhim,'bhim'));
+    methodsWrapper.appendChild(createPill(METHODS.whatsapp,'whatsapp'));
   }
 }
 
-/* QR toggle */
-showQRtoggle.onclick = ()=>{
-  const disp = qrCard.style.display === 'block' ? 'none' : 'block';
-  qrCard.style.display = disp;
-};
+/* --- UI behaviour based on device --- */
+function setupUI(){
+  // Treat iPad-like devices as desktop (we already set device variable accordingly)
+  const isMobile = (device === 'android' || device === 'ios');
+  // Methods visible only on phones
+  methodsWrapper.setAttribute('aria-hidden', isMobile ? 'false' : 'true');
+  showQRtoggle.setAttribute('aria-hidden', isMobile ? 'false' : 'true');
+  scanpay.setAttribute('aria-hidden', isMobile ? 'true' : 'false');
+  upiPlain.setAttribute('aria-hidden', isMobile ? 'true' : 'false');
+  copyFull.setAttribute('aria-hidden', isMobile ? 'false' : 'true');
 
-/* copy handlers */
-async function copyUPI(){
-  try{
-    await navigator.clipboard.writeText(UPI_ID);
-    showToast('UPI ID copied');
-  }catch(e){ alert('Copy failed — use: '+UPI_ID); }
+  if(!isMobile){
+    // desktop/iPad: always show QR and UPI text; hide copy button
+    scanpay.style.display = 'block';
+    showQRtoggle.style.display = 'none';
+    upiPlain.style.display = 'block';
+    copyFull.style.display = 'none';
+  } else {
+    // mobile: QR collapsed by default, show toggle and full-copy
+    scanpay.style.display = 'none';
+    showQRtoggle.style.display = 'block';
+    upiPlain.style.display = 'none';
+    copyFull.style.display = 'flex';
+  }
 }
-copyBtn.addEventListener('click', (e)=>{ e.stopPropagation(); copyUPI(); });
-copyWide.addEventListener('click', copyUPI);
 
-/* open form */
-openFormBtn.addEventListener('click', ()=> window.open(FORM_URL,'_blank'));
+/* --- QR toggle (mobile) --- */
+showQRtoggle.addEventListener('click', ()=>{
+  const open = scanpay.style.display !== 'block';
+  scanpay.style.display = open ? 'block' : 'none';
+});
 
-/* amount logic */
-document.querySelectorAll('.preset').forEach(b=> b.addEventListener('click', ()=>{ amountInput.value = b.dataset.val; refresh(); }));
-amountInput.addEventListener('input', refresh);
-function refresh(){
+/* --- Copy full-width --- */
+if(copyWide){
+  copyWide.addEventListener('click', async ()=>{
+    try{ await navigator.clipboard.writeText(UPI_ID); showToast('UPI ID copied'); }
+    catch(e){ alert('Copy failed — use: ' + UPI_ID); }
+  });
+}
+
+/* --- Amount logic --- */
+document.querySelectorAll('.preset').forEach(b => b.addEventListener('click', ()=>{
+  amountInput.value = b.dataset.val;
+  refreshAmount();
+}));
+amountInput.addEventListener('input', refreshAmount);
+function refreshAmount(){
   const v = Number(amountInput.value) || 0;
   bigAmount.textContent = '₹ ' + (v>0? v.toLocaleString() : '0');
-  // update QR title and fallback URL
+  // ensure QR fallback uses updated amount in title
   qrImg.title = buildUPI(v);
 }
 
-/* init */
-buildMethods();
-refresh();
+/* --- Open form --- */
+openFormBtn.addEventListener('click', ()=> window.open(FORM_URL,'_blank'));
 
-// show QR on desktop by default, hide toggle
-if(device === 'desktop'){
-  qrCard.style.display = 'block';
-  showQRtoggle.style.display = 'none';
-} else {
-  qrCard.style.display = 'none';
-  showQRtoggle.style.display = 'block';
-}
+/* --- Init --- */
+buildMethodsUI();
+setupUI();
+refreshAmount();
 
-/* ensure UPI UI: desktop shows text, mobile shows copy button (CSS handles but set explicit) */
-if(window.matchMedia('(min-width:921px)').matches){
-  upiText.style.display = 'block';
-  copyBtn.style.display = 'none';
-} else {
-  upiText.style.display = 'none';
-  copyBtn.style.display = 'inline-block';
-}
+/* show plain UPI on desktop/iPad below QR, mobile not show UPI text anywhere (only copy-wide) */
+if(upiPlain) upiPlain.textContent = UPI_ID;
 
-/* qr fallback to google if local missing */
+/* QR fallback if local image missing */
 qrImg.onerror = ()=>{
   const upi = buildUPI(Number(amountInput.value)||0);
   qrImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl=' + encodeURIComponent(upi);
 };
+
+/* Accessibility: keyboard trigger for showQRtoggle */
+showQRtoggle.addEventListener('keydown',(e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showQRtoggle.click(); } });
+
 </script>
 </body>
 </html>
