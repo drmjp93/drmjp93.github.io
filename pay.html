@@ -37,13 +37,15 @@
   .pill .action{ width:110px; background:#0b1220; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; cursor:pointer; }
 
   .selected-box{ border-radius:10px; padding:10px; border:1px solid #eef2f7; display:block; }
-  body.is-desktop .selected-box > div:first-child { display:none !important; }  /* hides "Selected" label block */
+  body.is-desktop .selected-box > div:first-child { display:none !important; }  /* hides "Selected" label block on desktop */
   body.is-desktop #selLabel { display:none !important; }
   body.is-desktop #selDesc { display:none !important; }
   body.is-desktop .amount-row { display:flex !important; }
   body.is-desktop .selected-box { border: 1px solid #e5e7eb; padding: 10px; background: #fafafa; }
 
-  .amount-row{ display:flex; gap:8px; align-items:center; margin-top:6px; }
+  /* Amount controls moved outside selected-box - visible always */
+  .amount-controls{ display:flex; gap:8px; align-items:center; margin-top:12px; }
+  .amount-controls .label{ font-weight:800; margin-right:6px; }
   input[type=number]{ padding:8px 10px; border-radius:8px; border:1px solid #ddd; width:110px; font-weight:800; text-align:center; }
 
   .summary{ margin-top:16px; display:flex; flex-direction:column; gap:12px; }
@@ -57,76 +59,57 @@
   .qr-sep{ width:1px; height:96px; background:#e5e7eb; }
 
   /* Minimal split-pill CTA (Option A text but white-left) */
-.split-cta{
-  margin-top:16px;
-  display:flex;
-  align-items:stretch;
-  border-radius:12px;
-  overflow:hidden;
-  border:1px solid rgba(15,23,42,0.06);
-  background:#fff;
-  box-shadow:0 8px 20px rgba(15,23,42,0.04);
-  height:72px;
-}
-
-/* LEFT: white background */
-.split-cta .left{
-  flex:1;
-  padding:14px 18px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:4px;
-  min-width:0;
-  background:#ffffff;     /* white */
-  color:#0b1220;          /* deep slate (matches your design) */
-}
-
-/* Option A Typography */
-.split-cta .left .line1{
-  font-weight:900;
-  font-family:"Arial Black", Impact, "Segoe UI", system-ui, sans-serif;
-  color:#0b1220;           /* dark */
-  font-size:1.05rem;
-  letter-spacing:0.6px;
-  text-transform:uppercase;
-  line-height:1.0;
-}
-
-.split-cta .left .line2{
-  font-weight:700;
-  font-size:0.95rem;
-  color:#1a1a1a;           /* slightly lighter dark */
-}
-
-.split-cta .left .line3{
-  font-weight:600;
-  font-size:0.78rem;
-  color:#6b7280;           /* muted grey */
-  margin-top:4px;
-}
-
-/* RIGHT: dark button unchanged */
-.split-cta .right{
-  width:160px;
-  background:linear-gradient(180deg,#0b1220,#111827);
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  font-weight:900;
-  letter-spacing:0.2px;
-  border-left:1px solid rgba(255,255,255,0.05);
-}
-  .split-cta .right:focus,
-  .split-cta .right:active{
-    outline:3px solid rgba(59,130,246,0.18);
+  .split-cta{
+    margin-top:16px;
+    display:flex;
+    align-items:stretch;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid rgba(15,23,42,0.06);
+    background:#fff;
+    box-shadow:0 8px 20px rgba(15,23,42,0.04);
+    height:72px;
   }
 
+  /* LEFT: white background */
+  .split-cta .left{
+    flex:1;
+    padding:14px 18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:4px;
+    min-width:0;
+    background:#ffffff;     /* white */
+    color:#0b1220;          /* deep slate (matches your design) */
+  }
+
+  /* Option A Typography */
+  .split-cta .left .line1{ font-weight:900; font-family:"Arial Black", Impact, "Segoe UI", system-ui, sans-serif; color:#0b1220; font-size:1.05rem; letter-spacing:0.6px; text-transform:uppercase; line-height:1.0; }
+  .split-cta .left .line2{ font-weight:700; font-size:0.95rem; color:#1a1a1a; }
+  .split-cta .left .line3{ font-weight:600; font-size:0.78rem; color:#6b7280; margin-top:4px; }
+
+  /* RIGHT: dark button unchanged */
+  .split-cta .right{
+    width:160px;
+    background:linear-gradient(180deg,#0b1220,#111827);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-weight:900;
+    letter-spacing:0.2px;
+    border-left:1px solid rgba(255,255,255,0.05);
+  }
+  .split-cta .right:focus,
+  .split-cta .right:active{ outline:3px solid rgba(59,130,246,0.18); }
+
+  /* SMALL SCREENS: stack split-cta vertically to avoid overlap */
   @media (max-width:640px){
-    .split-cta{ flex-direction:row; height:auto; }
-    .split-cta .right{ width:100%; padding:12px 0; }
+    .split-cta{ flex-direction:column; height:auto; }
+    .split-cta .right{ width:100%; padding:16px 0; border-left:none; border-top:1px solid rgba(15,23,42,0.04); }
+    .split-cta .left{ padding:16px; }
   }
 
   /* hide selected-box on mobile (iOS / Android) to prevent duplication */
@@ -142,7 +125,6 @@
 </head>
 <body>
 
-<!-- quick sketch link for your reference in VS Code -->
 <div style="max-width:1100px;margin:6px auto 0;font-size:.85rem;color:#6b7280;text-align:center;">
   <a href="/mnt/data/IMG_E139CFFF-DBD6-47A6-84C9-73AE361AB20B.jpeg" target="_blank" style="color:var(--primary);text-decoration:none;">Open sketch (local)</a>
 </div>
@@ -160,7 +142,7 @@
       <p><strong>Before consultation</strong></p>
       <ul>
         <li>Appointment given only after payment.</li>
-        <li>Fill the confirmation form details to share you contact details</li>
+        <li>Fill the confirmation form details to share your contact details.</li>
         <li>Emergency: go to hospital immediately.</li>
       </ul>
 
@@ -170,7 +152,7 @@
         <li>After 72 hrs — ₹300.</li>
       </ul>
 
-      <p style="margin-top:14px;color:#dbe6f5;">After payment. Please fill the confirmation form (Name, Phone & Type of Payment Mode). Time for consultation will be shared on that number.</p>
+      <p style="margin-top:14px;color:#dbe6f5;">After payment please fill the confirmation form (Name, Phone & Type of Payment Mode). Consultation time will be shared on that number.</p>
     </div>
   </aside>
 
@@ -208,31 +190,32 @@
         <div class="amount" id="bigAmount">₹ 400</div>
       </div>
 
-      <div class="selected-box">
+      <!-- Amount controls (always visible) -->
+      <div class="amount-controls" aria-label="Amount controls">
+        <div class="label">Amount</div>
+        <input id="amountInput" type="number" value="400" min="1" />
+        <button class="preset" data-val="400" style="padding:8px;border-radius:8px;background:#eef2f7;border:1px solid #e6eefc;cursor:pointer;font-weight:800;">₹400</button>
+        <button class="preset" data-val="300" style="padding:8px;border-radius:8px;background:#eef2f7;border:1px solid #e6eefc;cursor:pointer;font-weight:800;">₹300</button>
+      </div>
+
+      <!-- selected box (desktop only) -->
+      <div class="selected-box" aria-hidden="true">
         <div style="font-weight:800;">Selected</div>
         <div id="selLabel" style="font-weight:900;margin-top:6px;">WhatsApp Pay</div>
         <div id="selDesc" style="color:var(--muted);margin-top:6px;">Opens WhatsApp Pay or UPI handler</div>
-
-        <div class="amount-row">
-          <div style="font-weight:800;margin-right:6px;">Amount</div>
-          <input id="amountInput" type="number" value="400" min="1" />
-          <button class="preset" data-val="400" style="padding:8px;border-radius:8px;background:#eef2f7;border:1px solid #e6eefc;cursor:pointer;font-weight:800;">₹400</button>
-          <button class="preset" data-val="300" style="padding:8px;border-radius:8px;background:#eef2f7;border:1px solid #e6eefc;cursor:pointer;font-weight:800;">₹300</button>
-        </div>
       </div>
 
       <div style="color:var(--muted);font-weight:700;margin-top:8px;">FEES: ₹400 NEW CASE · ₹300 OLD CASE</div>
 
-      <!-- Minimal split CTA (Option A: professional text) -->
+      <!-- Minimal split CTA (Option A) - stacks on small screens -->
       <div class="split-cta" role="group" aria-label="After payment fill confirmation">
         <div class="left" aria-hidden="false">
-          <div class="line1"></div>
-          <div class="line2">AFTER PAYMENT</div>
-          <div class="line3">SUBMIT CONFIRMATION FORM</div>
+          <div class="line1">AFTER PAYMENT</div>
+          <div class="line2">SUBMIT CONFIRMATION FORM</div>
+          <div class="line3">Compulsory</div>
         </div>
         <div class="right" id="openFormBtn" role="button" tabindex="0" aria-pressed="false">OPEN FORM</div>
       </div>
-
     </div>
   </section>
 </div>
@@ -295,7 +278,7 @@ function attachPillBehavior(pill, key){
 }
 function createPill(key, def){
   const pill=document.createElement('div'); pill.className='pill'; pill.dataset.key=key;
-  pill.innerHTML = `<div class="label"><div class="logo">${def.title.charAt(0)}</div><div><div class="title">${def.title}</div><div class="desc">${def.desc}</div></div></div><div class="action">Open</div>`;
+  pill.innerHTML = `<div class="label"><div class="logo" style="width:40px;height:40px;border-radius:8px;background:#eef2f7;display:flex;align-items:center;justify-content:center;font-weight:800;">${def.title.charAt(0)}</div><div><div class="title">${def.title}</div><div class="desc">${def.desc}</div></div></div><div class="action">Open</div>`;
   attachPillBehavior(pill,key); return pill;
 }
 
@@ -336,6 +319,18 @@ function refresh(){ const amt = Number(amountInput.value)||0; bigAmount.textCont
 const isMobile = (device === 'android' || device === 'ios');
 buildMethods();
 refresh();
+
+/* hide selected-box on mobile devices (including iPad detected as iOS) */
+(function(){
+  const selBox = document.querySelector('.selected-box');
+  if(!selBox) return;
+  if (device === 'ios' || device === 'android') {
+    selBox.style.display = 'none';
+  } else {
+    selBox.style.display = 'block';
+  }
+})();
+
 if(device==='desktop'){ qrCard.style.display='block'; showQRtoggle.style.display='none'; } else { qrCard.style.display='none'; showQRtoggle.style.display='block'; }
 qrImg.onerror = ()=>{ const amt=Number(amountInput.value)||0; qrImg.src='https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl='+encodeURIComponent(buildUPI(amt)); };
 </script>
