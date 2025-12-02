@@ -125,6 +125,34 @@
       main.container{ padding:18px; }
       h2{ font-size:1.28rem; }
     }
+    .lang-switch {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  gap: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.lang-switch .lang {
+  color: #ffffff;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.lang-switch .lang:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .lang-switch {
+    position: static;
+    margin-top: 12px;
+    justify-content: center;
+  }
+}
   </style>
 
 <meta property="og:title" content="Telemedicine — Dr. Mit Panchani"/>
