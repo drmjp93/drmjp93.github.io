@@ -40,6 +40,7 @@
       background:#000;
       color:#fff;
       padding:28px 20px;
+      position:relative;
     }
 
     .header-flex {
@@ -63,7 +64,7 @@
     .separator { width:1px; height:130px; background:rgba(255,255,255,0.12); }
 
     .header-text h1 { margin:0; font-size:1.6rem; }
-    .header-text p { margin:6px 0 0; font-size:0.8rem; opacity:0.75; }
+    .header-text p { margin:6px 0 0; font-size:0.8rem; opacity:0.85; }
 
     main.container {
       width:92%; max-width:980px; margin:28px auto;
@@ -111,16 +112,25 @@
       main.container{padding:18px;}
       .lang-switch{position:static;margin-top:12px;justify-content:center;}
     }
+
+    /* inline stats bar styles */
+    #inline-stats-bar { max-width:980px; margin:18px auto; text-align:center; display:none; }
+    #inline-stats-card { display:inline-flex; gap:18px; background:#0f1113; padding:8px 16px; border-radius:10px; color:#fff; align-items:center; box-shadow:0 8px 24px rgba(4,6,10,0.12); border:1px solid rgba(255,255,255,0.03); }
+    .is-block { display:flex; flex-direction:column; align-items:center; padding:0 6px; min-width:90px; }
+    .is-number{ font-weight:700; font-size:1.02rem; color:#fff; }
+    .is-label{ font-size:0.66rem; color:#a7adb3; margin-top:4px; text-align:center; max-width:120px; }
+    .sep-pipe{ color:#52565a; font-weight:600; margin:0 8px; }
+    @media(max-width:720px){ #inline-stats-card{ gap:12px; padding:10px; } .is-label{ font-size:0.58rem; } .sep-pipe{ display:none; } }
+
   </style>
 
-  <!-- OG tags -->
+  <!-- OG + JSON-LD -->
   <meta property="og:title" content="ટેલીમેડિસિન — ડૉ. મિત પાંચાણી"/>
   <meta property="og:description" content="ડાયાબિટીસ, થાયરોઇડ, બ્લડ પ્રેશર, કોલેસ્ટ્રોલ અને કાર્ડિયાક સમસ્યાઓ માટે ઝડપી અને સરળ ટેલીમેડિસિન સલાહ."/>
   <meta property="og:url" content="https://drmjp93.in/gu/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="https://drmjp93.in/preview.jpg"/>
 
-  <!-- JSON-LD unchanged -->
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -136,92 +146,383 @@
 </head>
 
 <body>
-
-<header class="fade-in" style="position:relative;">
+<header class="fade-in" role="banner">
   <div class="header-flex">
     <div class="profile-photo-container">
-      <img src="/myphoto.jpg" alt="Dr Mit Panchani" class="profile-photo"/>
+      <img src="/myphoto.jpg" alt="Dr Mit Panchani" class="profile-photo" />
     </div>
 
     <div class="header-text">
       <h1 class="slide-in">ડૉ. મિત પાંચાણી</h1>
-      <p class="fade-in">MD (General Medicine) | 2D ઈકોકાર્ડિયોગ્રાફી ફેલો</p>
+      <p class="fade-in">MD (General Medicine) | 2D ઇકોકાર્ડિયોગ્રાફી ફેલો</p>
     </div>
   </div>
 
-  <div class="lang-switch">
+  <div class="lang-switch" aria-hidden="false">
     <a href="/" class="lang">English |</a>
     <a href="/hi/" class="lang">हिन्दी |</a>
     <a href="/gu/" class="lang">ગુજરાતી</a>
   </div>
 </header>
 
-<!-- Inline stats bar (unchanged, same scripts) -->
-<div id="inline-stats-bar" style="display:none"></div>
+<!-- inline stats placeholder -->
+<div id="inline-stats-bar" aria-hidden="true">
+  <div id="inline-stats-card" role="region" aria-label="Key clinical stats">
+    <div class="is-block">
+      <div class="is-number" data-key="echo_studies">—</div>
+      <div class="is-label">2D ઇકો</div>
+    </div>
+    <div class="sep-pipe">|</div>
+    <div class="is-block">
+      <div class="is-number" data-key="cases_attended">—</div>
+      <div class="is-label">કેસો સંભાળ્યા</div>
+    </div>
+    <div class="sep-pipe">|</div>
+    <div class="is-block">
+      <div class="is-number" data-key="surgical_fitness_given">—</div>
+      <div class="is-label">ફિટનેસ સર્ટિફિકેટ</div>
+    </div>
+    <div class="sep-pipe">|</div>
+    <div class="is-block">
+      <div class="is-number" data-key="admissions">—</div>
+      <div class="is-label">ભરણા (Admissions)</div>
+    </div>
+  </div>
+  <div id="stats-legend" style="margin-top:8px;color:var(--muted);font-size:0.9rem;">રીપોર્ટેડ ડેટા આધારિત — અનુભવ વધુ હોઈ શકે છે.</div>
+</div>
 
-<main class="container">
+<main class="container" id="main" role="main">
 
-  <!-- ABOUT -->
   <section id="about" class="fade-up">
     <h2>મારા વિશે</h2>
     <p>
       હું ઈન્ટર્નલ મેડિસિનમાં એડલ્ટ દર્દીઓનું સંપૂર્ણ OPD આધારિત સારવાર પૂરી પાડીશ.
-      શ્વાસની સમસ્યાઓ, ડાયાબિટીસ, થાયરોઇડ, બ્લડ પ્રેશર, ઇન્ફેક્શન, કિડની અને ન્યૂરોલોજીકલ લક્ષણોનું
-      યોગ્ય મૂલ્યાંકન અને સારવાર આપું છું.  
-      નિર્ણય લેવા માટે સાક્ષ્ય આધારિત અને સ્પષ્ટ અભિગમ રાખું છું.
+      શ્વાસની સમસ્યાઓ, ડાયાબિટીસ, થાઈરોઈડ, બ્લડ પ્રેશર, ઇન્ફેક્શન, કિડની અને ન્યૂરોલોજીકલ લક્ષણોનું
+      યોગ્ય મૂલ્યાંકન અને સારવાર આપું છું. નિર્ણય લેવા માટે સાક્ષ્ય આધારિત અને સ્પષ્ટ અભિગમ રાખું છું.
     </p>
   </section>
 
-  <!-- QUALIFICATIONS -->
   <section id="qualifications" class="fade-up">
-    <h2>ક્વોલિફિકેશન</h2>
+    <h2>સાક્ષરતાઓ (Qualifications)</h2>
     <ul class="clean">
       <li>MBBS, અમદાવાદ</li>
       <li>MD (General Medicine), સુરત</li>
       <li>PGCIH (MSU), વડોદરા</li>
-      <li>2D ઈકોકાર્ડિયોગ્રાફી ફેલોશીપ (CIMS), અમદાવાદ</li>
+      <li>2D ઇકોકાર્ડિયોગ્રાફી ફેલોશિપ (CIMS), અમદાવાદ</li>
     </ul>
   </section>
 
-  <!-- EXPERIENCE -->
   <section id="experience" class="fade-up">
     <h2>ક્લિનિકલ અનુભવ</h2>
     <ul class="clean">
-      <li>એડલ્ટ ઈન્ટર્નલ મેડિસિનમાં OPD આધારિત નિદાન અને મેનેજમેન્ટ.</li>
-      <li>શ્વસન રોગો, ડાયાબિટીસ, થાયરોઇડ, BP, કિડની ઈન્ફેક્શન, માથાના દુઃખાવાની સારવાર.</li>
-      <li>ECG અને 2D ઈકોકાર્ડિયોગ્રાફી કરવાનો અનુભવ.</li>
-      <li>પ્રેગ્નન્સીમાં ડાયાબિટીસ, થાયરોઇડ અને BPની સારવાર.</li>
-      <li>પ્રિવેન્ટિવ હેલ્થ અને લાંબા ગાળાની ફોલો-અપ કાળજી.</li>
+      <li>એડલ્ટ ઈન્ટર્નલ મેડિસિન — OPD આધારિત નિદાન અને વ્યવસ્થા.</li>
+      <li>શ્વસન રોગો, ડાયાબિટીસ, થાઈરોઇડ, હાઈબ્લડ પ્રેશર, કિડની સંક્રમણ અને માથાનો દુઃખાવો.</li>
+      <li>ECG અને 2D ઇકો કરવા અને વ્યાખ્યા આપવા નો અનુભવ.</li>
+      <li>ગર્ભાવસ્થામાં ડાયાબિટીસ/થાઈરોઇડ/બીપીનું મેનેજમેન્ટ.</li>
+      <li>રોકથામ પર સલાહ અને લાંબા ગાળાના ફોલો-અપ કાળજી.</li>
     </ul>
   </section>
 
-  <!-- TELEMEDICINE -->
   <section id="telemedicine" class="fade-up">
-    <h2>ટેલીમેડિસિન</h2>
-    <p>ઓનલાઈન સલાહ માટે નીચે ક્લિક કરો.</p>
-
-    <a href="telemedicine.html" class="appointment-btn">ટેલીમેડિસિન સલાહ</a>
-
-    <p class="small-note">
-      પેમેન્ટ અને ફોર્મની વિગતો ટેલીમેડિસિન પેજમાં ઉપલબ્ધ છે.
-    </p>
+    <h2>ટેલીમેડિસિન સલાહ</h2>
+    <p>ઓનલાઈન કન્સલ્ટેશન માટે નીચે ક્લિક કરો.</p>
+    <a href="telemedicine.html" class="appointment-btn" aria-label="Open telemedicine page">ટેલીમેડિસિન કન્સલ્ટેશન</a>
+    <p class="small-note">પેમેન્ટ અને પેમેન્ટ પછીના ફોર્મ માટે ટેલીમેડિસિન પેજ જુઓ.</p>
   </section>
 
-  <!-- LDL TOOL CARD (unchanged structure) -->
-  <!-- DO NOT MODIFY — ONLY TEXT WAS CHANGED ABOVE -->
-  <!-- Entire tool block remains same as English version -->
-  <!-- (not pasting again to reduce message length; your original code must be kept as-is) -->
+  <h2 style="margin-top:34px;">ટૂલ્સ (Tools)</h2>
+  <!-- LDL Tool Card: embedded iframe (keeps original English behaviour) -->
+  <details id="ldl-embed-card" style="margin-top:14px;border-radius:12px;border:1px solid #eef2ff;background:#fff;">
+    <summary style="list-style:none;cursor:pointer;display:flex;align-items:stretch;gap:14px;padding:0;outline:none;">
+      <div style="display:flex;gap:14px;align-items:center;padding:14px 16px;flex:1;min-width:0;">
+        <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.9rem;box-shadow:0 8px 22px rgba(12,18,35,0.08);">LDL</div>
+        <div style="overflow:hidden;min-width:0;">
+          <div style="font-weight:700;color:var(--text);font-size:1rem;">તમારું LDL મૂલ્ય દાખલ કરો — દવા જરૂરી છે કે نہیں જોઈશું</div>
+          <div style="font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">LDL કેલ્ક્યુલેટર (મારા દ્વારા વિકસિત)</div>
+        </div>
+      </div>
 
-</main>
+      <div style="display:flex;align-items:center;justify-content:center;padding:0 18px;color:#fff;font-weight:700;background:linear-gradient(90deg,#ff6b6b,#ff3d71);border-top-right-radius:12px;border-bottom-right-radius:12px;">
+        <span style="display:block;padding:12px 0;">ટૅપ કરીને ખોલો ▾</span>
+      </div>
+    </summary>
 
-<footer style="text-align:center;padding:20px;color:#6b7280">
-  © 2025 Dr. Mit Panchani — All Rights Reserved.
-</footer>
+    <style>
+      #ldl-embed-card summary::-webkit-details-marker { display:none; }
+      #ldl-embed-card summary::marker { content:none; }
+      #ldl-embed-card > summary { margin:0; }
+      #ldl-embed-card summary:hover { transform: translateY(-2px); transition: transform .14s ease; }
+      @media (max-width:520px) {
+        #ldl-embed-card summary div[style*="padding:14px 16px"] { padding:10px 12px; }
+        #ldl-embed-card summary div[style*="padding:0 18px"] span { padding:10px 0; font-size:14px; }
+      }
+    </style>
 
-<!-- All scripts for stats widget + visitor counter remain unchanged -->
+    <div style="padding:16px;">
+      <div id="ldl-iframe-wrap" style="width:100%;min-height:520px;border-radius:12px;overflow:hidden;border:1px solid #e8eefc;background:#fafcff;">
+        <div style="padding:26px;text-align:center;color:var(--muted);">Loading tool…</div>
+      </div>
+    </div>
+  </details>
+    <!-- Visitor + floating stats and scripts -->
+  <footer role="contentinfo" style="text-align:center;padding:20px;color:var(--muted);margin-top:28px;">
+    © 2025 Dr. Mit Panchani. All Rights Reserved.
+    <div style="margin-top:8px;font-size:0.85rem;color:#a1a1a1;">
+      Visitors: <span id="visitorCount">—</span>
+    </div>
+  </footer>
+
+  <!-- Floating stats widget (same behaviour as English) -->
+  <style>
+    #live-stats{position:fixed;right:16px;bottom:16px;z-index:9999;font-family:system-ui,Segoe UI,Roboto,Arial}
+    #live-stats .card{min-width:240px;background:#0f1724;color:#fff;padding:12px;border-radius:10px;box-shadow:0 10px 30px rgba(2,6,23,.45)}
+    #live-stats .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    #live-stats .label{font-size:12px;color:#a5b4fc}
+    #live-stats .num{font-weight:700;font-size:16px}
+    #live-stats .close-btn{background:transparent;border:none;color:#cbd5e1;font-size:18px;cursor:pointer}
+    #live-stats .muted{font-size:11px;color:#94a3b8;margin-top:8px}
+    @media (max-width:520px){ #live-stats{right:10px;left:10px;bottom:12px} #live-stats .card{min-width:unset} }
+  </style>
+
+  <div id="live-stats" aria-live="polite">
+    <div class="card" role="region" aria-label="Clinical activity">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <strong style="font-size:14px">Clinical Activity</strong>
+        <button class="close-btn" id="stats-close" aria-label="Close stats">×</button>
+      </div>
+
+      <div class="row">
+        <div>
+          <div class="label">Echo studies</div>
+          <div class="num" data-key="echo_studies">—</div>
+        </div>
+        <div>
+          <div class="label">Cases attended</div>
+          <div class="num" data-key="cases_attended">—</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <div class="label">Surgical fitness</div>
+          <div class="num" data-key="surgical_fitness_given">—</div>
+        </div>
+        <div>
+          <div class="label">Admissions</div>
+          <div class="num" data-key="admissions">—</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="flex:1">
+          <div class="label">Updated</div>
+          <div id="stats-updated" style="font-size:12px;color:#cbd5e1">—</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 <script>
-  /* (same script content—no translation) */
+(function(){
+  // --- Inline stats bar logic (same as English) ---
+  const INLINE_ID = 'inline-stats-bar';
+  const HIDE_KEY = 'hideStatsMode';
+  const STATS_PATH = '/stats.json';
+
+  function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+  function animateNumberEl(el, to, duration=2600){
+    const from = 0;
+    const start = performance.now();
+    function frame(now){
+      const progress = Math.min((now - start)/duration, 1);
+      const t = easeOutCubic(progress);
+      const val = Math.floor(from + (to - from) * t);
+      el.textContent = val.toLocaleString();
+      if (progress < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function populateInline(data){
+    const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
+    keys.forEach((key, idx) => {
+      const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
+      if (!el) return;
+      const value = Number(data[key]) || 0;
+      const dur = 2200 + idx*300 + Math.random()*600;
+      animateNumberEl(el, value, dur);
+    });
+  }
+
+  function prefillInline(data){
+    const keys = ['echo_studies','cases_attended','surgical_fitness_given','admissions'];
+    keys.forEach(key => {
+      const el = document.querySelector('#' + INLINE_ID + ' [data-key="'+key+'"]');
+      if (!el) return;
+      el.textContent = (Number(data[key]) || 0).toLocaleString();
+    });
+  }
+
+  function showInlineWithAnimation(){
+    fetch(STATS_PATH + '?_=' + Date.now())
+      .then(r => r.ok ? r.json() : {})
+      .then(data => {
+        const inlineBar = document.getElementById(INLINE_ID);
+        if (!inlineBar) return;
+        inlineBar.style.display = 'block';
+        inlineBar.setAttribute('aria-hidden','false');
+        populateInline(data);
+      })
+      .catch(err => {
+        console.warn('inline-stats fetch failed', err);
+        const inlineBar = document.getElementById(INLINE_ID);
+        if (inlineBar){ inlineBar.style.display='block'; inlineBar.setAttribute('aria-hidden','false'); }
+      });
+  }
+
+  function shouldShowInline(){
+    try{
+      const saved = sessionStorage.getItem(HIDE_KEY);
+      if(!saved) return false;
+      if (saved === 'inline') return true;
+      const expiry = new Date(saved);
+      if (!isNaN(expiry) && expiry > new Date()) return true;
+    }catch(e){}
+    return false;
+  }
+
+  if (shouldShowInline()){
+    showInlineWithAnimation();
+  } else {
+    fetch(STATS_PATH + '?_=' + Date.now())
+      .then(r => r.ok ? r.json() : {})
+      .then(data => prefillInline(data))
+      .catch(()=>{/* ignore */});
+  }
+
+  window.addEventListener('storage', (e) => {
+    if (e.key !== HIDE_KEY) return;
+    if (shouldShowInline()) showInlineWithAnimation();
+    else {
+      const inlineBar = document.getElementById(INLINE_ID);
+      if(inlineBar){ inlineBar.style.display='none'; inlineBar.setAttribute('aria-hidden','true'); }
+    }
+  });
+
+  window.addEventListener('showInlineStats', showInlineWithAnimation);
+})();
+</script>
+
+<script>
+(function(){
+  // --- Floating stats widget logic (same as English) ---
+  const path = '/stats.json';
+  const HIDE_KEY = 'hideStatsMode';
+  const TEMP_HIDE_MS = 10 * 60 * 1000; // 10 minutes
+
+  const card = document.getElementById('live-stats');
+  const closeBtn = document.getElementById('stats-close');
+
+  try {
+    const saved = sessionStorage.getItem(HIDE_KEY);
+    if (saved === 'inline') { if (card) card.style.display = 'none'; }
+    else if (saved) {
+      const expiry = new Date(saved);
+      if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display = 'none'; }
+    }
+  } catch(e){}
+
+  closeBtn.addEventListener('click', () => {
+    if (card) card.style.display = 'none';
+    const until = new Date(Date.now() + TEMP_HIDE_MS).toISOString();
+    try { sessionStorage.setItem(HIDE_KEY, until); } catch(e){}
+    try { window.dispatchEvent(new StorageEvent('storage', { key: HIDE_KEY, newValue: until })); } catch(e){}
+    try { window.dispatchEvent(new Event('showInlineStats')); } catch(e){}
+  });
+
+  function easeOutCubic(x){ return 1 - Math.pow(1 - x, 3); }
+  function animate(el, to, duration=2600){
+    const from = 0;
+    const start = performance.now();
+    function frame(now){
+      const progress = Math.min((now - start) / duration, 1);
+      const t = easeOutCubic(progress);
+      el.textContent = Math.floor(from + (to - from) * t).toLocaleString();
+      if (progress < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  fetch(path + '?_=' + Date.now()).then(r => r.ok ? r.json() : {}).then((data) => {
+    document.querySelectorAll('#live-stats .num').forEach(el => {
+      const key = el.dataset.key;
+      const val = Number(data[key]) || 0;
+      animate(el, val, 2000 + Math.random()*1200);
+    });
+    const up = document.getElementById('stats-updated');
+    if (up) up.textContent = new Date().toLocaleString();
+  }).catch(err => console.warn('stats widget error', err));
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === HIDE_KEY){
+      const saved = sessionStorage.getItem(HIDE_KEY);
+      if (saved === 'inline') { if (card) card.style.display='none'; }
+      else if (saved) {
+        const expiry = new Date(saved);
+        if (!isNaN(expiry) && expiry > new Date()) { if (card) card.style.display='none'; }
+      } else { if (card) card.style.display='block'; }
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  // --- Visitor counter (same as English page) ---
+  const el = document.getElementById('visitorCount');
+  if(!el) return;
+  function toKeycaps(num) {
+    const map = {'0':'0️⃣','1':'1️⃣','2':'2️⃣','3':'3️⃣','4':'4️⃣','5':'5️⃣','6':'6️⃣','7':'7️⃣','8':'8️⃣','9':'9️⃣'};
+    return num.toString().split('').map(n => map[n] || n).join('');
+  }
+  async function updateVisitorCount(){
+    try{
+      const resp = await fetch('https://api.counterapi.dev/v1/drmjp93in/visits/up');
+      const j = await resp.json();
+      if(j && j.count !== undefined) el.innerHTML = toKeycaps(j.count);
+      else el.innerText = '-';
+    }catch(e){ el.innerText = '-'; }
+  }
+  document.addEventListener('DOMContentLoaded', updateVisitorCount);
+})();
+</script>
+
+<script>
+(function(){
+  // --- LDL iframe lazy-load (same as English) ---
+  const details = document.getElementById('ldl-embed-card');
+  const wrap = document.getElementById('ldl-iframe-wrap');
+  let loaded = false;
+  const NETLIFY = 'https://drmjp93-ldlcal.netlify.app';
+  details.addEventListener('toggle', ()=>{
+    if (!loaded && details.open){
+      wrap.innerHTML = '';
+      const iframe = document.createElement('iframe');
+      iframe.src = NETLIFY;
+      iframe.title = 'LDL Calculator';
+      iframe.style.width = '100%';
+      iframe.style.height = '600px';
+      iframe.style.border = '0';
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'no-referrer';
+      wrap.appendChild(iframe);
+      loaded = true;
+    }
+  });
+})();
 </script>
 
 </body>
 </html>
+  
