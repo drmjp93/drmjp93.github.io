@@ -157,34 +157,27 @@
 
 <body>
 
-  <!-- HEADER -->
-  <header class="fade-in" role="banner">
-    <div class="header-flex">
-      <div class="profile-photo-container">
-        <!-- uploaded file path used as requested -->
-        <img src="myphoto.jpg"
-             alt="Dr Mit Panchani — Internal Medicine"
-             class="profile-photo" loading="lazy" />
-      </div>
-<!-- Language Switcher (Blends with Black Header) -->
-<div style="
-    text-align:right;
-    margin-top:6px;
-    font-size:0.9rem;
-    opacity:0.85;
-">
-  <a href="/" style="color:#fff; text-decoration:none; margin-right:10px;">English</a>
-  <a href="/hi/" style="color:#fff; text-decoration:none; margin-right:10px;">हिन्दी</a>
-  <a href="/gu/" style="color:#fff; text-decoration:none;">ગુજરાતી</a>
-</div>
-      <div class="separator" aria-hidden="true"></div>
-
-      <div class="header-text">
-        <h1 class="slide-in">Dr. Mit Panchani</h1>
-        <p class="fade-in">MD (General Medicine) | 2D Echocardiographer </p>
-      </div>
+<header class="fade-in" role="banner" style="position:relative;">
+  <div class="header-flex">
+    <div class="profile-photo-container">
+      <img src="/myphoto.jpg"
+           alt="Dr Mit Panchani — Internal Medicine"
+           class="profile-photo" loading="lazy" />
     </div>
-  </header>
+
+    <div class="header-text">
+      <h1 class="slide-in">Dr. Mit Panchani</h1>
+      <p class="fade-in">MD (General Medicine) | 2D Echocardiographer</p>
+    </div>
+  </div>
+
+  <!-- Top-right language switcher -->
+  <div class="lang-switch">
+    <a href="/" class="lang">English</a>
+    <a href="/hi/" class="lang">हिन्दी</a>
+    <a href="/gu/" class="lang">ગુજરાતી</a>
+  </div>
+</header>
 
   <!-- INLINE STATS BAR (separated, full short labels, pipe separators, tooltip kept) -->
   <style>
