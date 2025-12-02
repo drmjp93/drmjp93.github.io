@@ -1,48 +1,351 @@
 <!doctype html>
 <html lang="hi">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>टेलीमेडिसिन कंसल्टेशन — डॉ. मित पांचाणी</title>
-  <meta name="description" content="ऑनलाइन टेलीमेडिसिन कंसल्टेशन — डॉ. मित पांचाणी" />
-  <link rel="canonical" href="https://drmjp93.in/hi/telemedicine.html">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>टेलीमेडिसिन परामर्श — डॉ. मित पांचाणी</title>
+  <meta name="description" content="डॉ. मित पांचाणी द्वारा ऑनलाइन टेलीमेडिसिन परामर्श।" />
+
   <style>
-    :root{--bg:#f5f7fa;--card:#fff;--text:#222;--muted:#6b7280;--accent:#1a1a1a}
-    *{box-sizing:border-box}body{margin:0;padding:20px;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text)}
-    .container{max-width:980px;margin:18px auto;background:var(--card);padding:26px;border-radius:12px}
-    h1{color:var(--accent)}.lead{color:var(--muted)}
-    .btn{display:inline-block;padding:12px 18px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:700}
-    .note{background:#fffbea;padding:10px;border-radius:8px;border:1px solid #f6e29b;color:#6b7280}
-    footer{text-align:center;margin-top:22px;color:var(--muted)}
+    :root {
+      --bg:#f5f7fa; --card:#ffffff; --text:#222; --muted:#6b7280;
+      --accent:#1a1a1a; --accentDark:#0f1724;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0; padding:20px;
+      background:var(--bg);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text); line-height:1.55;
+    }
+    .container{
+      max-width:980px; margin:18px auto; background:var(--card);
+      padding:26px; border-radius:12px;
+      box-shadow:0 12px 30px rgba(15,15,15,0.06);
+    }
+    h1{margin:0 0 10px; font-size:1.8rem; color:var(--accent);}
+    .lead{color:var(--muted); margin-bottom:18px;}
+    .btn{
+      display:inline-block; padding:12px 18px;
+      background:var(--accent);
+      color:#fff; border-radius:8px; text-decoration:none;
+      font-weight:700; font-size:0.98rem;
+    }
+    .note{
+      background:#fffbea; padding:12px;
+      border-radius:8px; font-size:0.88rem;
+      margin-top:10px; border:1px solid #f6e29b;
+    }
+    footer{text-align:center; margin-top:30px; color:var(--muted);}
+
+    .acc { border-radius:8px; overflow:hidden; border:1px solid #eaeaea; margin:14px 0; }
+    .acc button{
+      width:100%; text-align:left; padding:14px;
+      background:#fafafa; border:0; font-weight:700;
+      cursor:pointer; font-size:1rem;
+    }
+    .acc .panel{
+      padding:14px; display:none; background:white;
+      color:#444; border-top:1px solid #eee;
+    }
+
+    ul.quick{ margin:8px 0 18px 18px;color:#333; }
+    a.link-inline{ color:#1a1a1a; text-decoration:underline; font-weight:600; }
+    @media (max-width:560px){
+      body{padding:14px}
+      .container{padding:18px}
+    }
+  </style>
+
+  <style>
+.pill-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:12px 22px;
+  border-radius:999px;
+  background:#0b0b0b;
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  min-width:140px;
+  box-shadow: 0 8px 20px rgba(6,7,10,0.28), inset 0 -3px 8px rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.04);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  cursor:pointer;
+}
+.pill-btn.secondary{
+  background:#262626;
+  box-shadow: 0 6px 16px rgba(10,10,10,0.18);
+  color:#fff;
+}
+.pill-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(6,7,10,0.32); }
+.pill-btn:active { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(6,7,10,0.22); }
+
+.btn-row {
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin:28px 0;
+  flex-wrap:wrap;
+}
+
+@media (max-width:420px){
+  .btn-row .pill-btn { min-width:unset; width:48%; padding:10px 14px; }
+}
+
+@media (max-width:560px) {
+  .pill-btn {
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    padding:10px 14px !important;
+    font-size:0.95rem !important;
+    line-height:1.2 !important;
+    white-space:normal !important;
+    text-align:center !important;
+    border-radius:14px !important;
+  }
+  .btn-row { gap:12px; }
+  .btn-row .pill-btn { width:100% !important; }
+}
+
+.pill-btn:focus {
+  outline: 3px solid rgba(59,130,246,0.16);
+  box-shadow:0 10px 30px rgba(6,7,10,0.16);
+}
   </style>
 </head>
+
 <body>
-  <main class="container">
-    <a href="/hi/" style="text-decoration:none;color:var(--muted)">← मुख्य पृष्ठ</a>
-    <h1>टेलीमेडिसिन कंसल्टेशन</h1>
-    <p class="lead">फोन के माध्यम से त्वरित और विश्वसनीय परामर्श।</p>
+<main class="container">
 
-    <div class="note"><strong>आपातकालीन स्थिति:</strong> छाती में दर्द, गंभीर सांस की तकलीफ़ — नजदीकी अस्पताल जाएँ।</div>
+  <h1>टेलीमेडिसिन परामर्श</h1>
+  <div class="lead">
+    फ़ोन कॉल के माध्यम से सुविधाजनक और विश्वसनीय चिकित्सा सलाह।
+  </div>
 
-    <h2>मुख्य बातें</h2>
+  <!-- EMERGENCY -->
+  <div style="background:#ffe9e9;color:#9b1111;padding:10px;border-radius:8px;font-weight:700;margin-bottom:16px;">
+    आपातकाल? सीने में दर्द, तेज साँस फूलना, कमजोरी, बेहोशी, दौरे या व्यवहार में बदलाव होने पर तुरंत नजदीकी अस्पताल जाएँ।
+  </div>
+
+  <!-- QUICK INFO -->
+  <ul class="quick">
+    <li>पहली सलाह: ₹400 (लगभग 15 मिनट)</li>
+    <li><a href="#" id="openFollowUp" class="link-inline">फॉलो-अप नीति (देखने के लिए टैप करें)</a></li>
+    <li>पेमेंट के बाद ही अपॉइंटमेंट तय किया जाएगा</li>
+    <li>परामर्श फ़ोन पर (आवश्यकता हो तो वीडियो)</li>
+  </ul>
+
+  <!-- HOW IT WORKS -->
+  <div class="acc">
+    <button aria-expanded="false">प्रक्रिया कैसे होती है?</button>
+    <div class="panel">
+      <ol>
+        <li><strong>Pay Now</strong> पर क्लिक करके भुगतान पूरा करें।</li>
+        <li>पेमेंट के बाद आवश्यक जानकारी भरने हेतु फ़ॉर्म सबमिट करें।</li>
+        <li>इसके बाद आपको फ़ोन कॉल का समय दिया जाएगा और परामर्श शुरू होगा।</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- SUITABLE FOR -->
+  <div class="acc">
+    <button aria-expanded="false">किसके लिए उपयोगी?</button>
+    <div class="panel">
+      <ul>
+        <li>डायबिटीज़, थायरॉइड, BP, कोलेस्ट्रॉल, चल रही कार्डियक समस्या</li>
+        <li>रुमेटाइड आर्थराइटिस, वर्टिगो</li>
+        <li><strong>गर्भावस्था</strong> में डायबिटीज़/थायरॉइड/BP (गैर-आपातकाल)</li>
+        <li>दवाइयों की समीक्षा</li>
+        <li>रक्त रिपोर्ट / टेस्ट की समीक्षा</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BEFORE CONSULT -->
+  <div class="acc">
+    <button aria-expanded="false">परामर्श से पहले</button>
+    <div class="panel">
+      <ul>
+        <li>उम्र, चल रही दवाइयाँ, एलर्जी</li>
+        <li>हाल की रिपोर्ट / स्कैन</li>
+        <li>उपलब्ध vitals — BP, तापमान, SPO₂</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- REFUND -->
+  <div class="acc">
+    <button aria-expanded="false">रीफ़ंड और री-शेड्यूल नियम</button>
+    <div class="panel">
+      <ul>
+        <li>अपॉइंटमेंट समय देने से पहले माँगा गया रीफ़ंड — पूर्ण रीफ़ंड।</li>
+        <li>समय तय होने के बाद अनुपस्थित रहने पर — रीफ़ंड नहीं।</li>
+        <li>एक बार मुफ्त में री-शेड्यूल संभव।</li>
+        <li>तकनीकी समस्या हमारी तरफ से हो तो कॉल दोबारा किया जाएगा।</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOLLOW-UP -->
+  <div class="acc">
+    <button aria-expanded="false">फॉलो-अप नियम व मैसेजिंग गाइडलाइन</button>
+    <div class="panel">
+      <p style="font-weight:700;margin:0 0 8px 0;">फॉलो-अप नीति:</p>
+      <ul>
+        <li>उसी समस्या के लिए 72 घंटे के अंदर फॉलो-अप → <strong>नि:शुल्क</strong> (कॉल/मेसेज अनुसार)।</li>
+        <li>72 घंटे बाद → <strong>₹300</strong></li>
+      </ul>
+
+      <p style="font-weight:700;margin:12px 0 6px 0;">महत्वपूर्ण:</p>
+      <ul>
+        <li>नई समस्या या नया लक्षण — इसे नया परामर्श माना जाएगा, भले ही 72 घंटे के अंदर हो।</li>
+      </ul>
+
+      <p style="font-weight:700;margin:12px 0 6px 0;">WhatsApp गाइडलाइन:</p>
+      <ul>
+        <li>WhatsApp केवल छोटी स्पष्टियों और रिपोर्ट भेजने के लिए।</li>
+        <li>नई समस्या, डोज़ बदलने या निर्णय लेने का माध्यम नहीं।</li>
+        <li>नई समस्या के लिए नया पेड परामर्श आवश्यक।</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- T&C -->
+  <div class="acc">
+    <button aria-expanded="false">टेलीमेडिसिन नियम व शर्तें</button>
+    <div class="panel">
+      <ul>
+        <li>सलाह आपके द्वारा दी गई जानकारी के आधार पर होती है।</li>
+        <li>टेलीमेडिसिन कुछ स्थितियों में शारीरिक जांच का विकल्प नहीं है।</li>
+        <li>आपकी सारी चिकित्सा जानकारी गोपनीय रखी जाएगी।</li>
+        <li>रोगी सही जानकारी प्रदान करने व सलाह का पालन करने हेतु सहमत है।</li>
+        <li>पेमेंट + कॉल/मेसेज = टेली-कंसल्ट सहमति।</li>
+        <li>फ़ॉर्म भरे बिना हम आपसे संपर्क नहीं कर सकते।</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="btn-row" aria-hidden="false">
+    <a href="pay.html" class="pill-btn" id="payNowBtn" aria-label="Pay now">
+      मैंने ऊपर दिए सभी नियम पढ़ लिए — भुगतान जारी रखें
+    </a>
+
+    <a href="index.html" class="pill-btn secondary" id="backBtn" aria-label="Back to homepage">
+      वापस जाएँ
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  © 2025 Dr. Mit Panchani. All Rights Reserved.
+</footer>
+
+<!-- FOLLOW UP MODAL -->
+<div id="followModal"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45);
+           backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:9999;">
+  <div style="background:#fff; width:92%; max-width:640px; padding:18px;
+           border-radius:12px; max-height:80vh; overflow-y:auto; position:relative;">
+    <button id="closeFollowUp"
+            style="position:absolute; top:10px; right:12px; background:none; border:0;
+                   font-size:22px; cursor:pointer;">×</button>
+
+    <h2 style="margin-top:0;">फॉलो-अप नीति</h2>
+
+    <p style="font-weight:700;margin:0 0 8px 0;">फॉलो-अप नीति:</p>
     <ul>
-      <li>पहली कंसल्टेशन ₹400 (लगभग 15 मिनट)</li>
-      <li>फॉलो-अप ₹300</li>
-      <li>भुगतान के बाद ही अपॉइंटमेंट दिया जाएगा</li>
+      <li>उसी समस्या का 72 घंटे के भीतर फॉलो-अप → <strong>नि:शुल्क</strong></li>
+      <li>72 घंटे बाद → <strong>₹300</strong></li>
     </ul>
 
-    <h3>प्रक्रिया</h3>
-    <ol>
-      <li><strong>Pay</strong> पर क्लिक करें और भुगतान पूरा करें।</li>
-      <li>भुगतान के बाद पुष्टि फॉर्म भरें।</li>
-      <li>फिर कॉल का समय निर्धारित किया जाएगा।</li>
-    </ol>
+    <p style="font-weight:700;margin:12px 0 6px 0;">महत्वपूर्ण:</p>
+    <ul>
+      <li>नई समस्या = नया परामर्श</li>
+    </ul>
 
-    <p style="text-align:center;margin-top:18px;">
-      <a class="btn" href="/pay.html">भुगतान पृष्ठ खोलें</a>
-    </p>
+    <p style="font-weight:700;margin:12px 0 6px 0;">WhatsApp गाइडलाइन:</p>
+    <ul>
+      <li>केवल छोटी स्पष्टियों और रिपोर्ट के लिए</li>
+      <li>नई समस्या/डोज़ परिवर्तन के लिए नहीं</li>
+      <li>नई समस्या हेतु पेड परामर्श आवश्यक</li>
+    </ul>
+  </div>
+</div>
 
-  </main>
-  <footer>© 2025 Dr. Mit Panchani</footer>
+<script>
+  document.querySelectorAll('.acc').forEach(acc=>{
+    const btn = acc.querySelector('button');
+    const panel = acc.querySelector('.panel');
+    btn.addEventListener('click', ()=>{
+      const open = panel.style.display === 'block';
+      panel.style.display = open ? 'none' : 'block';
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+
+  (function(){
+    const modal = document.getElementById('followModal');
+    const openBtn = document.getElementById('openFollowUp');
+    const closeBtn = document.getElementById('closeFollowUp');
+
+    if(!openBtn || !modal) return;
+
+    openBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', ()=>{
+      modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal){
+        modal.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && modal.style.display === 'flex'){
+        modal.style.display = 'none';
+      }
+    });
+  })();
+
+  (function(){
+    function applyFallback(){
+      if (window.innerWidth <= 560){
+        document.querySelectorAll('.pill-btn').forEach(b=>{
+          b.style.display = 'block';
+          b.style.width = '100%';
+          b.style.maxWidth = '100%';
+          b.style.padding = '10px 14px';
+          b.style.borderRadius = '14px';
+          b.style.whiteSpace = 'normal';
+          b.style.textAlign = 'center';
+        });
+      } else {
+        document.querySelectorAll('.pill-btn').forEach(b=>{
+          b.style.display = '';
+          b.style.width = '';
+          b.style.maxWidth = '';
+          b.style.padding = '';
+          b.style.borderRadius = '';
+          b.style.whiteSpace = '';
+          b.style.textAlign = '';
+        });
+      }
+    }
+    window.addEventListener('resize', applyFallback);
+    document.addEventListener('DOMContentLoaded', applyFallback);
+  })();
+</script>
+
 </body>
 </html>
