@@ -1,35 +1,348 @@
 <!doctype html>
 <html lang="hi">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>भुगतान — टेलीमेडिसिन</title>
-  <link rel="canonical" href="https://drmjp93.in/hi/pay.html">
-  <style>
-    :root{--bg:#f5f7fa;--card:#fff;--text:#222;--accent:#0b1220;--muted:#6b7280}
-    *{box-sizing:border-box}body{margin:0;padding:20px;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text)}
-    .card{max-width:760px;margin:18px auto;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 12px 30px rgba(15,15,15,0.06)}
-    h1{color:var(--accent)}
-    .btn{display:inline-block;padding:10px 14px;background:var(--accent);color:#fff;border-radius:10px;text-decoration:none;font-weight:800}
-    footer{text-align:center;margin-top:18px;color:var(--muted)}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>टेलीमेडिसिन — भुगतान</title>
+<meta name="description" content="डिवाइस-संज्ञान UPI भुगतान पेज — टेलीमेडिसिन" />
+<style>
+:root{
+  --bg:#f5f7fa; --card:#fff; --muted:#6b7280; --accent:#0b1220; --pill-h:56px;
+}
+*{box-sizing:border-box}
+body{ margin:0; padding:20px; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--accent); }
+
+/* top */
+.topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.back{ background:#0b1220; color:#fff; padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:800; }
+
+/* grid */
+.container{ max-width:1100px; margin:22px auto; display:grid; grid-template-columns:1fr 460px; gap:20px; align-items:flex-start;}
+@media(max-width:920px){ .container{ grid-template-columns:1fr; } }
+
+/* left card */
+.card-left{ background:#0b1220; color:#fff; border-radius:14px; padding:22px; min-height:520px; }
+.card-left h2{ margin:0 0 12px; font-size:1.4rem; }
+.rules{ color:#e6eef9; line-height:1.6; }
+
+/* right card */
+.card-right{ background:var(--card); border-radius:14px; padding:18px; box-shadow:0 8px 30px rgba(15,15,15,0.06); }
+.alert{ background:#fffbea; border:1px solid #f6e29b; padding:10px 12px; border-radius:10px; font-weight:700; margin-bottom:14px; color:#6b7280; }
+
+/* method pills (mobile) */
+.methods{ display:flex; flex-direction:column; gap:12px; margin-bottom:12px; }
+.pill{
+  display:flex; align-items:stretch; height:var(--pill-h); border-radius:12px;
+  background:#fff; border:1px solid #e9eef6; overflow:hidden; transition:box-shadow .14s ease, transform .12s ease;
+  padding:0;
+}
+.pill .left{ flex:1; display:flex; flex-direction:column; justify-content:center; padding:12px 14px; min-width:0; }
+.pill .title{ font-weight:900; font-size:1rem; margin-bottom:2px; }
+.pill .desc{ color:var(--muted); font-size:.90rem; }
+.pill .action{
+  flex:0 0 110px; display:inline-flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg,#0b1220,#0f1724);
+  color:#fff; border-radius:0 12px 12px 0;
+  padding:0 12px; font-weight:900; cursor:pointer; border:0; height:100%;
+}
+.pill:focus-within, .pill:focus{ outline:none; box-shadow:0 0 0 4px rgba(59,130,246,0.10); }
+.pill:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(11,18,32,0.06); }
+
+/* show QR toggle (mobile) */
+#showQRtoggle{ margin-top:8px; background:#eef2f7; border-radius:8px; padding:10px; text-align:center; font-weight:700; cursor:pointer; display:none; }
+
+/* Scan & Pay card */
+.scanpay{ margin-top:12px; border:1px solid #e7eef6; border-radius:12px; padding:12px; background:#fff; display:none; }
+.scanpay .row{ display:flex; gap:12px; align-items:center; }
+.scanpay .leftLabel{ flex:0 0 120px; border-radius:8px; background:#f8fafc; display:flex; align-items:center; justify-content:center; font-weight:900; color:#0b1220; height:120px; text-align:center; padding:8px; }
+.scanpay .rightQR{ flex:1; display:flex; align-items:center; gap:12px; padding:8px; justify-content:center; }
+.qr-img{ width:160px; height:160px; border-radius:8px; border:1px solid #eaeff6; object-fit:contain; background:#fff; }
+
+/* UPI plain (desktop & iPad) */
+.upi-plain{ display:none; margin-top:12px; text-align:center; font-weight:900; color:#0b1220; background:#f9fafb; padding:10px; border-radius:10px; border:1px solid #eef2f7; }
+
+/* full-width copy button (mobile) */
+.copy-full{ margin-top:12px; display:none; gap:8px; }
+.copy-full .copywide{ flex:1; background:#0b1220; color:#fff; padding:12px; border-radius:10px; border:0; font-weight:900; cursor:pointer; }
+
+/* Amount / presets - fixed non-wrapping group */
+.amount-row{ margin-top:12px; display:flex; gap:8px; align-items:center; flex-wrap:nowrap; }
+.amount-row label{ font-weight:900; min-width:60px; white-space:nowrap; }
+.amount-row input{ padding:8px 10px; border-radius:8px; border:1px solid #ddd; width:100px; text-align:center; font-weight:800; flex:0 0 auto; }
+.preset{ padding:8px 12px; border-radius:8px; background:#eef6ff; border:1px solid #e0efff; font-weight:800; cursor:pointer; white-space:nowrap; }
+
+/* on very narrow screens allow wrap safely */
+@media(max-width:360px){
+  .amount-row{ flex-wrap:wrap; }
+  .amount-row input{ width:84px; }
+}
+
+/* total summary bar with amount on right */
+.totalbar{ margin-top:14px; display:flex; align-items:center; justify-content:space-between; background:#f1f6fb; padding:14px; border-radius:10px; }
+.totalbar .label{ color:var(--muted); font-weight:800; }
+.totalbar .amt{ font-weight:900; font-size:1.3rem; background:#fff; padding:6px 12px; border-radius:8px; }
+
+/* split CTA */
+.split-cta{ margin-top:18px; display:flex; border-radius:12px; overflow:hidden; border:1px solid #e7eef6; background:#fff; height:64px; }
+.split-cta .left{ flex:1; padding:10px 14px; display:flex; flex-direction:column; justify-content:center; min-width:0; }
+.split-cta .left .l1{ font-weight:900; font-size:1.02rem; color:#0b1220; text-transform:uppercase; white-space:normal; word-break:break-word; }
+.split-cta .left .l2{ color:var(--muted); font-weight:700; font-size:.90rem; margin-top:4px; }
+.split-cta .right{ width:160px; background:#0b1220; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; cursor:pointer; }
+
+/* responsive tweaks */
+@media(max-width:920px){
+  #showQRtoggle{ display:block; }
+  .methods{ display:flex; }
+}
+@media(max-width:640px){
+  .scanpay .row{ flex-direction:column; align-items:center; gap:8px; }
+  .scanpay .leftLabel{ width:100%; height:56px; }
+  .qr-img{ width:220px; height:220px; }
+  .split-cta{ flex-direction:row; height:auto; }
+  .split-cta .right{ width:140px; padding:12px 10px; }
+  .copy-full{ display:flex; }
+}
+@media(max-width:420px){
+  .split-cta{ flex-direction:column; }
+  .split-cta .right{ width:100%; border-top:1px solid rgba(0,0,0,0.04); }
+}
+
+/* toast */
+#openToast{ position:fixed; left:50%; transform:translateX(-50%); bottom:22px; background:rgba(11,18,32,0.95); color:#fff; padding:10px 14px; border-radius:12px; display:none; font-weight:700; z-index:9999; }
+</style>
 </head>
 <body>
-  <main class="card">
-    <a href="/hi/telemedicine.html" style="color:var(--muted);text-decoration:none">← वापस</a>
-    <h1>भुगतान निर्देश</h1>
-    <p>कृपया नीचे दी गई जानकारी पढ़ें और फिर "भुगतान प्रारम्भ करें" बटन पर क्लिक करें।</p>
 
-    <ul>
-      <li>Payee: <strong>Mit J Panchani</strong></li>
-      <li>राशि मार्गदर्शक: <strong>नया केस ₹400 · फॉलो-अप ₹300</strong></li>
-      <li>भुगतान के बाद पुष्टि फॉर्म भरना अनिवार्य है।</li>
-    </ul>
+<div class="topbar">
+  <a class="back" href="telemedicine.html">← वापस</a>
+  <div style="color:var(--muted);font-weight:700">सुरक्षित भुगतान</div>
+</div>
 
-    <p style="margin-top:12px;"><a class="btn" href="/pay.html">भुगतान प्रक्रिया शुरू करें</a></p>
+<div class="container">
+  <!-- LEFT -->
+  <aside class="card-left">
+    <h2>टेलीमेडिसिन — नियम</h2>
+    <div class="rules">
+      <p><strong>परामर्श से पहले</strong></p>
+      <ul>
+        <li>अपॉइंटमेंट केवल भुगतान के बाद दी जाएगी।</li>
+        <li>भुगतान के बाद संपर्क व भुगतान विवरण देने हेतु पुष्टिकरण फ़ॉर्म भरें; <strong>यदि आप ऐसा नहीं करते तो हम आपसे संपर्क नहीं कर पाएंगे।</strong></li>
+        <li>यदि कोई आपात स्थिति हो → तुरंत नज़दीकी अस्पताल जाएँ।</li>
+      </ul>
 
-    <p style="margin-top:16px;color:var(--muted)">भुगतान समस्या के लिए: support@drmjp93.in</p>
-  </main>
-  <footer>© 2025 Dr. Mit Panchani</footer>
+      <p style="margin-top:10px;"><strong>फॉलो-अप</strong></p>
+      <ul>
+        <li>वही समस्या 72 घंटे के अंदर — नि:शुल्क।</li>
+        <li>72 घंटे के बाद — ₹300।</li>
+      </ul>
+
+      <p style="margin-top:10px;"><strong>सहायता</strong></p>
+      <ul>
+        <li>भुगतान या अन्य समस्याएँ? हमें ईमेल करें: support@drmjp93.in</li>
+      </ul>
+      <p style="margin-top:14px;color:#dbe6f5;">भुगतान के बाद कृपया पुष्टिकरण फ़ॉर्म भरें। परामर्श का समय/स्लॉट उसी नंबर पर भेजा जाएगा।</p>
+    </div>
+  </aside>
+
+  <!-- RIGHT -->
+  <section class="card-right">
+    <div class="alert">⚠️ भुगतान से पहले ग्रहणकर्ता का नाम सुनिश्चित करें: <strong>Mit J Panchani</strong></div>
+
+    <!-- method pills (mobile only) -->
+    <div id="methodsWrapper" class="methods" aria-hidden="true"></div>
+
+    <!-- show QR toggle (mobile only) -->
+    <div id="showQRtoggle" aria-hidden="true">📷 QR कोड दिखाएँ</div>
+
+    <!-- Scan & Pay card -->
+    <div class="scanpay" id="scanpay" aria-hidden="true">
+      <div class="row">
+        <div class="leftLabel">स्कैन &amp; भुगतान</div>
+        <div class="rightQR">
+          <img id="qrImg" class="qr-img" src="qr.jpg" alt="QR">
+        </div>
+      </div>
+      <!-- UPI plain shown below QR only on desktop/iPad -->
+      <div class="upi-plain" id="upiPlain" aria-hidden="true">drmjp93@upi</div>
+    </div>
+
+    <!-- full-width copy (mobile only) -->
+    <div class="copy-full" id="copyFull" aria-hidden="true">
+      <button class="copywide" id="copyWide">UPI ID कॉपी करें</button>
+    </div>
+
+    <!-- Amount controls -->
+    <div class="amount-row">
+      <label for="amountInput">राशि</label>
+      <input id="amountInput" type="number" value="400" min="1" />
+      <button class="preset" data-val="400">₹400</button>
+      <button class="preset" data-val="300">₹300</button>
+    </div>
+
+    <!-- Total bar -->
+    <div class="totalbar">
+      <div class="label">कुल मूल्य</div>
+      <div class="amt" id="bigAmount">₹ 400</div>
+    </div>
+
+    <!-- split CTA -->
+    <div class="split-cta" role="group" aria-label="भुगतान के बाद पुष्टिकरण जमा करें">
+      <div class="left">
+        <div class="l1">भुगतान के बाद</div>
+        <div class="l2">पुष्टिकरण फ़ॉर्म जमा करें (आवश्यक)</div>
+      </div>
+      <div class="right" id="openFormBtn">फ़ॉर्म खोलें</div>
+    </div>
+  </section>
+</div>
+
+<div id="openToast" role="status" aria-live="polite"></div>
+
+<script>
+/* Responsive-first detection (screen width) with UA fallback */
+function prefersMobileByWidth(){ return window.matchMedia('(max-width:920px)').matches; }
+function uaSuggestsMobile(){ return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent); }
+let isMobile = prefersMobileByWidth() || uaSuggestsMobile();
+document.body.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
+
+/* Robust iOS detection for showing only WhatsApp: */
+function isIOSDevice(){
+  const ua = navigator.userAgent || '';
+  const platform = navigator.platform || '';
+  if(/iPhone|iPod|iPad/.test(ua)) return true;
+  if(platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
+  return false;
+}
+
+/* Config */
+const UPI_ID = 'drmjp93@upi';
+const PAYEE = 'Mit J Panchani';
+const NOTE = 'Telemedicine Consultation';
+const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSegoCeodeLpgCAXnSki_0kS74YONXKT_RtRl5jlyX9hAfmtbw/viewform?usp=dialog';
+
+/* Elements */
+const methodsWrapper = document.getElementById('methodsWrapper');
+const showQRtoggle = document.getElementById('showQRtoggle');
+const scanpay = document.getElementById('scanpay');
+const upiPlain = document.getElementById('upiPlain');
+const copyFull = document.getElementById('copyFull');
+const copyWide = document.getElementById('copyWide');
+const amountInput = document.getElementById('amountInput');
+const bigAmount = document.getElementById('bigAmount');
+const openFormBtn = document.getElementById('openFormBtn');
+const qrImg = document.getElementById('qrImg');
+const toast = document.getElementById('openToast');
+
+/* Methods */
+const METHODS = {
+  whatsapp:{ title:'WhatsApp Pay', desc:'WhatsApp UPI खोलें', pkg:null },
+  gpay:{ title:'Google Pay', desc:'GPay खोलें', pkg:'com.google.android.apps.nbu.paisa.user' },
+  phonepe:{ title:'PhonePe', desc:'PhonePe खोलें', pkg:'com.phonepe.app' },
+  bhim:{ title:'BHIM / UPI', desc:'कोई भी UPI ऐप खोलें', pkg:'in.org.npci.upiapp' }
+};
+
+/* Helpers */
+function enc(v){ return encodeURIComponent(v); }
+function buildUPI(amount){
+  const a = Number(amount)||0;
+  const safe = (isFinite(a)&&a>0)? a.toFixed(2) : '0.00';
+  return `upi://pay?pa=${enc(UPI_ID)}&pn=${enc(PAYEE)}&am=${enc(safe)}&tn=${enc(NOTE)}&cu=INR`;
+}
+function intentURI(pkg, upi){ return `intent://${upi.replace('upi://','')}#Intent;package=${pkg};scheme=upi;end`; }
+function showToast(msg, ms=1000){ toast.textContent = msg; toast.style.display='block'; clearTimeout(toast._t); toast._t = setTimeout(()=> toast.style.display='none', ms); }
+
+/* Build pills (mobile only). iOS: only WhatsApp; Android: all four. */
+function createPill(def){
+  const p = document.createElement('div'); p.className='pill';
+  p.innerHTML = `<div class="left"><div class="title">${def.title}</div><div class="desc">${def.desc}</div></div><div class="action">खोलें</div>`;
+  const openHandler = ()=>{
+    const upi = buildUPI(amountInput.value);
+    if(/Android/i.test(navigator.userAgent) && def.pkg){
+      window.location.href = intentURI(def.pkg, upi);
+    } else {
+      window.location.href = upi;
+    }
+  };
+  p.addEventListener('click', ()=>{ p.style.transform='translateY(-3px)'; setTimeout(()=>p.style.transform='none',120); openHandler(); });
+  p.querySelector('.action').addEventListener('click', (e)=>{ e.stopPropagation(); openHandler(); });
+  return p;
+}
+function buildMethodsUI(){
+  methodsWrapper.innerHTML = '';
+  if(!isMobile) return;
+  if(isIOSDevice()){
+    methodsWrapper.appendChild(createPill(METHODS.whatsapp));
+  } else {
+    methodsWrapper.appendChild(createPill(METHODS.gpay));
+    methodsWrapper.appendChild(createPill(METHODS.phonepe));
+    methodsWrapper.appendChild(createPill(METHODS.bhim));
+    methodsWrapper.appendChild(createPill(METHODS.whatsapp));
+  }
+}
+
+/* Setup UI */
+function setupUI(){
+  if(isMobile){
+    methodsWrapper.style.display='flex';
+    showQRtoggle.style.display='block';
+    scanpay.style.display='none';
+    upiPlain.style.display='none';
+    copyFull.style.display='flex';
+  } else {
+    methodsWrapper.style.display='none';
+    showQRtoggle.style.display='none';
+    scanpay.style.display='block';
+    upiPlain.style.display='block';
+    copyFull.style.display='none';
+  }
+}
+
+/* Toggle QR (mobile) */
+showQRtoggle.addEventListener('click', ()=>{
+  scanpay.style.display = (scanpay.style.display === 'block') ? 'none' : 'block';
+});
+
+/* Copy UPI (mobile full) */
+copyWide && copyWide.addEventListener('click', async ()=>{
+  try{ await navigator.clipboard.writeText(UPI_ID); showToast('UPI ID कॉपी हो गया'); }
+  catch(e){ alert('कॉपि असफल — उपयोग करें: ' + UPI_ID); }
+});
+
+/* Amount logic */
+document.querySelectorAll('.preset').forEach(b=> b.addEventListener('click', ()=>{ amountInput.value = b.dataset.val; refreshAmount(); }));
+amountInput.addEventListener('input', refreshAmount);
+function refreshAmount(){
+  const v = Number(amountInput.value) || 0;
+  bigAmount.textContent = '₹ ' + (v>0? v.toLocaleString() : '0');
+  qrImg.title = buildUPI(v);
+}
+
+/* Open form */
+openFormBtn.addEventListener('click', ()=> window.open(FORM_URL,'_blank'));
+
+/* Init */
+buildMethodsUI();
+setupUI();
+refreshAmount();
+if(upiPlain) upiPlain.textContent = UPI_ID;
+
+/* QR fallback to Google API if local missing */
+qrImg.onerror = ()=>{ const upi = buildUPI(Number(amountInput.value)||0); qrImg.src = 'https://chart.googleapis.com/chart?cht=qr&chs=240x240&chl=' + encodeURIComponent(upi); };
+
+/* React to viewport change */
+window.matchMedia('(max-width:920px)').addEventListener('change', (e)=>{
+  isMobile = e.matches || uaSuggestsMobile();
+  document.body.classList.toggle('is-mobile', isMobile);
+  document.body.classList.toggle('is-desktop', !isMobile);
+  buildMethodsUI();
+  setupUI();
+});
+
+/* small UA fallback used above */
+function uaSuggestsMobile(){ return /Android|iPhone|iPod|Mobile/i.test(navigator.userAgent); }
+
+/* accessible toggle */
+showQRtoggle.addEventListener('keydown',(e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); showQRtoggle.click(); } });
+</script>
 </body>
 </html>
