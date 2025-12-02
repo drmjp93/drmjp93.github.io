@@ -4,151 +4,286 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ડૉ. મિત પાંચાણી — પ્રોફાઇલ</title>
-  <meta name="description" content="ડૉ. મિત પાંચાણી — એમડી ફિઝિશિયન, ડાયાબિટીસ, થાયરોઇડ, ટેલીમેડિસિન કન્સલ્ટેશન." />
+  <meta name="description" content="ડૉ. મિત પંચાણી — MD (General Medicine). OPD અને Telemedicine સેવા. ડાયાબિટીસ, થાયરોઇડ અને હૃદય સંબંધિત માર્ગદર્શન." />
   <link rel="canonical" href="https://drmjp93.in/gu/">
 
   <style>
     :root{
-      --bg:#f5f7fa; --card:#ffffff; --text:#222; --muted:#6b7280;
-      --accent:#1a1a1a; --accentDark:#0f1724;
+      --bg:#f5f7fa; --card:#ffffff; --text:#0b1220; --muted:#6b7280;
+      --accent:#1a1a1a; --header-bg:#0f1724; --pill-h:56px;
     }
-    *{box-sizing:border-box;}
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin:0; padding:20px;
-      background:var(--bg);
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-      color:var(--text); line-height:1.6;
+      margin:0; padding:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased;
+      line-height:1.6;
     }
-    .container{
-      max-width:980px; margin:18px auto;
-      background:var(--card); padding:26px;
-      border-radius:12px;
+
+    /* header */
+    header{
+      background:var(--header-bg);
+      color:#fff;
+      padding:22px;
+      border-radius:0 0 12px 12px;
+      position:relative;
+    }
+    .header-flex{
+      max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:18px;
+    }
+    .profile-photo{
+      width:120px; height:120px; border-radius:50%; object-fit:cover;
+      object-position:50% 10%; border:2px solid rgba(255,255,255,0.08); background:#222;
+      box-shadow:0 6px 18px rgba(0,0,0,0.28);
+    }
+    .header-text h1{ margin:0; font-size:1.6rem; font-weight:800; line-height:1; }
+    .header-text p{ margin:6px 0 0; font-size:0.95rem; color:rgba(255,255,255,0.85) }
+
+    /* language switcher top-right inside header */
+    .lang-switch{
+      position:absolute; top:16px; right:18px; display:flex; gap:12px; font-weight:700;
+      font-size:0.95rem;
+    }
+    .lang-switch a{ color:#fff; text-decoration:none; opacity:0.95 }
+    .lang-switch a:hover{ opacity:1; text-decoration:underline; }
+
+    /* small visitor badge (right of lang switcher) */
+    .visitor-badge{
+      position:absolute; top:52px; right:18px; color:#cfe3ff; font-weight:700; font-size:0.9rem;
+      opacity:0.95;
+    }
+
+    /* main container */
+    main.container{
+      max-width:980px; margin:22px auto; background:var(--card); padding:26px; border-radius:12px;
       box-shadow:0 12px 30px rgba(15,15,15,0.06);
     }
 
-    /* Header layout */
-    header{
-      background:#0f1724;
-      color:white;
-      padding:24px;
-      border-radius:12px;
-      position:relative;
-      margin-bottom:22px;
-    }
-    .header-flex{
-      display:flex;
-      align-items:center;
-      gap:18px;
-    }
-    .profile-photo{
-      width:82px; height:82px; border-radius:50%;
-      object-fit:cover; border:2px solid #fff;
-    }
-    .header-text h1{
-      margin:0; font-size:1.9rem; font-weight:800;
-    }
-    .header-text p{
-      margin:4px 0 0; color:#dbeafe; font-size:1rem;
+    /* emergency banner */
+    .emergency{
+      background:#ffecec; color:#8b1b1b; padding:12px; border-radius:10px; font-weight:700; margin-bottom:16px;
     }
 
-    /* Language switcher */
-    .lang-switch{
-      position:absolute;
-      top:16px; right:20px;
-      display:flex; gap:12px;
-      font-weight:600;
-    }
-    .lang-switch a{
-      color:white;
-      text-decoration:none;
-      opacity:0.85;
-    }
-    .lang-switch a:hover{
-      opacity:1;
-      text-decoration:underline;
+    /* quick lead */
+    .lead{ color:var(--muted); margin-bottom:14px; font-size:0.98rem; }
+
+    /* cards / sections */
+    .row{ display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap; }
+    .col{ flex:1; min-width:280px; }
+
+    .card{
+      background:#fff; border-radius:12px; padding:16px; border:1px solid #eef2f7;
+      box-shadow:0 8px 20px rgba(12,18,35,0.03);
     }
 
-    /* Mobile reposition */
-    @media(max-width:720px){
-      .header-flex{ flex-direction:column; text-align:center; }
-      .lang-switch{
-        position:static;
-        margin-top:12px;
-        justify-content:center;
-      }
+    .cta-pill{
+      display:inline-flex; align-items:center; gap:12px; padding:12px 18px; border-radius:999px;
+      background:linear-gradient(90deg,#0b1220,#111827); color:#fff; text-decoration:none; font-weight:800;
+      box-shadow:0 10px 28px rgba(12,20,40,0.12);
     }
 
-    /* Sections */
-    h2{ color:var(--accent); margin-top:22px; }
-    .lead{ color:var(--muted); margin-top:10px; margin-bottom:18px; }
+    /* LDL embed card (summary style) */
+    .ldl-card-summary{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border-radius:12px; background:linear-gradient(135deg,#7c3aed,#06b6d4); color:#fff; }
 
-    .btn{
-      display:inline-block; padding:12px 18px;
-      background:var(--accent);
-      color:#fff; border-radius:8px;
-      text-decoration:none; font-weight:700;
-      margin-top:12px;
-    }
+    /* telemedicine card */
+    .tele-card .title{ font-weight:800; font-size:1.05rem; margin-bottom:8px; }
 
-    footer{
-      text-align:center; margin-top:28px;
-      color:var(--muted); font-size:0.9rem;
+    /* stats bar (inline) */
+    #inline-stats-bar{ max-width:980px; margin:18px auto; text-align:center; display:none }
+    #inline-stats-card{ display:inline-flex; gap:18px; align-items:center; background:#0f1113; color:#fff; padding:8px 16px; border-radius:10px; box-shadow:0 8px 24px rgba(4,6,10,0.12); }
+
+    /* footer */
+    footer{ text-align:center; color:var(--muted); padding:18px 0; font-size:0.9rem; }
+
+    @media(max-width:920px){
+      .header-flex{ flex-direction:column; text-align:center; gap:12px; }
+      .visitor-badge{ position:static; margin-top:8px; text-align:center; }
+      .lang-switch{ position:static; margin-top:8px; justify-content:center; }
     }
   </style>
 </head>
 
 <body>
 
-  <main class="container">
+  <!-- HEADER -->
+  <header>
+    <div class="header-flex">
+      <img src="/myphoto.jpg" alt="Dr Mit Panchani" class="profile-photo" />
 
-    <!-- HEADER -->
-    <header>
-      <div class="header-flex">
-        <img src="/myphoto.jpg" alt="Dr Mit Panchani" class="profile-photo" />
+      <div class="header-text" style="min-width:0;">
+        <h1>ડૉ. મિત પાંચાણી</h1>
+        <p>MD (General Medicine) | 2D ઇકો કાર્ડિયોગ્રાફી ફેલોશિપ — OPD અને Telemedicine</p>
+      </div>
+    </div>
 
-        <div class="header-text">
-          <h1>ડૉ. મિત પાંચાણી</h1>
-          <p>MD (General Medicine) | 2D ઇકો કાર્ડિયોગ્રાફી ફેલોશિપ</p>
+    <!-- language switcher -->
+    <div class="lang-switch" aria-hidden="false">
+      <a href="/" aria-label="English">English</a>
+      <a href="/hi/" aria-label="Hindi">हिन्दी</a>
+      <a href="/gu/" aria-label="Gujarati" style="text-decoration:underline;font-weight:900">ગુજરાતી</a>
+    </div>
+
+    <!-- visitor count badge -->
+    <div class="visitor-badge" id="visitorCount">👥 —</div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="container" role="main">
+
+    <!-- emergency -->
+    <div class="emergency">જરૂરી સ્થિતિ? છાતીમાં દુખાવો, شديد શ્વાસ લેવામાં તકલીફ, જબરદસ્ત કમજોਰੀ કે વિસંગતિ → નજીકનું હોસ્પિટલ સાંભળો.</div>
+
+    <div class="lead">
+      સરળ અને વ્યાવસાયિક ટેલીમેડિસિન કન્સલ્ટેશન — ડાયાબિટીસ, થાયરોઇડ, બ્લડ પ્રેશર અને કોલેસ્ટ્રોલ માટે માર્ગદર્શન.
+    </div>
+
+    <!-- top row: Telemedicine card + LDL summary -->
+    <div class="row" style="margin-bottom:16px;">
+      <div class="col">
+        <div class="card tele-card">
+          <div class="title">Telemedicine Consultation</div>
+          <div style="color:var(--muted);margin-bottom:10px;">ફોન દ્વારા વ્યવસાયિક સલાહ. એપોઇન્ટમેન્ટ ચુકવણી પછી અનિવાર્ય.</div>
+
+          <ul style="margin:0 0 12px 18px; color:#222;">
+            <li>પ્રથમ કન્સલ્ટેશન: ₹400 (લગભગ 15 મિનિટ)</li>
+            <li>ફોલો-અપ: ₹300</li>
+            <li>ચુકવણી બાદ કન્ફર્મેશન ફોર્મ ભરો અને સમય નક્કી થશે</li>
+          </ul>
+
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="/gu/telemedicine.html" class="cta-pill" aria-label="ટેલીમેડિસિન પેજ ખોલો">ટેલીમેડિસિન વિગતો</a>
+            <a href="/pay.html" class="cta-pill" style="background:linear-gradient(90deg,#0b1220,#0f1724);">હવે ચુકવણી કરો</a>
+          </div>
         </div>
       </div>
 
-      <div class="lang-switch">
-        <a href="/">English</a>
-        <a href="/hi/">हिन्दी</a>
-        <a href="/gu/" style="font-weight:900; text-decoration:underline;">ગુજરાતી</a>
+      <div style="width:320px; min-width:240px;">
+        <div class="ldl-card-summary" role="region" aria-label="LDL Calculator">
+          <div style="display:flex;flex-direction:column;gap:6px;min-width:0;">
+            <div style="font-weight:900;">LDL કાલ્ક્યુલેટર</div>
+            <div style="font-size:0.86rem;opacity:0.95;">LDL મૂલ્ય દાખલ કરીને માર્ગદર્શન મેળવો</div>
+          </div>
+
+          <div>
+            <a href="#ldl" class="cta-pill" style="padding:10px 14px;background:rgba(255,255,255,0.12);color:#fff;font-weight:800;text-decoration:none;">ખોલો</a>
+          </div>
+        </div>
+
+        <!-- optional small note -->
+        <div style="font-size:0.82rem;color:var(--muted);margin-top:10px;text-align:left;">
+          સંદેશ: LDL કાલ્ક્યુલેટર એક સાધન છે — નિદાન માટે માર્ગદર્શન લેવું.
+        </div>
       </div>
-    </header>
+    </div>
 
-    <!-- INTRO -->
-    <p class="lead">
-      OPD અને ટેલીમેડિસિન સેવાઓ — ડાયાબિટીસ, થાયરોઇડ, બ્લડ પ્રેશર, કોલેસ્ટ્રોલ અને નિયમિત ફોલો-અપ માટે.
-    </p>
+    <!-- LDL embedded (details/expand) -->
+    <section id="ldl" style="margin-top:18px;">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-weight:900;">LDL Statin કૅલ્ક્યુલેટર (ભારત)</div>
+          <div style="color:var(--muted);font-weight:700">મદદ જરૂરી છે?</div>
+        </div>
 
-    <!-- SERVICES -->
-    <section>
-      <h2>સેવા</h2>
-      <ul>
-        <li>ટેલીમેડિસિન કન્સલ્ટેશન (ફોન / WhatsApp)</li>
-        <li>ડાયાબિટીસ અને થાયરોઇડ મેનેજમેન્ટ</li>
-        <li>બ્લડ પ્રેશર / કોલેસ્ટ્રોલ પ્રોફાઈલ ચેક</li>
-        <li>લેબ રિપોર્ટ રિવ્યુ અને દવાઓની માર્ગદર્શન</li>
-      </ul>
+        <div style="margin-top:12px;color:var(--muted);">
+          ↓ ખાતરી કરવા માટે નીચે ક્લિક કરીને құрал ખોલો.
+        </div>
 
-      <a class="btn" href="/gu/telemedicine.html">
-        ટેલીમેડિસિન માટે આગળ વધો →
-      </a>
+        <div style="margin-top:14px;border-radius:10px;overflow:hidden;border:1px solid #e8eefc;background:#fafcff;min-height:120px;">
+          <div style="padding:18px;text-align:center;color:var(--muted);" id="ldlFramePlaceholder">ટૂલ લોડ કરવા માટે ક્લિક કરો…</div>
+        </div>
+      </div>
     </section>
 
-    <!-- CONTACT -->
-    <section>
-      <h2>સંપર્ક</h2>
-      <p>કોઈ મદદ અથવા પ્રશ્ન માટે ઇમેલ કરો:</p>
-      <p><strong>support@drmjp93.in</strong></p>
+    <!-- inline stats bar (prefetch only) -->
+    <div id="inline-stats-bar" aria-hidden="true" style="margin-top:18px;">
+      <div id="inline-stats-card">
+        <div style="min-width:110px;text-align:center;">
+          <div style="font-weight:700;color:#fff;" data-key="echo_studies">—</div>
+          <div style="font-size:0.75rem;color:#a7adb3;margin-top:6px;">2D Echo</div>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.06);height:36px;margin:0 10px;"></div>
+        <div style="min-width:110px;text-align:center;">
+          <div style="font-weight:700;color:#fff;" data-key="cases_attended">—</div>
+          <div style="font-size:0.75rem;color:#a7adb3;margin-top:6px;">મામલા</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- footer note + contact -->
+    <section style="margin-top:18px;">
+      <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-weight:800;">સંપર્ક અને વધુ માહિતી</div>
+        <div style="color:var(--muted);">મદદ માટે ઇમેઇલ: <strong>support@drmjp93.in</strong></div>
+        <div style="color:var(--muted);">વેબસાઈટ: <a href="https://drmjp93.in" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">drmjp93.in</a></div>
+      </div>
     </section>
 
   </main>
 
-  <footer>© 2025 Dr. Mit Panchani. All Rights Reserved.</footer>
+  <footer>
+    © 2025 Dr. Mit Panchaani — All rights reserved.
+  </footer>
+
+  <!-- Scripts: visitor count, LDL iframe lazy load, inline stats prefill -->
+  <script>
+  // Visitor count (CounterAPI)
+  (function(){
+    const el = document.getElementById('visitorCount');
+    if(!el) return;
+    async function updateVisitorCount(){
+      try{
+        const resp = await fetch('https://api.counterapi.dev/v1/drmjp93-ldlcal/visits/up');
+        const j = await resp.json();
+        if(j && j.count !== undefined){
+          el.innerText = '👥 ' + Number(j.count).toLocaleString();
+        } else {
+          el.innerText = '👥 -';
+        }
+      }catch(e){ el.innerText = '👥 -'; }
+    }
+    document.addEventListener('DOMContentLoaded', updateVisitorCount);
+  })();
+  </script>
+
+  <script>
+  // LDL iframe lazy-load when user clicks the placeholder
+  (function(){
+    const wrap = document.getElementById('ldlFramePlaceholder');
+    const NETLIFY = 'https://drmjp93-ldlcal.netlify.app'; // keep same
+    if(!wrap) return;
+    wrap.addEventListener('click', function(){
+      if(wrap._loaded) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = NETLIFY;
+      iframe.title = 'LDL Calculator';
+      iframe.style.width = '100%';
+      iframe.style.height = '560px';
+      iframe.style.border = '0';
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'no-referrer';
+      wrap.innerHTML = '';
+      wrap.appendChild(iframe);
+      wrap._loaded = true;
+      // reveal inline stats bar if desired
+      const inline = document.getElementById('inline-stats-bar');
+      if(inline) { inline.style.display = 'block'; }
+    });
+  })();
+  </script>
+
+  <script>
+  // Inline stats prefill from /stats.json (non-blocking)
+  (function(){
+    const PATH = '/stats.json';
+    fetch(PATH + '?_=' + Date.now()).then(r => r.ok ? r.json() : {}).then(data => {
+      if(!data) return;
+      ['echo_studies','cases_attended'].forEach(k=>{
+        const el = document.querySelector('[data-key="'+k+'"]');
+        if(el) el.textContent = (Number(data[k]) || 0).toLocaleString();
+      });
+    }).catch(()=>{});
+  })();
+  </script>
 
 </body>
 </html>
