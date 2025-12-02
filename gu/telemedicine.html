@@ -1,48 +1,376 @@
 <!doctype html>
 <html lang="gu">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ટેલીમેડિસિન કન્સલ્ટેશન — ડૉ. મિત પાંચાણી</title>
-  <meta name="description" content="ઓનલાઇન ટેલીમેડિસિન કન્સલ્ટેશન — ડૉ. મિત પાંચાણી" />
-  <link rel="canonical" href="https://drmjp93.in/gu/telemedicine.html">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ટેલીમેડિસિન કન્સલ્ટેશન — ડૉ. મિત પંચાણી</title>
+  <meta name="description" content="ડૉ. મિત પંચાણી દ્વારા ઓનલાઈન ટેલીમેડિસિન કન્સલ્ટેશન." />
+
   <style>
-    :root{--bg:#f5f7fa;--card:#fff;--text:#222;--muted:#6b7280;--accent:#1a1a1a}
-    *{box-sizing:border-box}body{margin:0;padding:20px;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text)}
-    .container{max-width:980px;margin:18px auto;background:var(--card);padding:26px;border-radius:12px}
-    h1{color:var(--accent)}.lead{color:var(--muted)}
-    .btn{display:inline-block;padding:12px 18px;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:700}
-    .note{background:#fffbea;padding:10px;border-radius:8px;border:1px solid #f6e29b;color:#6b7280}
-    footer{text-align:center;margin-top:22px;color:var(--muted)}
+    :root {
+      --bg:#f5f7fa; --card:#ffffff; --text:#222; --muted:#6b7280;
+      --accent:#1a1a1a; --accentDark:#0f1724;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0; padding:20px;
+      background:var(--bg);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text); line-height:1.55;
+    }
+    .container{
+      max-width:980px; margin:18px auto; background:var(--card);
+      padding:26px; border-radius:12px;
+      box-shadow:0 12px 30px rgba(15,15,15,0.06);
+    }
+    h1{margin:0 0 10px; font-size:1.8rem; color:var(--accent);}
+    .lead{color:var(--muted); margin-bottom:18px;}
+    .btn{
+      display:inline-block; padding:12px 18px;
+      background:var(--accent);
+      color:#fff; border-radius:8px; text-decoration:none;
+      font-weight:700; font-size:0.98rem;
+    }
+    .note{
+      background:#fffbea; padding:12px;
+      border-radius:8px; font-size:0.88rem;
+      margin-top:10px; border:1px solid #f6e29b;
+    }
+    footer{text-align:center; margin-top:30px; color:var(--muted);}
+
+    /* Accordion */
+    .acc { border-radius:8px; overflow:hidden; border:1px solid #eaeaea; margin:14px 0; }
+    .acc button{
+      width:100%; text-align:left; padding:14px;
+      background:#fafafa; border:0; font-weight:700;
+      cursor:pointer; font-size:1rem;
+    }
+    .acc .panel{
+      padding:14px; display:none; background:white;
+      color:#444; border-top:1px solid #eee;
+    }
+
+    /* small helpers */
+    ul.quick{ margin:8px 0 18px 18px;color:#333; }
+    a.link-inline{ color:#1a1a1a; text-decoration:underline; font-weight:600; }
+    @media (max-width:560px){
+      body{padding:14px}
+      .container{padding:18px}
+    }
+  </style>
+
+  <style>
+/* Black pill buttons — reuse .pill-btn on both links/buttons */
+.pill-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:12px 22px;
+  border-radius:999px;             /* pill shape */
+  background:#0b0b0b;              /* deep black */
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  min-width:140px;
+  box-shadow: 0 8px 20px rgba(6,7,10,0.28), inset 0 -3px 8px rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.04);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  cursor:pointer;
+}
+
+/* secondary pill (lighter black / muted) */
+.pill-btn.secondary{
+  background:#262626;
+  box-shadow: 0 6px 16px rgba(10,10,10,0.18);
+  color:#fff;
+}
+
+/* small icon styling if you want icons inside */
+.pill-btn .icon {
+  width:20px; height:20px; display:inline-block; flex:0 0 20px;
+  border-radius:4px; background:transparent;
+}
+
+/* hover / active */
+.pill-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(6,7,10,0.32); }
+.pill-btn:active { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(6,7,10,0.22); }
+
+/* container for side-by-side layout */
+.btn-row {
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin:28px 0;
+  flex-wrap:wrap;
+}
+
+/* make them half-width on very small screens (narrow) */
+@media (max-width:420px){
+  .btn-row .pill-btn { min-width:unset; width:48%; padding:10px 14px; }
+}
+
+/* MOBILE FIX: ensure .pill-btn renders as rectangle on mobile
+   (full-width rectangle visual, not tall circular blob) */
+@media (max-width: 560px) {
+  .pill-btn {
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    padding:10px 14px !important;
+    font-size:0.95rem !important;
+    line-height:1.2 !important;
+    white-space:normal !important;    /* allow wrapping */
+    text-align:center !important;
+    border-radius:14px !important;    /* rounded rectangle */
+  }
+  .btn-row { gap:12px; }
+  /* For very narrow screens, stack vertically with space */
+  .btn-row .pill-btn { width:100% !important; }
+}
+
+/* optional small safety fallback so other rules don't force oval */
+.pill-btn { min-width:0 !important; min-height:0 !important; }
+
+/* small accessible focus style */
+.pill-btn:focus { outline: 3px solid rgba(59,130,246,0.16); box-shadow:0 10px 30px rgba(6,7,10,0.16); }
   </style>
 </head>
+
 <body>
-  <main class="container">
-    <a href="/gu/" style="text-decoration:none;color:var(--muted)">← મુખ્ય પાનું</a>
-    <h1>ટેલીમેડિસિન કન્સલ્ટેશન</h1>
-    <p class="lead">ફોન દ્વારા વહેલી અને અસરકારક સલાહ.</p>
+<main class="container">
 
-    <div class="note"><strong>તાત્કાલિક સ્થિતિ:</strong> છાતીમાં દુખાવો, ગંભીર ઉશ્વાસની મુશ્કેલીઓ — નજીકની હોસ્પિટલ નો સંપર્ક કરવો</div>
+  <!-- HEADER -->
+  <h1>ટેલીમેડિસિન કન્સલ્ટેશન</h1>
+  <div class="lead">
+    સરળ અને ઝડપી ફોન પર તબીબી સલાહ.
+  </div>
 
-    <h2>મુખ્ય મુદ્દા</h2>
+  <!-- EMERGENCY BANNER -->
+  <div style="background:#ffe9e9;color:#9b1111;padding:10px;border-radius:8px;font-weight:700;margin-bottom:16px;">
+    તાત્કાલિક સ્થિતિ? છાતીમાં દુખાવો, ગંભીર શ્વાસની તકલીફ, કમજોરી, સીઝર કે મગજમાં ફેરફાર → તરત નજીકની હોસ્પિટલ જાઓ.
+  </div>
+
+  <!-- QUICK INFO WITH INLINE CLICKABLE FOLLOW-UP -->
+  <ul class="quick">
+    <li>પ્રથમ કન્સલ્ટેશન ₹400 (જાહેરાત પ્રમાણે ~15 મિનિટ)</li>
+    <li>
+      <a href="#" id="openFollowUp" class="link-inline">ફોલો-અપ નીતિ (ટેપ કરો)</a>
+    </li>
+    <li>એપોઈન્ટમેન્ટ ફક્ત ચુકવણી પછી જ મળશે</li>
+    <li>પ્રાથમિક રીતે કન્સલ્ટેશન ફોન દ્વારા; જરૂરી હોવાથી વિડિઓ પણ</li>
+  </ul>
+
+  <!-- ACCORDION: HOW IT WORKS -->
+  <div class="acc">
+    <button aria-expanded="false">કેવી રીતે કામ કરશે?</button>
+    <div class="panel">
+      <ol>
+        <li><strong>ચૂકો:</strong> “ચુકવણી” બટન પર ક્લિક કરીને ચુકવણી પૂર્ણ કરો.</li>
+        <li>ચુકવણી પછી સ્ક્રીન પર દર્શાવેલ સૂચનાઓ પ્રમાણે ટ્રાન્ઝેક્શન વિગતો અને ફોર્મ ભરો.</li>
+        <li>મારે માહિતી મળી ગયે પછી કોલ માટે સમય નિર્ધારિત કરીશ અને કન્સલ્ટેશન થશે.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ACCORDION: SUITABLE FOR -->
+  <div class="acc">
+    <button aria-expanded="false">કોણ માટે યોગ્ય છે</button>
+    <div class="panel">
+      <ul>
+        <li>ડાયાબિટીસ, થાયરોઇડ, BP ફોલો-અપ, કોલેસ્ટ્રોલ, સતત હૃદયની સ્થિતિઓ</li>
+        <li><strong>ગર્ભાવસ્થા</strong> સાથે ડાયાબિટીસ/થાઇરોઇડ/BP (નૉન-ઇમર્જન્સી)</li>
+        <li>દવા સમીક્ષા</li>
+        <li>લેબ રિપોર્ટ / રિપોર્ટની ચર્ચા</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ACCORDION: BEFORE CONSULT -->
+  <div class="acc">
+    <button aria-expanded="false">કન્સલ્ટેશન પહેલાં શું તૈયાર કરો</button>
+    <div class="panel">
+      <ul>
+        <li>ઉમ્ર, હાલની દવાઓ અને એલર્જી વિશે માહિતી</li>
+        <li>હાલના લેબ રિપોર્ટ્સ/ઇમેજિંગ (જોઈએ તો)</li>
+        <li>જો મળે તોVitals: BP, તાપમાન, SPO₂</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ACCORDION: REFUND POLICY -->
+  <div class="acc">
+    <button aria-expanded="false">રિફંડ અને રીસ્કેડ્યુલ નીતિ</button>
+    <div class="panel">
+      <ul>
+        <li>જ્યારે આપ আবেদন કરો અને એપોઇન્ટમેન્ટ ન ફાળવવામાં આવી હોય ત્યારે સંપૂર્ણ રિફંડ.</li>
+        <li>સ્લોટ કન્ફર્મ થયા બાદ ન-શો માટે રિફંડ નહીં મળે.</li>
+        <li>એકવારની મફત રીસ્કેડ્યુલ મંજૂર.</li>
+        <li>મારી બાજુથી ટેકનિકલ તકલીફ આવે તો ફરીથી કોલ નિઃશુલ્ક શેડ્યુલ કરવામાં આવશે.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ACCORDION: FOLLOW-UP POLICY (FULL) -->
+  <div class="acc">
+    <button aria-expanded="false">ફોલો-અપ નીતિ અને સંદેશ правила</button>
+    <div class="panel">
+      <p style="font-weight:700;margin:0 0 8px 0;">ફોલો-અપ:</p>
+      <ul>
+        <li>સમાન સમસ્યા માટે 72 કલાકની અંદર → <strong>મફત</strong> (કોલ અથવા મેસેજ).</li>
+        <li>72 કલાક પછી → <strong>₹300</strong> પ્રતિ કોલ.</li>
+      </ul>
+
+      <p style="font-weight:700;margin:12px 0 6px 0;">મહત્વપૂર્ણ:</p>
+      <ul>
+        <li>નવી લક્ષણો હોય તો તે નવી કન્સલ્ટેશન ગણાશે, ભલે 72 કલાકની અંદર હોય.</li>
+      </ul>
+
+      <p style="font-weight:700;margin:12px 0 6px 0;">WhatsApp નીતિ:</p>
+      <ul>
+        <li>WhatsApp ફક્ત નાના સ્પષ્ટીકરણો અને રિપોર્ટ શેર કરવા માટે છે.</li>
+        <li>નવા લક્ષણો અથવા દવા બદલાવ માટે WhatsApp પર આધાર ન લો.</li>
+        <li>નવા મુદ્દા માટે નવુ પેડ કન્સલ્ટેશન બુક કરો.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ACCORDION: T&C -->
+  <div class="acc">
+    <button aria-expanded="false">ટેલીમેડિસિનની શરતો</button>
+    <div class="panel">
+      <ul>
+        <li>સલાહ આપેલી માહિતી પર આધારિત છે.</li>
+        <li>જ્યારે જરૂરી હોય ત્યારે શારીરિક તપાસ જરૂરી રહેશે.</li>
+        <li>બધા મેડિકલ ડેટા કન્ફીડેન્શિયલ રહેશે.</li>
+        <li>પેશન્ટ સાચી માહિતી આપશે અને સલાહનું પાલન કરશે.</li>
+        <li>ચુકવણી + મેસેજ/કૉલ = ટેલીકન્સલ્ટેશન માટે સંમતિ ગણાશે.</li>
+        <li>ફોર્મ ભરવામાં મહત્વપૂર્ણ — વગર તેના અમે સંપર્ક ન કરી શકીએ.</li>
+      </ul>
+    </div>
+  </div>
+
+<!-- Replace existing pay/back button block with this -->
+<div class="btn-row" aria-hidden="false">
+  <a href="/gu/pay.html" class="pill-btn" id="payNowBtn" aria-label="Pay now">
+    હું ઉપરોક્ત નિયમ વાંચી ગયો/ગઇ છું — ચુકવણી કરવા આગળ વધો
+  </a>
+
+  <a href="/gu/index.html" class="pill-btn secondary" id="backBtn" aria-label="Back to homepage">
+    પરત
+  </a>
+</div>
+
+</main>
+
+<footer>
+  © 2025 ડૉ. મિત પંચાણી. All Rights Reserved.
+</footer>
+
+<!-- FOLLOW-UP POLICY MODAL (placed after footer) -->
+<div id="followModal"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45);
+           backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:9999;">
+  <div style="background:#fff; width:92%; max-width:640px; padding:18px;
+           border-radius:12px; max-height:80vh; overflow-y:auto; position:relative;">
+    <button id="closeFollowUp"
+            style="position:absolute; top:10px; right:12px; background:none; border:0;
+                   font-size:22px; cursor:pointer;">×</button>
+
+    <h2 style="margin-top:0;">ફોલો-અપ નીતિ</h2>
+
+    <p style="font-weight:700;margin:0 0 8px 0;">ફોલો-અપ:</p>
     <ul>
-      <li>પ્રથમ કન્સલ્ટેશન ₹400 (લગભગ 15 મિનિટ)</li>
-      <li>ફોલો-અપ ₹300</li>
-      <li>ચુકવણી પછી જ એપોઇન્ટમેન્ટ મળશે</li>
+      <li>સમાન સમસ્યા માટે 72 કલાકની અંદર → <strong>મફત</strong> (કોલ અથવા WhatsApp).</li>
+      <li>72 કલાક પછી → <strong>₹300</strong> પ્રતિ કોલ.</li>
     </ul>
 
-    <h3>પ્રક્રિયા</h3>
-    <ol>
-      <li><strong>Pay</strong> પર ક્લિક કરો અને ચુકવણી કરો.</li>
-      <li>ચુકવણી પછી કન્ફર્મેશન ફોર્મ ભરો.</li>
-      <li>પછી ફોન કૉલનો સમય બતાવવામાં આવશે.</li>
-    </ol>
+    <p style="font-weight:700;margin:12px 0 6px 0;">મહત્વપૂર્ણ:</p>
+    <ul>
+      <li>નવી સમસ્યા અથવા નવા લક્ષણો → નવો કન્સલ્ટેશન ગણાશે.</li>
+    </ul>
 
-    <p style="text-align:center;margin-top:18px;">
-      <a class="btn" href="/pay.html">ચુકવણી પેજ ખોલો</a>
-    </p>
+    <p style="font-weight:700;margin:12px 0 6px 0;">WhatsApp નીતિ:</p>
+    <ul>
+      <li>WhatsApp માત્ર નાના પ્રશ્નો અને રિપોર્ટ શેર કરવા માટે છે.</li>
+      <li>નવા સારવારના નિર્ણયો માટે WhatsApp પર આધાર રાખશો નહીં.</li>
+    </ul>
+  </div>
+</div>
 
-  </main>
-  <footer>© 2025 Dr. Mit Panchani</footer>
+<script>
+  // accordion behaviour
+  document.querySelectorAll('.acc').forEach(acc=>{
+    const btn = acc.querySelector('button');
+    const panel = acc.querySelector('.panel');
+    btn.addEventListener('click', ()=>{
+      const open = panel.style.display === 'block';
+      panel.style.display = open ? 'none' : 'block';
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+
+  // modal popup behaviour
+  (function(){
+    const modal = document.getElementById('followModal');
+    const openBtn = document.getElementById('openFollowUp');
+    const closeBtn = document.getElementById('closeFollowUp');
+
+    if(!openBtn || !modal) return;
+
+    openBtn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', ()=>{
+      modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal){
+        modal.style.display = 'none';
+      }
+    });
+
+    // accessibility: close on ESC
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && modal.style.display === 'flex'){
+        modal.style.display = 'none';
+      }
+    });
+  })();
+
+  // Small JS fallback: ensure pill-btn is rectangle on narrow screens (in case CSS gets overridden)
+  (function(){
+    function applyFallback(){
+      if (window.innerWidth <= 560){
+        document.querySelectorAll('.pill-btn').forEach(b=>{
+          b.style.display = 'block';
+          b.style.width = '100%';
+          b.style.maxWidth = '100%';
+          b.style.padding = '10px 14px';
+          b.style.borderRadius = '14px';
+          b.style.whiteSpace = 'normal';
+          b.style.textAlign = 'center';
+        });
+      } else {
+        // remove inline fallback when not needed
+        document.querySelectorAll('.pill-btn').forEach(b=>{
+          b.style.display = '';
+          b.style.width = '';
+          b.style.maxWidth = '';
+          b.style.padding = '';
+          b.style.borderRadius = '';
+          b.style.whiteSpace = '';
+          b.style.textAlign = '';
+        });
+      }
+    }
+    window.addEventListener('resize', applyFallback);
+    document.addEventListener('DOMContentLoaded', applyFallback);
+  })();
+</script>
+
 </body>
 </html>
