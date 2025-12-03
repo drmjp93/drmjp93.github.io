@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
+  <!-- Home page -->
   <url>
     <loc>https://drmjp93.in/</loc>
-    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://drmjp93.in/"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://drmjp93.in/hi/"/>
+    <xhtml:link rel="alternate" hreflang="gu" href="https://drmjp93.in/gu/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drmjp93.in/"/>
   </url>
 
+  <!-- Telemedicine Page -->
   <url>
-    <loc>https://drmjp93.in/telemedicine.html</loc>
-    <priority>0.90</priority>
+    <loc>https://drmjp93.in/telemedicine</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://drmjp93.in/telemedicine"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://drmjp93.in/hi/telemedicine"/>
+    <xhtml:link rel="alternate" hreflang="gu" href="https://drmjp93.in/gu/telemedicine"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drmjp93.in/telemedicine"/>
   </url>
 
+  <!-- Payment Page -->
   <url>
     <loc>https://drmjp93.in/pay.html</loc>
-    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://drmjp93.in/pay.html"/>
+    <xhtml:link rel="alternate" hreflang="hi" href="https://drmjp93.in/hi/pay.html"/>
+    <xhtml:link rel="alternate" hreflang="gu" href="https://drmjp93.in/gu/pay.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://drmjp93.in/pay.html"/>
   </url>
 
 </urlset>
